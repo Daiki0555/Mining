@@ -10,6 +10,7 @@ K2EngineLow* g_k2EngineLow = nullptr;
 /// </summary>
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
+	//‚ª‚ñ‚Î‚Á‚Ä‚Ë
 	// commit test
 	// ƒQ[ƒ€‚Ì‰Šú‰»B
 	InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, TEXT("Game"));
