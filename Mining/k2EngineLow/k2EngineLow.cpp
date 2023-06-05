@@ -13,7 +13,6 @@ namespace nsK2EngineLow {
 		g_gameTime = nullptr;
 		
 		delete m_graphicsEngine;
-		
 		//ゲームオブジェクトマネージャーを削除。
 		GameObjectManager::DeleteInstance();
 		PhysicsWorld::DeleteInstance();
