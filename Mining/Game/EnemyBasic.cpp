@@ -1,2 +1,2 @@
 #include "stdafx.h"
-#include "EnemyStatus.h"
+#include "EnemyBasic.h"

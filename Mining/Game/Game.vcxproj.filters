@@ -4,6 +4,9 @@
     <Filter Include="system">
       <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{168bee26-e540-43da-9b2c-a4f1fd1f338b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -12,6 +15,19 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="EnemyBasic.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Slime.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Mushroom.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Bee.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -19,5 +35,18 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="EnemyBasic.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Slime.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Mushroom.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Bee.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

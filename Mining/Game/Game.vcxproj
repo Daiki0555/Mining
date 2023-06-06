@@ -224,7 +224,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="EnemyBasic.cpp" />
+    <ClCompile Include="Enemy_Bee.cpp" />
+    <ClCompile Include="Enemy_Mushroom.cpp" />
+    <ClCompile Include="Enemy_Slime.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -234,6 +239,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="EnemyBasic.h" />
+    <ClInclude Include="Enemy_Bee.h" />
+    <ClInclude Include="Enemy_Mushroom.h" />
+    <ClInclude Include="Enemy_Slime.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>

@@ -19,7 +19,7 @@ public:
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
 	/// <param name="moveSpeed">移動速度</param>
-	void SetStatus(float attackPower, float moveSpeed) {
+	void SetStatus(int attackPower, float moveSpeed) {
 		m_AttackPower = attackPower;
 		m_MoveSpeed = moveSpeed;
 	}
@@ -61,10 +61,10 @@ private:
 	ModelRender		m_ModelRender;						// モデルレンダー
 
 	Vector3			m_Position = Vector3::Zero;			// 自身の座標
-	Vector3			m_Scale = Vector3::Zero;			// 自身のスケール
+	Vector3			m_Scale = Vector3::One;				// 自身のスケール
 	Quaternion		m_Rotation = Quaternion::Identity;	// 自身の回転
 
-	float			m_AttackPower = 0.0f;				// 攻撃力
+	int				m_AttackPower = 0;					// 攻撃力
 	float			m_MoveSpeed = 0.0f;					// 移動速度
 };
 

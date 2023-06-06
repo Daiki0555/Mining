@@ -12,10 +12,10 @@ public:
 	void LoadAnimation();
 	void PlayAnimation();
 
-	void Rotation(Vector3 rotation);
+	void Rotation();
 	void Move();
 	void Attack();
-	void Damage(float attackPower);
+	void Damage(int attackPower);
 	void Dig();
 	void Death();
 	void Clear();
@@ -59,12 +59,12 @@ private:
 	CharacterController m_CharacterController;				// キャラクターコントローラー
 
 	Vector3				m_Position = Vector3::Zero;			// 自身の座標
-	Vector3				m_Scale = Vector3::Zero;			// 自身のスケール
+	Vector3				m_Scale = Vector3::One;				// 自身のスケール
+	Vector3				m_MoveSpeed = Vector3::Zero;		// 移動速度
+
 	Quaternion			m_Rotation= Quaternion::Identity;	// 自身の回転
 
-	float				m_HitPoint = 150.0f;				// HP
+	int					m_HitPoint = 150;					// HP
 	float				m_Stamina = 100.0f;					// スタミナ
-	float				m_AttackPower = 50.0f;				// 攻撃力
-	float				m_MoveSpeed = 10.0f;				// 移動速度
 };
 
