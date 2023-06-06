@@ -231,6 +231,7 @@
     <ClCompile Include="graphics\RenderingEngine.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="LevelRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -514,6 +515,7 @@
     <ClInclude Include="graphics\RenderingEngine.h">
       <Filter>graphics</Filter>
     </ClInclude>
+    <ClInclude Include="LevelRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
@@ -572,6 +574,9 @@
     </Filter>
     <Filter Include="AI\PathFinding">
       <UniqueIdentifier>{72d94fe6-e599-4523-8e54-81df808c96fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="level3DRender">
+      <UniqueIdentifier>{fa537c02-93c2-4a16-8e63-8e672bc9ba6d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
