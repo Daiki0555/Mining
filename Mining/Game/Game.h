@@ -1,4 +1,5 @@
 #pragma once
+class Player;
 class Game:public IGameObject
 {
 public:
@@ -6,5 +7,8 @@ public:
 	~Game();
 
 	bool Start();
+	
+private:
+	Player* m_Player = nullptr;		// ƒvƒŒƒCƒ„[
 };
 

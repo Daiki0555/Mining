@@ -21,7 +21,7 @@ public:
 	void Clear();
 
 private:
-	enum m_ActionState {
+	enum ActionState {
 		m_ActionState_Idle,			// 待機
 		m_ActionState_Walk,			// 歩く
 		m_ActionState_Run,			// 走る
@@ -30,16 +30,7 @@ private:
 		m_ActionState_Death,		// 死亡
 		m_ActionState_Clear			// クリア
 	};
-
-	enum m_AnimationState {
-		m_AnimationState_Idle,		// 待機
-		m_AnimationState_Walk,		// 歩く
-		m_AnimationState_Run,		// 走る
-		m_AnimationState_Dig,		// 掘る
-		m_AnimationState_Damage,	// 被弾
-		m_AnimationState_Death,		// 死亡
-		m_AnimationState_Clear		// クリア
-	};
+	ActionState m_actionState;
 
 	enum EnAnimationClip {
 		m_en_AnimationClips_Idle,		// 待機
@@ -51,20 +42,30 @@ private:
 		m_en_AnimationClips_Clear,		// クリア
 		m_en_AnimationClips_Num
 	};
-	EnAnimationClip m_EnAnimationClips[m_en_AnimationClips_Num];
+	AnimationClip m_EnAnimationClips[m_en_AnimationClips_Num];
 
 // --------------------------------------------------------
-	ModelRender			m_ModelRender;						// モデルレンダー
+	ModelRender			m_modelRender;						// モデルレンダー
 
-	CharacterController m_CharacterController;				// キャラクターコントローラー
+	CharacterController m_characterController;				// キャラクターコントローラー
 
-	Vector3				m_Position = Vector3::Zero;			// 自身の座標
-	Vector3				m_Scale = Vector3::One;				// 自身のスケール
-	Vector3				m_MoveSpeed = Vector3::Zero;		// 移動速度
+	Vector3				m_position = Vector3::Zero;			// 自身の座標
+	Vector3				m_scale = Vector3::One;				// 自身のスケール
+	Vector3				m_moveSpeed = Vector3::Zero;		// 移動速度
 
-	Quaternion			m_Rotation= Quaternion::Identity;	// 自身の回転
+	Quaternion			m_rotation= Quaternion::Identity;	// 自身の回転
 
-	int					m_HitPoint = 150;					// HP
-	float				m_Stamina = 100.0f;					// スタミナ
+	struct PlayerStatus {
+		int				m_hitPoint = 150;					// HP(150)
+		int				m_attackPower = 25;					// 攻撃力(25)
+		float			m_stamina = 100.0f;					// スタミナ(100.0f)
+		float			m_basicSpeed = 10.0f;				// 基本速度(10.0f)
+	};
+	PlayerStatus		playerStatus;						// プレイヤーのステータス
+
+	float				m_invincibleTimer = 5.0f;			// 無敵時間
+	float				m_addSpped = 1.0f;					// 乗算速度
+
+	bool				m_takeDamageflag = true;			// ダメージを受けるフラグ
 };
 

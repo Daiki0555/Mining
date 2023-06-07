@@ -28,6 +28,7 @@
     <ClCompile Include="Enemy_Bee.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -48,5 +49,6 @@
     <ClInclude Include="Enemy_Bee.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h" />
   </ItemGroup>
 </Project>

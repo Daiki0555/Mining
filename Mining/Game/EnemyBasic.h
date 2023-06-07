@@ -1,70 +1,61 @@
 #pragma once
+class Player;
 class EnemyBasic:public IGameObject
 {
 public:
 	EnemyBasic();
 	~EnemyBasic();
 
-	bool Start();
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="attackPower">攻撃力</param>
+	/// <param name="moveSpeed">基本移動速度</param>
+	/// <param name="radius">キャラクターコントローラーの半径</param>
+	/// <param name="hight">キャラクターコントローラーの高さ</param>
+	/// <returns></returns>
+	bool Start(int attackPower, float moveSpeed, float radius, float height);
 
-	void Rotation();
+	void Rotation(Vector3 rotaion);
 	void Move();
 	void SearchPlayer();
 	void Attack();
 	void Damege();
 	void Dizzy();
 
-	/// <summary>
-	/// ステータスを設定するs
-	/// </summary>
-	/// <param name="attackPower">攻撃力</param>
-	/// <param name="moveSpeed">移動速度</param>
-	void SetStatus(int attackPower, float moveSpeed) {
-		m_AttackPower = attackPower;
-		m_MoveSpeed = moveSpeed;
-	}
-
-	/// <summary>
-	/// 攻撃力を参照する
-	/// </summary>
-	/// <returns></returns>
-	float GetAttackPower() {
-		return m_AttackPower;
-	}
-
 private:
-	enum m_ActionState {
+	enum ActionState {
 		m_ActionState_Idle,					// 待機
 		m_ActionState_Move,					// 移動
 		m_ActionState_Attack,				// 攻撃
 		m_ActionState_Damege,				// 被弾
 	};
-
-	enum m_AnimationState {
-		m_AnimationState_Idle,				// 待機
-		m_AnimationState_Move,				// 移動
-		m_AnimationState_Attack,			// 攻撃
-		m_AnimationState_Damege,			// 被弾
-	};
+	ActionState m_actionState;
 
 	enum EnAnimationClip {
-		m_en_AnimationClips_Idle,				// 待機
-		m_en_AnimationClips_Move,				// 移動
-		m_en_AnimationClips_Attack,				// 攻撃
-		m_en_AnimationClips_Damege,				// 被弾
+		m_en_AnimationClips_Idle,			// 待機
+		m_en_AnimationClips_Move,			// 移動
+		m_en_AnimationClips_Attack,			// 攻撃
+		m_en_AnimationClips_Damege,			// 被弾
 		m_en_AnimationClips_Num
 	};
-	EnAnimationClip m_En_AnimationClips[m_en_AnimationClips_Num];
+	AnimationClip m_En_animationClips[m_en_AnimationClips_Num];
 
 // -----------------------------------------------------------
+	Player*				m_player = nullptr;						// プレイヤー
 
-	ModelRender		m_ModelRender;						// モデルレンダー
+	CharacterController	m_characterController;					// キャラクターコントローラー
 
-	Vector3			m_Position = Vector3::Zero;			// 自身の座標
-	Vector3			m_Scale = Vector3::One;				// 自身のスケール
-	Quaternion		m_Rotation = Quaternion::Identity;	// 自身の回転
+	ModelRender			m_modelRender;							// モデルレンダー
 
-	int				m_AttackPower = 0;					// 攻撃力
-	float			m_MoveSpeed = 0.0f;					// 移動速度
+	Vector3				m_position = Vector3::Zero;				// 自身の座標
+	Vector3				m_scale = Vector3::One;					// 自身のスケール
+	Quaternion			m_rotation = Quaternion::Identity;		// 自身の回転
+
+	struct EnemyStatus {
+		int				m_attackPower = 0;						// 攻撃力
+		float			m_moveSpeed = 0.0f;						// 移動速度
+	};
+	EnemyStatus			enemyStatus;							// エネミーのステータス
 };
 
