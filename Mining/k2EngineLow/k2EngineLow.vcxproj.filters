@@ -231,6 +231,8 @@
     <ClCompile Include="graphics\RenderingEngine.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="LevelRender.cpp" />
+    <ClCompile Include="Level2DRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -514,6 +516,8 @@
     <ClInclude Include="graphics\RenderingEngine.h">
       <Filter>graphics</Filter>
     </ClInclude>
+    <ClInclude Include="LevelRender.h" />
+    <ClInclude Include="Level2DRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">

@@ -33,6 +33,7 @@ namespace nsK2EngineLow {
 		//アニメーションの初期化
 		InitAnimation(animationClips, numAnimationClips, enModelUpAxis);
 	
+		//モデルの初期化
 		InitModel(filePath, enModelUpAxis);
 	}
 
