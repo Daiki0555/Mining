@@ -2,7 +2,7 @@
 #include "level3D/TklFile.h"
 namespace nsK2EngineLow {
 
-	struct LevelObjectData {
+	struct LevelObjeData {
 		Vector3			position;		//À•W
 		Quaternion		rotaition;		//‰ñ“]
 		Vector3			scale;			//‘å‚«‚³
@@ -44,7 +44,7 @@ namespace nsK2EngineLow {
 		/// <summary>
 		/// ‰Šú‰»ˆ—
 		/// </summary>
-		void Init(const char* filePath, std::function<bool(LevelObjectData& objData)>hookFunc);
+		void Init(const char* filePath, std::function<bool(LevelObjeData& objData)>hookFunc);
 
 	private:
 		/// <summary>

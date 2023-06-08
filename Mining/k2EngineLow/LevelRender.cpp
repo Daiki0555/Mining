@@ -18,7 +18,7 @@ namespace nsK2EngineLow {
 
 	void LevelRender::Init(
 		const char* filePath,
-		std::function<bool(LevelObjectData& objData)> hookFunc
+		std::function<bool(LevelObjeData& objData)> hookFunc
 	)
 	{
 		//tklファイルのロード
@@ -33,7 +33,7 @@ namespace nsK2EngineLow {
 			if (bone->GetParentBoneNo() == 0) {
 
 				////行列から座標を作成
-				LevelObjectData levelObjData;
+				LevelObjeData levelObjData;
 				bone->CalcWorldTRS(levelObjData.position, levelObjData.rotaition, levelObjData.scale);
 
 				//ZupとYupの変更。

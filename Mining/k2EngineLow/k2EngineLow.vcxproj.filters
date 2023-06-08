@@ -225,14 +225,12 @@
     <ClCompile Include="graphics\FrameBuffer.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\ModelRender.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics\RenderingEngine.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelRender.cpp" />
+    <ClCompile Include="ModelRender.cpp" />
+    <ClCompile Include="RenderingEngine.cpp" />
+    <ClCompile Include="SpriteRender.cpp" />
     <ClCompile Include="Level2DRender.cpp" />
+    <ClCompile Include="LevelRender.cpp" />
+    <ClCompile Include="FontRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -507,17 +505,13 @@
     <ClInclude Include="graphics\FrameBuffer.h">
       <Filter>graphics</Filter>
     </ClInclude>
-    <ClInclude Include="IRenderer.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics\ModelRender.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics\RenderingEngine.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelRender.h" />
+    <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="ModelRender.h" />
+    <ClInclude Include="RenderingEngine.h" />
+    <ClInclude Include="SpriteRender.h" />
     <ClInclude Include="Level2DRender.h" />
+    <ClInclude Include="LevelRender.h" />
+    <ClInclude Include="FontRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
