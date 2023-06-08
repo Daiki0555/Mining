@@ -5,7 +5,7 @@
 namespace nsK2EngineLow {
 	void Level2DRender::Init(
 		const char* filePath,
-		std::function<bool(Level2DObjectData& objData)>hookFunc
+		std::function<bool(Level2DObjeData& objData)>hookFunc
 	)
 	{
 		CaslFile casl;
