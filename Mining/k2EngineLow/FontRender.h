@@ -30,11 +30,49 @@ namespace nsK2EngineLow {
 		{
 			return m_text;
 		}
-
+		/// <summary>
+		/// 座標の設定。zは0.0f
+		/// </summary>
+		/// <param name="pos"></param>
 		void SetPosition(const Vector3& pos)
 		{
 			m_position = pos;
 		}
+		/// <summary>
+		/// 座標の取得
+		/// </summary>
+		/// <returns></returns>
+		const Vector3& GetPosition()
+		{
+			return m_position;
+		}
+		/// <summary>
+		/// 大きさを設定
+		/// </summary>
+		/// <param name="scale"></param>
+		void SetScale(const float scale)
+		{
+			m_scale = scale;
+		}
+		/// <summary>
+		/// 大きさの取得
+		/// </summary>
+		/// <returns></returns>
+		const float GetScale()
+		{
+			return m_scale;
+		}
+		/// <summary>
+		/// 色の設定
+		/// </summary>
+		/// <param name="color"></param>
+		void SetColor(const Vector4& color)
+		{
+			m_color = color;
+		}
+
+
+
 	private:
 		Font		m_font;								//フォント
 		Vector2		m_pivot = Sprite::DEFAULT_PIVOT;	//ピボット
