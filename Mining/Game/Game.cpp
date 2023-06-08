@@ -14,5 +14,12 @@ Game::~Game()
 bool Game::Start()
 {
 	m_Player = NewGO<Player>(0, "player");
+
+	LevelDesign();
+
 	return true;
+}
+
+void Game::LevelDesign()
+{
 }
