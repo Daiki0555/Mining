@@ -254,6 +254,7 @@
     <ClCompile Include="AI\PathFinding\NaviMesh.cpp" />
     <ClCompile Include="AI\PathFinding\Path.cpp" />
     <ClCompile Include="AI\PathFinding\PathFinding.cpp" />
+    <ClCompile Include="FontRender.cpp" />
     <ClCompile Include="gameObject\Gameobjectmanager.cpp" />
     <ClCompile Include="gameObject\IGameObject.cpp" />
     <ClCompile Include="geometry\AABB.cpp" />
@@ -277,7 +278,6 @@
     <ClCompile Include="graphics\Material.cpp" />
     <ClCompile Include="graphics\MeshParts.cpp" />
     <ClCompile Include="graphics\Model.cpp" />
-    <ClCompile Include="graphics\ModelRender.cpp" />
     <ClCompile Include="graphics\NullTextureMaps.cpp" />
     <ClCompile Include="graphics\PipelineState.cpp" />
     <ClCompile Include="graphics\raytracing\BLASBuffer.cpp" />
@@ -288,7 +288,6 @@
     <ClCompile Include="graphics\raytracing\RaytracingShaderTable.cpp" />
     <ClCompile Include="graphics\raytracing\RaytracingWorld.cpp" />
     <ClCompile Include="graphics\raytracing\TLASBuffer.cpp" />
-    <ClCompile Include="graphics\RenderingEngine.cpp" />
     <ClCompile Include="graphics\RenderTarget.cpp" />
     <ClCompile Include="graphics\RootSignature.cpp" />
     <ClCompile Include="graphics\RWStructuredBuffer.cpp" />
@@ -315,6 +314,7 @@
     <ClCompile Include="LevelRender.cpp" />
     <ClCompile Include="math\Matrix.cpp" />
     <ClCompile Include="math\Vector.cpp" />
+    <ClCompile Include="ModelRender.cpp" />
     <ClCompile Include="online\SyncOnlineTwoPlayerMatchEngine.cpp" />
     <ClCompile Include="physics\BoxCollider.cpp" />
     <ClCompile Include="physics\CapsuleCollider.cpp" />
@@ -326,10 +326,12 @@
     <ClCompile Include="physics\PhysicsStaticObject.cpp" />
     <ClCompile Include="physics\RigidBody.cpp" />
     <ClCompile Include="physics\SphereCollider.cpp" />
+    <ClCompile Include="RenderingEngine.cpp" />
     <ClCompile Include="sound\SoundEngine.cpp" />
     <ClCompile Include="sound\SoundSource.cpp" />
     <ClCompile Include="sound\WaveFile.cpp" />
     <ClCompile Include="sound\WaveFileBank.cpp" />
+    <ClCompile Include="SpriteRender.cpp" />
     <ClCompile Include="tkFile\TkaFile.cpp" />
     <ClCompile Include="tkFile\TkmFile.cpp" />
     <ClCompile Include="tkFile\TknFile.cpp" />
@@ -342,6 +344,7 @@
     <ClInclude Include="AI\PathFinding\PathFinding.h" />
     <ClInclude Include="dbg\MyAssert.h" />
     <ClInclude Include="dbg\MyLog.h" />
+    <ClInclude Include="FontRender.h" />
     <ClInclude Include="gameObject\GameObjectManager.h" />
     <ClInclude Include="gameObject\IGameobject.h" />
     <ClInclude Include="geometry\AABB.h" />
@@ -369,7 +372,6 @@
     <ClInclude Include="graphics\Material.h" />
     <ClInclude Include="graphics\MeshParts.h" />
     <ClInclude Include="graphics\Model.h" />
-    <ClInclude Include="graphics\ModelRender.h" />
     <ClInclude Include="graphics\NullTextureMaps.h" />
     <ClInclude Include="graphics\PipelineState.h" />
     <ClInclude Include="graphics\raytracing\BLASBuffer.h" />
@@ -383,7 +385,6 @@
     <ClInclude Include="graphics\raytracing\TLASBuffer.h" />
     <ClInclude Include="graphics\RenderContext.h" />
     <ClInclude Include="graphics\RenderContext_inline.h" />
-    <ClInclude Include="graphics\RenderingEngine.h" />
     <ClInclude Include="graphics\RenderTarget.h" />
     <ClInclude Include="graphics\RootSignature.h" />
     <ClInclude Include="graphics\RWStructuredBuffer.h" />
@@ -408,6 +409,7 @@
     <ClInclude Include="math\Math.h" />
     <ClInclude Include="math\Matrix.h" />
     <ClInclude Include="math\Vector.h" />
+    <ClInclude Include="ModelRender.h" />
     <ClInclude Include="online\SyncOnlineTwoPlayerMatchEngine.h" />
     <ClInclude Include="physics\BoxCollider.h" />
     <ClInclude Include="physics\CapsuleCollider.h" />
@@ -421,10 +423,12 @@
     <ClInclude Include="physics\PhysicsStaticObject.h" />
     <ClInclude Include="physics\RigidBody.h" />
     <ClInclude Include="physics\SphereCollider.h" />
+    <ClInclude Include="RenderingEngine.h" />
     <ClInclude Include="sound\SoundEngine.h" />
     <ClInclude Include="sound\SoundSource.h" />
     <ClInclude Include="sound\WaveFile.h" />
     <ClInclude Include="sound\WaveFileBank.h" />
+    <ClInclude Include="SpriteRender.h" />
     <ClInclude Include="time\FPSLimitter.h" />
     <ClInclude Include="time\GameTime.h" />
     <ClInclude Include="time\Stopwatch.h" />

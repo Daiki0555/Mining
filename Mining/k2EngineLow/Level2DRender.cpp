@@ -14,7 +14,7 @@ namespace nsK2EngineLow {
 		for (int i= 0; i < casl.GetNumCaslData(); i++)
 		{
 			auto caslData = casl.GetCaslData(i);
-			Level2DObjectData objData;
+			Level2DObjeData objData;
 			objData.scale.x = caslData->scale.x;
 			objData.scale.y = caslData->scale.y;
 			objData.position.x = caslData->position.x;

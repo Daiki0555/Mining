@@ -3,7 +3,7 @@ namespace nsK2EngineLow {
 
 	struct CaslData;
 	
-	struct Level2DObjectData{
+	struct Level2DObjeData{
 		Vector3		position = Vector3::Zero;				//座標
 		Quaternion	rotation = Quaternion::Identity;		//回転
 		Vector3		scale = Vector3::One;					//拡大率
@@ -50,7 +50,7 @@ namespace nsK2EngineLow {
 		/// </summary>
 		/// <param name="filePath">caslファイルのファイルパス</param>
 		/// <param name="hookFunc">オブジェクトを作成するときの処理をフックする</param>
-		void Init(const char* filePath, std::function<bool(Level2DObjectData& objData)>hookFunc);
+		void Init(const char* filePath, std::function<bool(Level2DObjeData& objData)>hookFunc);
 	};
 }
 

@@ -2,6 +2,7 @@
 
 namespace nsK2EngineLow {
 	class ModelRender;
+	class SpriteRender;
 	class RenderTarget;
 	class RenderingEngine:public Noncopyable
 	{
@@ -44,9 +45,18 @@ namespace nsK2EngineLow {
 		/// レンダーオブジェクトを追加
 		/// </summary>
 		/// <param name="modelRender"></param>
-		void AddRenderObject(ModelRender* modelRender)
+		void AddSpriteRenderObject(SpriteRender* renderObject)
 		{
-			m_modelList.push_back(modelRender);
+			m_spriteList.push_back(renderObject);
+		}
+
+		/// <summary>
+		/// レンダーオブジェクトを追加
+		/// </summary>
+		/// <param name="modelRender"></param>
+		void AddModelRenderObject(ModelRender* renderObject)
+		{
+			m_modeList.push_back(renderObject);
 		}
 
 
@@ -61,9 +71,25 @@ namespace nsK2EngineLow {
 		/// <param name="rc"></param>
 		void Execute(RenderContext& rc);
 	private:
-		static RenderingEngine*		m_instance;
-		RenderTarget				m_mainRenderTarget;
-		std::vector<ModelRender*>	m_modelList;
+		/// <summary>
+		/// 2Dレンダーターゲットを初期化
+		/// </summary>
+		void Init2DRenderTarget();
+
+
+		/// <summary>
+		/// 2D描画処理
+		/// </summary>
+		/// <param name="rc"></param>
+		void Render2D(RenderContext& rc);
+	private:
+		static RenderingEngine*		m_instance;							//ライト用の構造体
+		RenderTarget				m_mainRenderTarget;					//メインレンダーターゲット
+		RenderTarget				m_2DRenderTarget;					//2Dレンダーターゲット
+		Sprite						m_2DSprite;							//2Dスプライト
+		Sprite						m_mainSprite;
+		std::vector<SpriteRender*>  m_spriteList;					//レンダリングするオブジェクト
+		std::vector<ModelRender*>	m_modeList;
 	};
 }
 

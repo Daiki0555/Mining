@@ -125,7 +125,10 @@ namespace nsK2EngineLow {
 		/// <param name="rc"></param>
 		void OnRenderModel(RenderContext& rc)
 		{
-			m_model.Draw(rc);
+			if (m_model.IsInited())
+			{
+				m_model.Draw(rc);
+			}
 		}
 
 	private:
