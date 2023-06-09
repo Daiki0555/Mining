@@ -59,8 +59,8 @@ void Player::LoadAnimation()
 	m_EnAnimationClips[m_en_AnimationClips_Run].Load("Assets/animData/player/run.tka");
 	m_EnAnimationClips[m_en_AnimationClips_Run].SetLoopFlag(true);
 
-	m_EnAnimationClips[m_en_AnimationClips_Dig].Load("Assets/animData/player/dig.tka");
-	m_EnAnimationClips[m_en_AnimationClips_Dig].SetLoopFlag(true);
+	//m_EnAnimationClips[m_en_AnimationClips_Dig].Load("Assets/animData/player/dig.tka");
+	//m_EnAnimationClips[m_en_AnimationClips_Dig].SetLoopFlag(true);
 
 	m_EnAnimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/player/damage.tka");
 	m_EnAnimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
@@ -116,7 +116,7 @@ void Player::Rotation()
 void Player::Move()
 {
 	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.y = 0.0f;
+	m_moveSpeed.z = 0.0f;
 
 	// ゲームパッドの入力量を参照する
 	Vector3 stickL;

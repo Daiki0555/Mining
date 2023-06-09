@@ -13,6 +13,7 @@ bool BackGround::Start()
 {
 	// ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	m_modelRender.Init("Assets/modelData/stage/stage.tkm");
+	m_physicsStaticObjct.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 
 	return true;
 }

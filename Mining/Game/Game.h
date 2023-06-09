@@ -1,5 +1,6 @@
 #pragma once
 class Player;
+class BackGround;
 class Game:public IGameObject
 {
 public:
@@ -10,8 +11,9 @@ public:
 	void LevelDesign();
 	
 private:
-	//LevelRender m_levelRender;
+	LevelRender		m_levelRender;					// レベルレンダー
 
-	Player* m_Player = nullptr;		// プレイヤー
+	Player*			m_player = nullptr;				// プレイヤー
+	BackGround*		m_backGround = nullptr;			// 背景
 };
 
