@@ -20,6 +20,38 @@ public:
 	void Death();
 	void Clear();
 
+	/// <summary>
+	/// 座標を参照する
+	/// </summary>
+	/// <returns></returns>
+	const Vector3& GetPosition()const {
+		return m_position;
+	}
+
+	/// <summary>
+	/// 座標を設定する
+	/// </summary>
+	/// <param name="position"></param>
+	void SetPosition(const Vector3& position) {
+		m_position = position;
+	}
+
+	/// <summary>
+	/// スケールを設定する
+	/// </summary>
+	/// <param name="position"></param>
+	void SetPosition(const Vector3& scale) {
+		m_scale = scale;
+	}
+
+	/// <summary>
+	/// 回転を設定する
+	/// </summary>
+	/// <param name="position"></param>
+	void SetPosition(const Quaternion& rotation) {
+		m_rotation = rotation;
+	}
+
 private:
 	enum ActionState {
 		m_ActionState_Idle,			// 待機

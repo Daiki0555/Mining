@@ -35,6 +35,7 @@
     <ClCompile Include="Stage\BackGround.cpp">
       <Filter>Stage</Filter>
     </ClCompile>
+    <ClCompile Include="GameCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -59,5 +60,6 @@
     <ClInclude Include="Stage\BackGround.h">
       <Filter>Stage</Filter>
     </ClInclude>
+    <ClInclude Include="GameCamera.h" />
   </ItemGroup>
 </Project>

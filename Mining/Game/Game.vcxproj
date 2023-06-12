@@ -229,6 +229,7 @@
     <ClCompile Include="Enemy\Enemy_Mushroom.cpp" />
     <ClCompile Include="Enemy\Enemy_Slime.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Stage\BackGround.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="Enemy\Enemy_Mushroom.h" />
     <ClInclude Include="Enemy\Enemy_Slime.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Stage\BackGround.h" />
     <ClInclude Include="stdafx.h" />
