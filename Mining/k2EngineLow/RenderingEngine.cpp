@@ -15,6 +15,16 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Init()
 	{
+		//ディレクションライトの設定
+		SetDirectionLight(Vector3(1, -1, 1), Vector3(0.5f, 0.5f, 0.5f));
+
+		//環境光の設定
+		SetAmbient(0.1f);
+
+
+
+		m_lightCB.directionLig = m_directionLig.GetDirectionLig();
+
 		//メインレンダーターゲットを設定
 		/*float clearColor[4] = { 0.5f,0.5f,0.5f,1.0f };
 		m_mainRenderTarget.Create(
@@ -77,8 +87,10 @@ namespace nsK2EngineLow {
 	{
 		ModelRendering(rc);
 		Render2D(rc);
+		FontRendering(rc);
 		m_spriteList.clear();
 		m_modeList.clear();
+		m_fontList.clear();
 	}
 
 	//モデルリストに入れられたモデルを描画する
@@ -95,6 +107,14 @@ namespace nsK2EngineLow {
 		for (auto& renderObj : m_spriteList)
 		{
 			renderObj->OnRender2D(rc);
+		}
+	}
+
+	void RenderingEngine::FontRendering(RenderContext& rc)
+	{
+		for (auto& fontobj:m_fontList)
+		{
+			fontobj->OnRender(rc);
 		}
 	}
 }

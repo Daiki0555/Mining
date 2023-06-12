@@ -1,7 +1,7 @@
 #pragma once
 
 namespace nsK2EngineLow {
-	class RenderingEngine;
+	
 	class ModelRender
 	{
 	public:
@@ -176,7 +176,7 @@ namespace nsK2EngineLow {
 		Skeleton		m_skeleton;
 		float			m_animationSpeed=1.0f;
 
-		
+		RenderingEngine m_renderinEngine;
 	};
 }
 

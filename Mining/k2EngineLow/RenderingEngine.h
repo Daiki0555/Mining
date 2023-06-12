@@ -4,16 +4,26 @@ namespace nsK2EngineLow {
 	class ModelRender;
 	class SpriteRender;
 	class RenderTarget;
+	class FontRender;
+	class DirectionLight;
 	class RenderingEngine:public Noncopyable
 	{
 	public:
-	private:
+		struct LightCB
+		{
+			DirectionLight::directionLight directionLig;
+		};
+
+
+
+	//private:
 		RenderingEngine();
 		~RenderingEngine();
 
-		void ModelRendering(RenderContext& rc);
+		
 
 	public:
+
 		/// <summary>
 		/// インスタンスの生成
 		/// </summary>
@@ -47,7 +57,7 @@ namespace nsK2EngineLow {
 		/// <param name="modelRender"></param>
 		void AddSpriteRenderObject(SpriteRender* renderObject)
 		{
-			m_spriteList.push_back(renderObject);
+			m_spriteList.emplace_back(renderObject);
 		}
 
 		/// <summary>
@@ -56,7 +66,43 @@ namespace nsK2EngineLow {
 		/// <param name="modelRender"></param>
 		void AddModelRenderObject(ModelRender* renderObject)
 		{
-			m_modeList.push_back(renderObject);
+			m_modeList.emplace_back(renderObject);
+		}
+		/// <summary>
+		/// レンダーオブジェクトを追加
+		/// </summary>
+		/// <param name="modelRender"></param>
+		void AddFontRenderObject(FontRender* renderObject)
+		{
+			m_fontList.emplace_back(renderObject);
+		}
+
+		LightCB& GetLightCB()
+		{
+			return m_lightCB;
+		}
+
+		DirectionLight::directionLight& GetDirectionLight()
+		{
+			return m_directionLig.GetDirectionLig();
+		}
+
+		/// <summary>
+		/// ディレクショナルライトの設定。
+		/// </summary>
+		/// <param name="dir">ライトの方向。</param>
+		/// <param name="color">ライトのカラー。[</param>
+		void SetDirectionLight(const Vector3& dir, const Vector3 color)
+		{
+			m_directionLig.SetDirection(dir);
+			m_directionLig.SetColor(color);
+			GetLightCB().directionLig = m_directionLig.GetDirectionLig();
+		}
+
+		void SetAmbient(const float amb)
+		{
+			m_directionLig.SetAmbientLight(amb);
+			GetLightCB().directionLig = m_directionLig.GetDirectionLig();
 		}
 
 
@@ -76,20 +122,35 @@ namespace nsK2EngineLow {
 		/// </summary>
 		void Init2DRenderTarget();
 
-
+		/// <summary>
+		/// モデルの描画
+		/// </summary>
+		/// <param name="rc"></param>
+		void ModelRendering(RenderContext& rc);
 		/// <summary>
 		/// 2D描画処理
 		/// </summary>
 		/// <param name="rc"></param>
 		void Render2D(RenderContext& rc);
+		/// <summary>
+		/// フォントの描画
+		/// </summary>
+		/// <param name="rc"></param>
+		void FontRendering(RenderContext& rc);
 	private:
 		static RenderingEngine*		m_instance;							//ライト用の構造体
+		
+		DirectionLight				m_directionLig;						//ディレクショナルライトの構造体
+		LightCB						m_lightCB;
+
+
 		RenderTarget				m_mainRenderTarget;					//メインレンダーターゲット
 		RenderTarget				m_2DRenderTarget;					//2Dレンダーターゲット
 		Sprite						m_2DSprite;							//2Dスプライト
 		Sprite						m_mainSprite;
-		std::vector<SpriteRender*>  m_spriteList;					//レンダリングするオブジェクト
-		std::vector<ModelRender*>	m_modeList;
+		std::vector<SpriteRender*>  m_spriteList;						//レンダリングするオブジェクト
+		std::vector<ModelRender*>	m_modeList;							//モデルリスト
+		std::vector<FontRender*>	m_fontList;							//フォントリスト
 	};
 }
 
