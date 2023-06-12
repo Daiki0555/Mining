@@ -7,10 +7,11 @@ public:
 	~GameCamera();
 
 	bool Start();
-	void UpDate();
-	void CameraSettings();							// 注視点、始点、画角を設定する
+	void Update();
+	void CameraSettings();								// 注視点、始点、画角を設定する
 	
 private:
-	Player*		m_player = nullptr;					// プレイヤー
-};
+	Player*		m_player = nullptr;						// プレイヤー
 
+	Vector3		m_toCameraPosition = Vector3::Zero;		// 注視点から始点へ向かうベクトル
+};

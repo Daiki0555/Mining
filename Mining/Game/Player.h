@@ -40,7 +40,7 @@ public:
 	/// スケールを設定する
 	/// </summary>
 	/// <param name="position"></param>
-	void SetPosition(const Vector3& scale) {
+	void SetScale(const Vector3& scale) {
 		m_scale = scale;
 	}
 
@@ -48,7 +48,7 @@ public:
 	/// 回転を設定する
 	/// </summary>
 	/// <param name="position"></param>
-	void SetPosition(const Quaternion& rotation) {
+	void SetRotation(const Quaternion& rotation) {
 		m_rotation = rotation;
 	}
 
@@ -91,7 +91,7 @@ private:
 		int				m_hitPoint = 150;					// HP(150)
 		int				m_attackPower = 25;					// 攻撃力(25)
 		float			m_stamina = 100.0f;					// スタミナ(100.0f)
-		float			m_basicSpeed = 10.0f;				// 基本速度(10.0f)
+		float			m_basicSpeed = 100.0f;				// 基本速度(10.0f)
 	};
 	PlayerStatus		playerStatus;						// プレイヤーのステータス
 
