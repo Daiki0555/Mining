@@ -39,7 +39,7 @@ void Game::LevelDesign()
 	// レベルデザイン処理
 	m_levelRender.Init("Assets/level/levelData.tkl", [&](LevelObjeData& objData){
 		//名前がプレイヤーの時
-		if (objData.EqualObjectName(L"box") == true)
+		if (objData.EqualObjectName(L"stage") == true)
 		{
 			// 背景を描画
 			m_backGround = NewGO<BackGround>(0, "backGround");
