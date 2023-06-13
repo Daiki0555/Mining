@@ -14,12 +14,13 @@ private:
 	Vector3 m_scale=Vector3(1.0f,1.0f,1.0f);
 	ModelRender m_modelRender;
 	SpriteRender m_spriteRender;
+	FontRender m_fontRender;
 	//アニメーション
 	enum EnAnimationClip {
 		m_enAnimationClip_Idle,				//待機アニメーション
 		m_enAnimationClip_Num,				//アニメーションの数
 	};
 	AnimationClip m_animationClips[m_enAnimationClip_Num];
-
+	float m_timer = 0.0f;
 };
 

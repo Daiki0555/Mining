@@ -71,7 +71,74 @@ namespace nsK2EngineLow {
 			m_color = color;
 		}
 
+		/// <summary>
+		/// 色の取得
+		/// </summary>
+		/// <returns></returns>
+		const Vector4& GetColor()
+		{
+			return m_color;
+		}
 
+		/// <summary>
+		/// 回転の設定
+		/// </summary>
+		/// <param name="rot"></param>
+		void SetRotation(const float rot)
+		{
+			m_rotaition = rot;
+		}
+		/// <summary>
+		/// 回転を取得
+		/// </summary>
+		/// <returns></returns>
+		const float GetRotation()
+		{
+			return m_rotaition;
+		}
+		/// <summary>
+		/// ピボットを設定
+		/// </summary>
+		/// <param name="pivot"></param>
+		void SetPivot(const Vector2& pivot)
+		{
+			m_pivot = pivot;
+		}
+		/// <summary>
+		/// ピボットを取得
+		/// </summary>
+		/// <returns></returns>
+		const Vector2& GetPivot()
+		{
+			return m_pivot;
+		}
+
+		/// <summary>
+		/// 描画処理
+		/// </summary>
+		/// <param name="rc"></param>
+		void Draw(RenderContext& rc);
+
+		/// <summary>
+		/// 影のパラメータを設定
+		/// </summary>
+		/// <param name="isDrawShadow">影を描画するかどうか</param>
+		/// <param name="shadowOffset">ピクセルのオフセット量</param>
+		/// <param name="shadowColor">影の色</param>
+		void SetShadowParam(bool isDrawShadow, float shadowOffset, const Vector4& shadowColor)
+		{
+			m_font.SetShadowParam(isDrawShadow, shadowOffset, shadowColor);
+		}
+
+		void OnRender(RenderContext& rc)
+		{
+			m_font.Begin(rc);
+			m_font.Draw(m_text, Vector2(m_position.x, m_position.y), m_color, m_rotaition, m_scale, m_pivot);
+			m_font.End(rc);
+		}
+	private:
+
+		
 
 	private:
 		Font		m_font;								//フォント
@@ -81,10 +148,6 @@ namespace nsK2EngineLow {
 		wchar_t		m_text[MAX_TEXT_SIZE];				//文字		
 		float		m_scale = 1.0f;						//大きさ
 		float		m_rotaition = 0.0f;					//回転
-
 	};
-
-
-
 }
 

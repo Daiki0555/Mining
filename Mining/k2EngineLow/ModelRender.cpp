@@ -1,6 +1,6 @@
 #include "k2EngineLowPreCompile.h"
 #include "ModelRender.h"
-#include "RenderingEngine.h"
+
 
 namespace nsK2EngineLow {
 
@@ -62,6 +62,8 @@ namespace nsK2EngineLow {
 
 	void ModelRender::InitModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
 	{
+
+		RenderingEngine::GetInstance()->GetLightCB().directionLig.eyePos = g_camera3D->GetPosition();
 		//通常モデルの初期化
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = tkmFilePath;
@@ -74,6 +76,14 @@ namespace nsK2EngineLow {
 			modelInitData.m_skeleton = &m_skeleton;
 			modelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
 		}
+		RenderingEngine::GetInstance()->GetDirectionLight();
+		//ディレクションライトの情報をディスクリプタヒープに定数バファーといして
+		//登録するためにモデルの初期化情報として渡す
+		modelInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetLightCB();
+		modelInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetLightCB());
+		
+
+
 		m_model.Init(modelInitData);
 	}
 

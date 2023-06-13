@@ -13,6 +13,20 @@ cbuffer ModelCb : register(b0){
 	float4x4 mProj;
 };
 
+//ディレクションライト用の構造体
+struct DirectionLig
+{
+	float3 ligDirection;		//ライトの方向
+	float3 ligColor;			//ライトのカラー
+	float3 eyePos;				//視点の位置
+	float3 ambient;
+};
+
+
+cbuffer LightCb:register(b1){
+	DirectionLig dirLig;		//ディレクションライト用の定数バッファー
+};
+
 ////////////////////////////////////////////////
 // 構造体
 ////////////////////////////////////////////////
@@ -25,12 +39,15 @@ struct SSkinVSIn{
 struct SVSIn{
 	float4 pos 		: POSITION;		//モデルの頂点座標。
 	float2 uv 		: TEXCOORD0;	//UV座標。
+	float3 normal	: NORMAL;		//法線
 	SSkinVSIn skinVert;				//スキン用のデータ。
 };
 //ピクセルシェーダーへの入力。
 struct SPSIn{
-	float4 pos 			: SV_POSITION;	//スクリーン空間でのピクセルの座標。
-	float2 uv 			: TEXCOORD0;	//uv座標。
+	float4 pos 		: SV_POSITION;	//スクリーン空間でのピクセルの座標。
+	float2 uv 		: TEXCOORD0;	//uv座標。
+	float3 normal	: NORMAL;		//法線
+	float3 worldPos : TEXCOORD1;
 };
 
 ////////////////////////////////////////////////
@@ -76,8 +93,12 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 		m = mWorld;
 	}
 	psIn.pos = mul(m, vsIn.pos);
+	psIn.worldPos = vsIn.pos;
 	psIn.pos = mul(mView, psIn.pos);
 	psIn.pos = mul(mProj, psIn.pos);
+
+	//頂点法線をピクセルシェーダーに渡す
+	psIn.normal =mul(m, vsIn.normal);	//法線を回転させる
 
 	psIn.uv = vsIn.uv;
 
@@ -103,6 +124,52 @@ SPSIn VSSkinMain( SVSIn vsIn )
 /// </summary>
 float4 PSMain( SPSIn psIn ) : SV_Target0
 {
+	//ピクセルの法線とライトの方向の内積を計算する
+	float t = dot(psIn.normal, dirLig.ligDirection);
+    t *= -1.0f;
+
+	//内積の結果が０以下なら０にする
+	t=max(t,0.0f);
+
+	//ピクセルが受けている光を求める
+	float3 diffuseLig=dirLig.ligColor * t;
+
+	//反射ベクトルを求める
+	float3 refVec = reflect(dirLig.ligDirection, psIn.normal);
+
+	//光が当たったサーフェイスから視点に伸びるベクトルを求める
+	 float3 toEye = dirLig.eyePos - psIn.worldPos;
+
+	//正規化する
+	toEye = normalize(toEye);
+
+	//dot関数を利用してrefVecとtoEyeの内積を求める
+	t=dot(refVec,toEye);
+
+	//マイナスの場合は0にする
+	t=max(t,0.0f);
+
+	//鏡面反射の強さを絞る
+	t=pow(t,5.0f);
+
+	//鏡面反射光を求める
+	 float3 specularLig = dirLig.ligColor * t;
+
+	//拡散反射光と鏡面反射光を足して最終的な光を求める
+	float3 lig = diffuseLig + specularLig;
+
+	lig.x+=dirLig.ambient;
+	lig.x=min(lig.x,1.0f);
+	lig.y+=dirLig.ambient;
+	lig.y=min(lig.y,1.0f);
+	lig.z+=dirLig.ambient;
+	lig.z=min(lig.z,1.0f);
+
+
+
 	float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
+	
+	albedoColor.xyz*= lig;
+	
 	return albedoColor;
 }
