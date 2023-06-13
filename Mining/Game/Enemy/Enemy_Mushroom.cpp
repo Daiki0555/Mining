@@ -79,12 +79,7 @@ void Enemy_Mushroom::Update()
 	PlayAnimation();
 }
 
-void Enemy_Mushroom::Update()
-{
-
-}
-
 void Enemy_Mushroom::Render(RenderContext& rc)
 {
-
+	m_modelRender.Draw(rc);
 }

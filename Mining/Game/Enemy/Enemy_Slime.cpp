@@ -74,5 +74,5 @@ void Enemy_Slime::Update()
 
 void Enemy_Slime::Render(RenderContext& rc)
 {
-
+	m_modelRender.Draw(rc);
 }
