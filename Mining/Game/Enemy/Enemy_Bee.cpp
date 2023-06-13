@@ -28,6 +28,8 @@ bool Enemy_Bee::Start()
 		CHARACTERCONTROLLER_RADIUS,		// キャラクターコントローラーの半径
 		CHARACTERCONTROLLER_HEIGHT		// キャラクターコントローラーの高さ
 	);
+
+	return true;
 }
 
 void Enemy_Bee::LoadAnimation()
@@ -81,5 +83,5 @@ void Enemy_Bee::Update()
 
 void Enemy_Bee::Render(RenderContext& rc)
 {
-
+	m_modelRender.Draw(rc);
 }

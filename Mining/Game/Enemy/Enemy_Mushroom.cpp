@@ -28,6 +28,8 @@ bool Enemy_Mushroom::Start()
 		CHARACTERCONTROLLER_RADIUS,		// キャラクターコントローラーの半径
 		CHARACTERCONTROLLER_HEIGHT		// キャラクターコントローラーの高さ
 	);
+
+	return true;
 }
 
 void Enemy_Mushroom::LoadAnimation()

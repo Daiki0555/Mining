@@ -28,6 +28,8 @@ bool Enemy_Slime::Start()
 		CHARACTERCONTROLLER_RADIUS,		// キャラクターコントローラーの半径
 		CHARACTERCONTROLLER_HEIGHT		// キャラクターコントローラーの高さ
 	);
+
+	return true;
 }
 
 void Enemy_Slime::LoadAnimation()
