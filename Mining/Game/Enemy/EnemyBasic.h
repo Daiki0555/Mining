@@ -4,7 +4,7 @@ class EnemyBasic:public IGameObject
 {
 public:
 	EnemyBasic();
-	~EnemyBasic();
+	virtual ~EnemyBasic() = 0;
 
 	/// <summary>
 	/// 
@@ -23,12 +23,12 @@ public:
 	void Damege();
 	void Dizzy();
 
-private:
+protected:
 	enum ActionState {
 		m_ActionState_Idle,					// ‘Ò‹@
 		m_ActionState_Move,					// ˆÚ“®
 		m_ActionState_Attack,				// UŒ‚
-		m_ActionState_Damege,				// ”í’e
+		m_ActionState_Damage,				// ”í’e
 	};
 	ActionState m_actionState;
 
@@ -36,10 +36,10 @@ private:
 		m_en_AnimationClips_Idle,			// ‘Ò‹@
 		m_en_AnimationClips_Move,			// ˆÚ“®
 		m_en_AnimationClips_Attack,			// UŒ‚
-		m_en_AnimationClips_Damege,			// ”í’e
+		m_en_AnimationClips_Damage,			// ”í’e
 		m_en_AnimationClips_Num
 	};
-	AnimationClip m_En_animationClips[m_en_AnimationClips_Num];
+	AnimationClip m_EnanimationClips[m_en_AnimationClips_Num];
 
 // -----------------------------------------------------------
 	Player*				m_player = nullptr;						// ƒvƒŒƒCƒ„[

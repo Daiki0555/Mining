@@ -40,13 +40,13 @@ void GameCamera::Update()
 void GameCamera::CameraSettings()
 {
 	// 注視点
-	Vector3 m_targetPosition = m_player->GetPosition();				// プレイヤーの座標を参照
-	m_targetPosition.y += VALUE_Y;									// 足元の少し上に座標を持ち上げる
+	Vector3 targetPosition = m_player->GetPosition();				// プレイヤーの座標を参照
+	targetPosition.y += VALUE_Y;									// 足元の少し上に座標を持ち上げる
 
 	// 始点(自身の座標)
-	Vector3 position = m_toCameraPosition + m_targetPosition;		// 注視点と始点から注視点へ向かうベクトルを加算
+	Vector3 position = m_toCameraPosition + targetPosition;			// 注視点と始点から注視点へ向かうベクトルを加算
 
-	g_camera3D->SetTarget(m_targetPosition);						// 注視点を設定
+	g_camera3D->SetTarget(targetPosition);							// 注視点を設定
 	g_camera3D->SetPosition(position);								// 始点を設定
 	g_camera3D->Update();											// 更新
 }
