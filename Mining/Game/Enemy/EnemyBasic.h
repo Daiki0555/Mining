@@ -23,6 +23,38 @@ public:
 	void Damege();
 	void Dizzy();
 
+	/// <summary>
+	/// 座標を設定
+	/// </summary>
+	/// <param name="position"></param>
+	void SetPosition(const Vector3& position) {
+		m_position = position;
+	}
+
+	/// <summary>
+	/// 座標を取得する
+	/// </summary>
+	/// <returns></returns>
+	const Vector3 GetPosition() const {
+		return m_position;
+	}
+
+	/// <summary>
+	/// スケールを設定
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetScale(const Vector3& scale) {
+		m_scale = scale;
+	}
+
+	/// <summary>
+	/// 回転を設定
+	/// </summary>
+	/// <param name="rotation"></param>
+	void SetRotation(const Quaternion& rotation) {
+		m_rotation = rotation;
+	}
+
 protected:
 	enum ActionState {
 		m_ActionState_Idle,					// 待機
@@ -30,7 +62,7 @@ protected:
 		m_ActionState_Attack,				// 攻撃
 		m_ActionState_Damage,				// 被弾
 	};
-	ActionState m_actionState;
+	ActionState m_actionState = m_ActionState_Idle;
 
 	enum EnAnimationClip {
 		m_en_AnimationClips_Idle,			// 待機

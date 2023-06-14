@@ -20,6 +20,8 @@ Enemy_Mushroom::~Enemy_Mushroom()
 
 bool Enemy_Mushroom::Start()
 {
+	LoadAnimation();
+
 	m_modelRender.Init("Assets/modelData/enemy/MushroomMan/MushroomMan.tkm", m_EnanimationClips, m_en_AnimationClips_Num, enModelUpAxisZ);
 
 	EnemyBasic::Start(
@@ -34,17 +36,17 @@ bool Enemy_Mushroom::Start()
 
 void Enemy_Mushroom::LoadAnimation()
 {
-	m_EnanimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Idle.tka");
+	m_EnanimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/enemy/MushroomManAnim/MushroomMonster_Idle.tka");
 	m_EnanimationClips[m_en_AnimationClips_Idle].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Move].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Move.tka");
+	m_EnanimationClips[m_en_AnimationClips_Move].Load("Assets/animData/enemy/MushroomManAnim/MushroomMonster_Walk.tka");
 	m_EnanimationClips[m_en_AnimationClips_Move].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Attack].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Attack.tka");
-	m_EnanimationClips[m_en_AnimationClips_Attack].SetLoopFlag(true);
+	m_EnanimationClips[m_en_AnimationClips_Attack].Load("Assets/animData/enemy/MushroomManAnim/MushroomMonster_Attack.tka");
+	m_EnanimationClips[m_en_AnimationClips_Attack].SetLoopFlag(false);
 
-	m_EnanimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Damage.tka");
-	m_EnanimationClips[m_en_AnimationClips_Damage].SetLoopFlag(true);
+	m_EnanimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/enemy/MushroomManAnim/MushroomMonster_Damage.tka");
+	m_EnanimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
 }
 
 void Enemy_Mushroom::PlayAnimation()
@@ -79,6 +81,11 @@ void Enemy_Mushroom::Update()
 	}
 
 	PlayAnimation();
+
+	m_modelRender.SetScale(m_scale);
+	m_modelRender.SetRotaition(m_rotation);
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.Update();
 }
 
 void Enemy_Mushroom::Render(RenderContext& rc)

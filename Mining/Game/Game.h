@@ -2,6 +2,9 @@
 class Player;
 class BackGround;
 class GameCamera;
+class Enemy_Bee;
+class Enemy_Mushroom;
+class Enemy_Slime;
 class Game:public IGameObject
 {
 public:
@@ -19,5 +22,8 @@ private:
 	Player*			m_player = nullptr;				// ƒvƒŒƒCƒ„[
 	BackGround*		m_backGround = nullptr;			// ”wŒi
 	GameCamera*		m_gameCamera = nullptr;			// ƒQ[ƒ€ƒJƒƒ‰
+	Enemy_Bee*		m_bee = nullptr;				// Enemy_bee
+	Enemy_Mushroom* m_mushroom = nullptr;			// Enemy_mushroom
+	Enemy_Slime*	m_slime = nullptr;				// Enemy_slime
 };
 

@@ -20,7 +20,14 @@ Enemy_Slime::~Enemy_Slime()
 
 bool Enemy_Slime::Start()
 {
+	LoadAnimation();
+
+	m_scale = { 5.0f,5.0f,5.0f };
+
 	m_modelRender.Init("Assets/modelData/enemy/SlimeRabbit/SlimeRabbit.tkm", m_EnanimationClips, m_en_AnimationClips_Num, enModelUpAxisZ);
+	m_modelRender.SetScale(m_scale);
+	m_modelRender.SetRotaition(m_rotation);
+	m_modelRender.SetPosition(m_position);
 
 	EnemyBasic::Start(
 		ATTACK_POWER,					// çUåÇóÕ
@@ -42,7 +49,7 @@ void Enemy_Slime::LoadAnimation()
 	m_EnanimationClips[m_en_AnimationClips_Move].SetLoopFlag(true);
 
 	m_EnanimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Damage.tka");
-	m_EnanimationClips[m_en_AnimationClips_Damage].SetLoopFlag(true);
+	m_EnanimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
 }
 
 void Enemy_Slime::PlayAnimation()
@@ -72,6 +79,11 @@ void Enemy_Slime::Update()
 	}
 
 	PlayAnimation();
+
+	m_modelRender.SetScale(m_scale);
+	m_modelRender.SetRotaition(m_rotation);
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.Update();
 }
 
 void Enemy_Slime::Render(RenderContext& rc)

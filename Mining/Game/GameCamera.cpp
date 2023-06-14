@@ -46,9 +46,6 @@ void GameCamera::CameraSettings()
 
 	Vector3 cameraPos = m_toCameraPosition;
 	
-	// 入力量を取得
-	float x = g_pad[0]->GetRStickXF();
-
 	// 始点(自身の座標)
 	Vector3 position = m_toCameraPosition + targetPosition;			// 注視点と始点から注視点へ向かうベクトルを加算
 
@@ -59,6 +56,9 @@ void GameCamera::CameraSettings()
 
 void GameCamera::CameraRotation()
 {
+	// 入力量を取得
+	float x = g_pad[0]->GetRStickXF();
+
 	Quaternion rotation;
 	rotation.SetRotationDeg(Vector3::AxisY, 1.5 * x);				// Y軸周りに回転
 	rotation.Apply(m_toCameraPosition);								// 作成した回転を適用

@@ -3,6 +3,9 @@
 #include "Player.h"
 #include "Stage/BackGround.h"
 #include "GameCamera.h"
+#include "Enemy/Enemy_Bee.h"
+#include "Enemy/Enemy_Mushroom.h"
+#include "Enemy/Enemy_Slime.h"
 
 Game::Game()
 {
@@ -55,6 +58,20 @@ void Game::LevelDesign()
 			m_player->SetPosition(objData.position);
 			m_player->SetRotation(objData.rotaition);
 			return true;
+		}
+		if (objData.EqualObjectName(L"enemy") == true)
+		{
+			//m_bee = NewGO<Enemy_Bee>(0, "bee");
+			//m_bee->SetPosition(objData.position);
+			//m_bee->SetRotation(objData.rotaition);
+
+			//m_slime = NewGO<Enemy_Slime>(0, "slime");
+			//m_slime->SetPosition(objData.position);
+			//m_slime->SetRotation(objData.rotaition);
+
+			m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
+			m_mushroom->SetPosition(objData.position);
+			m_mushroom->SetRotation(objData.rotaition);
 		}
 
 		return true;
