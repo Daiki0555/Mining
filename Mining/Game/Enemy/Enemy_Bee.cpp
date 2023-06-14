@@ -34,16 +34,16 @@ bool Enemy_Bee::Start()
 
 void Enemy_Bee::LoadAnimation()
 {
-	m_EnanimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Idle.tka");
+	m_EnanimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/enemy/bee/idle.tka");
 	m_EnanimationClips[m_en_AnimationClips_Idle].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Move].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Move.tka");
+	m_EnanimationClips[m_en_AnimationClips_Move].Load("Assets/animData/enemy/bee/move.tka");
 	m_EnanimationClips[m_en_AnimationClips_Move].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Attack].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Attack.tka");
+	m_EnanimationClips[m_en_AnimationClips_Attack].Load("Assets/animData/enemy/bee/attack.tka");
 	m_EnanimationClips[m_en_AnimationClips_Attack].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/enemy/MushroomManAnim/MushroomMan_Damage.tka");
+	m_EnanimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/enemy/bee/damage.tka");
 	m_EnanimationClips[m_en_AnimationClips_Damage].SetLoopFlag(true);
 }
 
