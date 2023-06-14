@@ -23,7 +23,7 @@ Debug::Debug()
 	m_2pointLight.Update();
 	m_spotLight.SetSpotLight(0, Vector3{0.0f,50.0f,0.0f}, Vector3{20.0f,20.0f,20.0f}, 500, Vector3{1.0f,-1.0f,1.0f}, 25);
 	m_spotLight.Update();
-
+	//aa
 
 	RenderingEngine::GetInstance()->GetLightCB().ptNum = 2;
 	RenderingEngine::GetInstance()->GetLightCB().spNum = 1;
