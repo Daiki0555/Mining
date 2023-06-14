@@ -9,11 +9,24 @@ Debug::Debug()
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotaition(m_rotaition);
+	m_backRender.Init("Assets/modelData/bg.tkm");
+	m_backRender.SetPosition(Vector3::Zero);
+	m_backRender.SetScale(Vector3::One);
+	m_backRender.Update();
 	m_spriteRender.Init("Assets/Sprite/stamina.DDS", 500, 500);
 	m_spriteRender.SetPosition(Vector3::Zero);
 	m_spriteRender.SetScale(Vector3::One);
 	m_spriteRender.Update();
-	
+	m_pointLight.SetPointLight(0,Vector3::Zero, Vector3{ 0.0f,0.0f,0.0f }, 500.0f);
+	m_pointLight.Update();
+	m_2pointLight.SetPointLight(1, Vector3{10.0f,10.0f,0.0f}, Vector3{0.0f,0.0f,0.0f}, 500.0f);
+	m_2pointLight.Update();
+	m_spotLight.SetSpotLight(0, Vector3{0.0f,50.0f,0.0f}, Vector3{20.0f,20.0f,20.0f}, 500, Vector3{1.0f,-1.0f,1.0f}, 25);
+	m_spotLight.Update();
+	//ii
+
+	RenderingEngine::GetInstance()->GetLightCB().ptNum = 2;
+	RenderingEngine::GetInstance()->GetLightCB().spNum = 1;
 
 }
 Debug::~Debug()
@@ -46,6 +59,7 @@ void Debug::Update()
 void Debug::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_backRender.Draw(rc);
 	//m_spriteRender.Draw(rc);
 	//m_fontRender.Draw(rc);
 }

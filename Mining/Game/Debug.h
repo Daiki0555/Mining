@@ -13,6 +13,7 @@ private:
 	Quaternion m_rotaition = Quaternion::Identity;
 	Vector3 m_scale=Vector3(1.0f,1.0f,1.0f);
 	ModelRender m_modelRender;
+	ModelRender m_backRender;
 	SpriteRender m_spriteRender;
 	FontRender m_fontRender;
 	//アニメーション
@@ -22,5 +23,8 @@ private:
 	};
 	AnimationClip m_animationClips[m_enAnimationClip_Num];
 	float m_timer = 0.0f;
+	PointLight m_pointLight;
+	PointLight m_2pointLight;
+	SpotLight m_spotLight;
 };
 
