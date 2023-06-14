@@ -91,7 +91,7 @@ private:
 		int				m_hitPoint = 150;					// HP(150)
 		int				m_attackPower = 25;					// 攻撃力(25)
 		float			m_stamina = 100.0f;					// スタミナ(100.0f)
-		float			m_basicSpeed = 100.0f;				// 基本速度(100.0f)
+		float			m_basicSpeed = 150.0f;				// 基本速度(120.0f)
 	};
 	PlayerStatus		playerStatus;						// プレイヤーのステータス
 

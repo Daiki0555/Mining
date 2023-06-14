@@ -123,6 +123,14 @@ void Player::Move()
 	stickL.x = g_pad[0]->GetLStickXF();
 	stickL.y = g_pad[0]->GetLStickYF();
 
+	// カメラの前方向と右方向のベクトルを持ってくる
+	Vector3 forward = g_camera3D->GetForward();
+	Vector3 right = g_camera3D->GetRight();
+
+	// y方向には移動させない
+	forward.y = 0.0f;
+	right.y = 0.0f;
+
 	if (g_pad[0]->IsPress(enButtonB)) {
 		// Bボタンを押している間ダッシュ
 		m_actionState = m_ActionState_Run;
@@ -135,8 +143,11 @@ void Player::Move()
 	}
 
 	// スティックの入力量×移動速度×乗算速度で最終的な移動速度を計算する
-	m_moveSpeed.x += stickL.x * playerStatus.m_basicSpeed * m_addSpped;
-	m_moveSpeed.z += stickL.y * playerStatus.m_basicSpeed * m_addSpped;
+	right *= stickL.x * playerStatus.m_basicSpeed * m_addSpped;
+	forward *= stickL.y * playerStatus.m_basicSpeed * m_addSpped;
+
+	// 移動速度に上記で計算したベクトルを加算
+	m_moveSpeed += right + forward;
 
 	m_position = m_characterController.Execute(m_moveSpeed, 1.0f / 60.0f);
 
