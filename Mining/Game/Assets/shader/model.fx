@@ -19,12 +19,34 @@ struct DirectionLig
 	float3 ligDirection;		//ライトの方向
 	float3 ligColor;			//ライトのカラー
 	float3 eyePos;				//視点の位置
-	float3 ambient;
+	float3 ambient;				//環境光の強さ
 };
 
+//ポイントライト用の構造体
+struct PointLig
+{
+	float3 ptPosition;			//ポイントライトの位置
+	float3 ptColor;				//ポイントライトのカラー
+	float  ptRange;				//ポイントライトの影響範囲
+};
+
+//スポットライト用の構造体
+struct SpotLig
+{
+	float3 spPosition;			//スポットライトの位置
+	float3 spColor;				//スポットライトのカラー	
+	float spRange;				//スポットライトの射出範囲
+	float3 spDirection;			//スポットライトの射出方向
+	float spAngle;				//スポットライトの射出角度
+
+};
 
 cbuffer LightCb:register(b1){
 	DirectionLig dirLig;		//ディレクションライト用の定数バッファー
+	PointLig ptLig[2];			//ポイントライトの定数バッファー
+	SpotLig spLig[1];			//スポットライトの定数バッファー
+	int ptNum;					//ポイントライトの数
+	int spNum;
 };
 
 ////////////////////////////////////////////////
@@ -60,7 +82,9 @@ sampler g_sampler : register(s0);	//サンプラステート。
 ////////////////////////////////////////////////
 // 関数定義。
 ////////////////////////////////////////////////
-
+float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 normal);
+float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldPos, float3 normal);
+float3 CalcLigFromPointLight(SPSIn psIn);
 /// <summary>
 //スキン行列を計算する。
 /// </summary>
@@ -93,7 +117,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 		m = mWorld;
 	}
 	psIn.pos = mul(m, vsIn.pos);
-	psIn.worldPos = vsIn.pos;
+	psIn.worldPos = psIn.pos;
 	psIn.pos = mul(mView, psIn.pos);
 	psIn.pos = mul(mProj, psIn.pos);
 
@@ -124,52 +148,172 @@ SPSIn VSSkinMain( SVSIn vsIn )
 /// </summary>
 float4 PSMain( SPSIn psIn ) : SV_Target0
 {
-	//ピクセルの法線とライトの方向の内積を計算する
-	float t = dot(psIn.normal, dirLig.ligDirection);
-    t *= -1.0f;
+	//ディレクションライトによるLambert拡散反射光を計算する
+	float3 diffDirection=CalcLambertDiffuse(dirLig.ligDirection,dirLig.ligColor,psIn.normal);
+	// ディレクションライトによるPhong鏡面反射光を計算する
+	float3 specuDirection=CalcPhongSpecular(dirLig.ligDirection,dirLig.ligColor,psIn.worldPos,psIn.normal);
+	//ポイントライトによるライティングを計算する
+	float3 pointLight=CalcLigFromPointLight(psIn); 
 
-	//内積の結果が０以下なら０にする
-	t=max(t,0.0f);
+	float3 finalspLig = (0.0f, 0.0f, 0.0f);
+	//スポットライトによるライティングを計算する
+	for(int i=0;i<spNum;i++)
+	{
+		//ピクセル座標ースポットライトの座標を計算
+		float3 ligDir=psIn.worldPos-spLig[i].spPosition;
 
-	//ピクセルが受けている光を求める
-	float3 diffuseLig=dirLig.ligColor * t;
+		//正規化して大きさ1のベクトルにする
+		ligDir=normalize(ligDir);
 
-	//反射ベクトルを求める
-	float3 refVec = reflect(dirLig.ligDirection, psIn.normal);
+		//減衰なしのLambert拡散反射光を計算する
+		float3 diffSpotLight=CalcLambertDiffuse(
+			ligDir,				//ライトの方向
+			spLig[i].spColor,	//ライトのカラー
+			psIn.normal			//サーフェイスの法線
+		);
 
-	//光が当たったサーフェイスから視点に伸びるベクトルを求める
-	 float3 toEye = dirLig.eyePos - psIn.worldPos;
+		//減衰なしのPhong鏡面反射を計算する
+		float3 specSpotLight=CalcPhongSpecular(
+			ligDir,				//ライトの方向	
+			spLig[i].spColor,	//ライトのカラー
+			psIn.worldPos,		//サーフェイスのワールド座標
+			psIn.normal			//サーフェイスの法線
+		);
+		//距離による影響率を計算する
+    	// スポットライトとの距離を計算する
+		float3 distance =length(psIn.worldPos-spLig[i].spPosition);
 
-	//正規化する
-	toEye = normalize(toEye);
+		//影響率は距離に比例して小さくなっていく
+		float affect =1.0f-1.0f/spLig[i].spRange*distance;
+		affect=max(affect,0.0f);
 
-	//dot関数を利用してrefVecとtoEyeの内積を求める
-	t=dot(refVec,toEye);
+		//影響率を指数関数的にする
+		affect=pow(affect,3.0f);
 
-	//マイナスの場合は0にする
-	t=max(t,0.0f);
+		//影響率を乗算して反射光を弱める
+		diffSpotLight*=affect;
+		specSpotLight*=affect;
 
-	//鏡面反射の強さを絞る
-	t=pow(t,5.0f);
+		//入射光と射出方向の角度を求める
+    	//dot()を利用して内積を求める
+		float angle=dot(ligDir,spLig[i].spDirection);
 
-	//鏡面反射光を求める
-	 float3 specularLig = dirLig.ligColor * t;
+		//dot()で求めた値をacos()に渡して角度を求める
+		angle=abs(acos(angle));
+
+		 // 角度による影響率を求める
+    	// 角度に比例して小さくなっていく影響率を計算する
+    	affect = 1.0f - 1.0f / spLig[i].spAngle * angle;
+		affect=max(affect,0.0f);
+
+		// 影響の仕方を指数関数的にする。
+    	affect = pow(affect, 0.5f);
+
+		diffSpotLight*=affect;
+		specSpotLight*=affect;
+
+		finalspLig=diffSpotLight+specSpotLight;
+	}
+	
 
 	//拡散反射光と鏡面反射光を足して最終的な光を求める
-	float3 lig = diffuseLig + specularLig;
+	float3 lig = finalspLig+diffDirection+specuDirection+dirLig.ambient+pointLight;
 
-	lig.x+=dirLig.ambient;
-	lig.x=min(lig.x,1.0f);
-	lig.y+=dirLig.ambient;
-	lig.y=min(lig.y,1.0f);
-	lig.z+=dirLig.ambient;
-	lig.z=min(lig.z,1.0f);
-
-
+	lig=min(lig,10.0f);
 
 	float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
 	
 	albedoColor.xyz*= lig;
 	
 	return albedoColor;
+}
+
+/// <summary>
+/// Lambert拡散反射光を計算する
+/// </summary>
+float3 CalcLambertDiffuse(float3 lightDirection,float3 lightColor,float3 normal)
+{
+	//ピクセルの法線とライト方向の内積を計算する
+	float t=dot(normal,lightDirection)*-1.0f;
+
+	//内積の値を0以上の値にする
+	t=max(t,0.0f);
+
+	//拡散反射光を計算する
+	return lightColor*t;
+} 
+
+/// <summary>
+/// Phong鏡面反射光を計算する
+/// </summary>
+float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldPos, float3 normal)
+{
+	//反射ベクトルを求める
+	float3 refVec=reflect(lightDirection,normal);
+
+	//光があたったサーフェイスから視点に伸びるベクトルを求める
+	float3 toEye=dirLig.eyePos-worldPos;
+
+	//正規化する
+	toEye=normalize(toEye);
+
+	//鏡面反射光の強さを求める
+	float t=dot(refVec,toEye);
+
+	t=max(t,0.0f);
+
+	//鏡面反射の強さを求める
+	t=pow(t,2.0f);
+
+	//鏡面反射光を求める
+	return lightColor*t;
+
+}
+
+/// <summary>
+/// ポイントライトによる反射光を計算
+/// </summary>
+/// <param name="psIn">ピクセルシェーダーに渡されている引数</param>
+float3 CalcLigFromPointLight(SPSIn psIn)
+{
+	float3 finalPtLig = (0.0f, 0.0f, 0.0f);
+
+	for(int i=0;i<ptNum;i++)
+	{
+		//ポイントライトによるLambert拡散反射光とPhong鏡面反射光を計算する
+		//サーフェイスに入射するポイントライトの光の向きを計算する
+		
+		float3 ligDir=psIn.worldPos-ptLig[i].ptPosition;
+		ligDir = normalize(ligDir);
+		//減衰なしのLambert拡散反射光を計算する
+		float3 diffPoint=CalcLambertDiffuse(
+			ligDir,
+			ptLig[i].ptColor,
+			psIn.normal
+		);
+
+		//減衰なしのPhong鏡面反射光を計算する
+		float3 specPoint=CalcPhongSpecular(
+			ligDir,
+			ptLig[i].ptColor,
+			psIn.worldPos,
+			psIn.normal
+		);
+		
+		//ポイントライトとの距離を計算する
+		float distance=length(psIn.worldPos-ptLig[i].ptPosition);
+
+		//影響率は距離に比例して小さくなっていく
+		float affect=1.0f-1.0f/ptLig[i].ptRange*distance;
+		affect=max(affect,0.0f);
+
+		//影響率を指数関数的にする
+		affect=pow(affect,3.0f);
+
+		//拡散反射光と鏡面反射光に減衰率を乗算して影響率を弱める
+		diffPoint*=affect;
+		specPoint*=affect;
+	 	finalPtLig += diffPoint + specPoint;
+	}
+	return finalPtLig;
 }

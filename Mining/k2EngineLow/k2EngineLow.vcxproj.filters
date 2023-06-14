@@ -232,6 +232,8 @@
     <ClCompile Include="FontRender.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
     <ClCompile Include="ModelRender.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -514,6 +516,8 @@
     <ClInclude Include="FontRender.h" />
     <ClInclude Include="DirectionLight.h" />
     <ClInclude Include="ModelRender.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="SpotLight.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">

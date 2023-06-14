@@ -6,12 +6,19 @@ namespace nsK2EngineLow {
 	class RenderTarget;
 	class FontRender;
 	class DirectionLight;
+	class PointLight;
 	class RenderingEngine:public Noncopyable
 	{
 	public:
+		//ライトの構造体
 		struct LightCB
 		{
 			DirectionLight::directionLight directionLig;
+			PointLight::pointLight pointLig[2];
+			SpotLight::spotLight spotLig[1];
+			int ptNum;										//ポイントライトの数
+			int spNum;										//スポットライトの数
+		
 		};
 
 
@@ -99,12 +106,41 @@ namespace nsK2EngineLow {
 			GetLightCB().directionLig = m_directionLig.GetDirectionLig();
 		}
 
+		/// <summary>
+		/// 環境光の設定
+		/// </summary>
+		/// <param name="amb">環境光の強さ</param>
 		void SetAmbient(const float amb)
 		{
 			m_directionLig.SetAmbientLight(amb);
 			GetLightCB().directionLig = m_directionLig.GetDirectionLig();
 		}
 
+		/// <summary>
+		/// ポイントライトの設定
+		/// </summary>
+		/// <param name="ptNum">ポイントライトの数</param>
+		/// <param name="ptlig">ポイントライトの構造体</param>
+		void SetPointLight(const int ptNum, PointLight::pointLight& ptlig)
+		{
+			GetLightCB().pointLig[ptNum].ptPosition = ptlig.ptPosition;
+			GetLightCB().pointLig[ptNum].ptColor = ptlig.ptColor;
+			GetLightCB().pointLig[ptNum].ptRange = ptlig.ptRange;
+		}
+
+		/// <summary>
+		/// スポットライトの設定
+		/// </summary>
+		/// <param name="spNum">スポットライトの数</param>
+		/// <param name="splig">スポットライトの構造体</param>
+		void SetSpotLight(const int spNum, SpotLight::spotLight& splig)
+		{
+			GetLightCB().spotLig[spNum].spPosition = splig.spPosition;
+			GetLightCB().spotLig[spNum].spColor = splig.spColor;
+			GetLightCB().spotLig[spNum].spRange = splig.spRange;
+			GetLightCB().spotLig[spNum].spDirection = splig.spDirection;
+			GetLightCB().spotLig[spNum].spAngle = splig.spAngle;
+		}
 
 		/// <summary>
 		/// 初期化処理
