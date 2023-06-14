@@ -30,7 +30,6 @@ bool Game::Start()
 
 void Game::Objct_NewGO()
 {
-	m_player = NewGO<Player>(0, "player");
 	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
 }
 
@@ -38,7 +37,7 @@ void Game::LevelDesign()
 {
 	// レベルデザイン処理
 	m_levelRender.Init("Assets/level/levelData.tkl", [&](LevelObjeData& objData){
-		//名前がプレイヤーの時
+		//名前がstageの時
 		if (objData.EqualObjectName(L"stage") == true)
 		{
 			// 背景を描画
@@ -46,6 +45,15 @@ void Game::LevelDesign()
 			m_backGround->SetPosition(objData.position);
 			m_backGround->SetScale(objData.scale);
 			m_backGround->SetRotation(objData.rotaition);
+			return true;
+		}
+		//名前がplayerの時
+		if (objData.EqualObjectName(L"player") == true)
+		{
+			// プレイヤーを生成
+			m_player = NewGO<Player>(0, "player");
+			m_player->SetPosition(objData.position);
+			m_player->SetRotation(objData.rotaition);
 			return true;
 		}
 
