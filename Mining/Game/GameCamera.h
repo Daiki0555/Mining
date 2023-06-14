@@ -9,6 +9,7 @@ public:
 	bool Start();
 	void Update();
 	void CameraSettings();								// 注視点、始点、画角を設定する
+	void CameraRotation();
 	
 private:
 	Player*		m_player = nullptr;						// プレイヤー
