@@ -31,7 +31,6 @@ public:
 	/// <summary>
 	/// 座標を設定する
 	/// </summary>
-	/// <param name="position"></param>
 	void SetPosition(const Vector3& position) {
 		m_position = position;
 	}
@@ -39,7 +38,6 @@ public:
 	/// <summary>
 	/// スケールを設定する
 	/// </summary>
-	/// <param name="position"></param>
 	void SetScale(const Vector3& scale) {
 		m_scale = scale;
 	}
@@ -47,9 +45,24 @@ public:
 	/// <summary>
 	/// 回転を設定する
 	/// </summary>
-	/// <param name="position"></param>
 	void SetRotation(const Quaternion& rotation) {
 		m_rotation = rotation;
+	}
+
+	/// <summary>
+	/// クリスタルをlistに追加する
+	/// </summary>
+	/// <param name="number">自身のレアリティ</param>
+	void AddCrystal(const int& number) {
+		m_haveCrystals.emplace_back(number);
+	}
+
+	/// <summary>
+	/// クリスタルの総数を取得
+	/// </summary>
+	/// <returns></returns>
+	const int GetCrystalSum() const {
+		return m_haveCrystals.size();
 	}
 
 private:
@@ -99,5 +112,7 @@ private:
 	float				m_addSpped = 1.0f;					// 乗算速度
 
 	bool				m_takeDamageflag = true;			// ダメージを受けるフラグ
+
+	std::list<int>		m_haveCrystals;						// 所持しているクリスタル
 };
 
