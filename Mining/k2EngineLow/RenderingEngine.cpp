@@ -19,9 +19,14 @@ namespace nsK2EngineLow {
 		SetDirectionLight(Vector3(1, -1, 1), Vector3(0.5f, 0.5f, 0.5f));
 
 		//ŠÂ‹«Œõ‚Ìİ’è
-		SetAmbient(0.1f);
+		SetAmbient(1.0f);
 
-
+		//”¼‹…ƒ‰ƒCƒg‚Ìİ’è
+		/*SetHemiSphereLight(
+			Vector3(0.7f, 0.5f, 0.3f),
+			Vector3(0.15f, 0.7f, 0.95f),
+			Vector3(0.0f, 1.0f, 0.0f)
+		);*/
 
 		m_lightCB.directionLig = m_directionLig.GetDirectionLig();
 

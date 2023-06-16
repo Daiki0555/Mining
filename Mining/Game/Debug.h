@@ -11,8 +11,10 @@ public:
 private:
 	Vector3 m_position=Vector3::Zero;
 	Quaternion m_rotaition = Quaternion::Identity;
+	Quaternion m_rot=Quaternion::Identity;
 	Vector3 m_scale=Vector3(1.0f,1.0f,1.0f);
 	ModelRender m_modelRender;
+	ModelRender m_sampleRender;
 	ModelRender m_backRender;
 	SpriteRender m_spriteRender;
 	FontRender m_fontRender;

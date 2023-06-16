@@ -6,7 +6,6 @@ namespace nsK2EngineLow {
 	class RenderTarget;
 	class FontRender;
 	class DirectionLight;
-	class PointLight;
 	class RenderingEngine:public Noncopyable
 	{
 	public:
@@ -16,6 +15,7 @@ namespace nsK2EngineLow {
 			DirectionLight::directionLight directionLig;
 			PointLight::pointLight pointLig[2];
 			SpotLight::spotLight spotLig[1];
+			HemiSphereLight::hemiSphereLight hemiSphereLig;
 			int ptNum;										//ポイントライトの数
 			int spNum;										//スポットライトの数
 		
@@ -143,6 +143,16 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
+		/// 半球ライトを設定。
+		/// </summary>
+		void SetHemiSphereLight(const Vector3& grdColor, const Vector3& skyColor, const Vector3& grdNormal)
+		{
+			m_hemiShereLig.SetGroundColor(grdColor);
+			m_hemiShereLig.SetSkyColor(skyColor);
+			m_hemiShereLig.SetGroundNormal(grdNormal);
+			GetLightCB().hemiSphereLig = m_hemiShereLig.GetHemiSphereLig();
+		}
+		/// <summary>
 		/// 初期化処理
 		/// </summary>
 		void Init();
@@ -178,7 +188,7 @@ namespace nsK2EngineLow {
 		
 		DirectionLight				m_directionLig;						//ディレクショナルライトの構造体
 		LightCB						m_lightCB;
-
+		HemiSphereLight				m_hemiShereLig;
 
 		RenderTarget				m_mainRenderTarget;					//メインレンダーターゲット
 		RenderTarget				m_2DRenderTarget;					//2Dレンダーターゲット
