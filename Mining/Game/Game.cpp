@@ -83,11 +83,7 @@ void Game::LevelDesign()
 			m_crystal->SetPosition(objData.position);
 			m_crystal->SetScale(objData.scale);
 			m_crystal->SetRotation(objData.rotaition);
-			//m_crystal->SetRarity(objData.number);
-
-			//if (objData.number == 0) {
-				//テクスチャを変更する
-			//}
+			m_crystal->SetTexture();
 			return true;
 		}
 

@@ -35,7 +35,7 @@ bool GameCamera::Start()
 void GameCamera::Update()
 {
 	CameraSettings();												// ƒJƒƒ‰İ’è
-	CameraRotation();												// ‰ñ“]s
+	CameraRotation();												// ‰ñ“]
 }
 
 void GameCamera::CameraSettings()
