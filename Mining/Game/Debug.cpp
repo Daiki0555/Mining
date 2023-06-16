@@ -21,9 +21,17 @@ Debug::Debug()
 	m_pointLight.Update();
 	m_2pointLight.SetPointLight(1, Vector3{10.0f,10.0f,0.0f}, Vector3{0.0f,0.0f,0.0f}, 500.0f);
 	m_2pointLight.Update();
-	m_spotLight.SetSpotLight(0, Vector3{0.0f,50.0f,0.0f}, Vector3{20.0f,20.0f,20.0f}, 500, Vector3{1.0f,-1.0f,1.0f}, 25);
+	m_spotLight.SetSpotLight(0, Vector3{0.0f,50.0f,0.0f}, Vector3{0.0f,0.0f,0.0f}, 500, Vector3{-1.0f,-1.0f,-1.0f}, 25);
 	m_spotLight.Update();
-	//ii
+	g_camera3D->SetPosition({ 0.0f, 200.0f, 300.0f });
+	g_camera3D->SetTarget({ 0.0f, 100.0f, 0.0f });
+
+
+	m_sampleRender.Init("Assets/modelData/sample.tkm");
+	m_sampleRender.SetPosition(Vector3::Zero);
+	m_sampleRender.SetScale(Vector3::One);
+	m_sampleRender.SetRotaition(m_rot);
+	m_sampleRender.Update();
 
 	RenderingEngine::GetInstance()->GetLightCB().ptNum = 2;
 	RenderingEngine::GetInstance()->GetLightCB().spNum = 1;
@@ -58,8 +66,9 @@ void Debug::Update()
 
 void Debug::Render(RenderContext& rc)
 {
-	m_modelRender.Draw(rc);
-	m_backRender.Draw(rc);
+	m_sampleRender.Draw(rc);
+	//m_modelRender.Draw(rc);
+	//m_backRender.Draw(rc);
 	//m_spriteRender.Draw(rc);
 	//m_fontRender.Draw(rc);
 }

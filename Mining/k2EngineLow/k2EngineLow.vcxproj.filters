@@ -234,6 +234,7 @@
     <ClCompile Include="ModelRender.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="HemiSphereLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -518,6 +519,7 @@
     <ClInclude Include="ModelRender.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="HemiSphereLight.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
