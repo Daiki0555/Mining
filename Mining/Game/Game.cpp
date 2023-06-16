@@ -6,6 +6,7 @@
 #include "Enemy/Enemy_Bee.h"
 #include "Enemy/Enemy_Mushroom.h"
 #include "Enemy/Enemy_Slime.h"
+#include "Stage/Object/Crystal.h"
 
 Game::Game()
 {
@@ -59,19 +60,35 @@ void Game::LevelDesign()
 			m_player->SetRotation(objData.rotaition);
 			return true;
 		}
+		// 名前がenemyのとき
 		if (objData.EqualObjectName(L"enemy") == true)
 		{
-			//m_bee = NewGO<Enemy_Bee>(0, "bee");
+			//Enemy_Bee* m_bee = NewGO<Enemy_Bee>(0, "bee");
 			//m_bee->SetPosition(objData.position);
 			//m_bee->SetRotation(objData.rotaition);
 
-			//m_slime = NewGO<Enemy_Slime>(0, "slime");
+			//Enemy_Slime* m_slime = NewGO<Enemy_Slime>(0, "slime");
 			//m_slime->SetPosition(objData.position);
 			//m_slime->SetRotation(objData.rotaition);
 
-			m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
+			Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
 			m_mushroom->SetPosition(objData.position);
 			m_mushroom->SetRotation(objData.rotaition);
+			return true;
+		}
+		// 名前がcrystalのとき
+		if (objData.EqualObjectName(L"crystal") == true) 
+		{
+			Crystal* m_crystal = NewGO<Crystal>(0, "crystal");
+			m_crystal->SetPosition(objData.position);
+			m_crystal->SetScale(objData.scale);
+			m_crystal->SetRotation(objData.rotaition);
+			//m_crystal->SetRarity(objData.number);
+
+			//if (objData.number == 0) {
+				//テクスチャを変更する
+			//}
+			return true;
 		}
 
 		return true;

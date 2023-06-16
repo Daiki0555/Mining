@@ -36,6 +36,7 @@
       <Filter>Stage</Filter>
     </ClCompile>
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Stage\Object\Crystal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -61,5 +62,6 @@
       <Filter>Stage</Filter>
     </ClInclude>
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Stage\Object\Crystal.h" />
   </ItemGroup>
 </Project>

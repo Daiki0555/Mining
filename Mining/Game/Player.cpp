@@ -129,8 +129,8 @@ void Player::Move()
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
-	if (g_pad[0]->IsPress(enButtonB)) {
-		// Bボタンを押している間ダッシュ
+	if (g_pad[0]->IsPress(enButtonA)) {
+		// ボタンを押している間ダッシュ
 		m_actionState = m_ActionState_Run;
 		m_addSpped = 2.5f;
 	}
