@@ -118,6 +118,7 @@ static const int MAX_BONE = 512;	// ƒ{[ƒ“‚ÌÅ‘å”B
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "HemiSphereLight.h"
+#include "Bloom.h"
 
 #include "RenderingEngine.h"
 #include "ModelRender.h"

@@ -152,6 +152,17 @@ namespace nsK2EngineLow {
 			m_hemiShereLig.SetGroundNormal(grdNormal);
 			GetLightCB().hemiSphereLig = m_hemiShereLig.GetHemiSphereLig();
 		}
+
+		/// <summary>
+		/// ブルームの閾値を設定
+		/// </summary>
+		/// <param name="threshold">閾値</param>
+		void SetBloomThreshold(const float threshold)
+		{
+			m_bloom.SetThreshold(threshold);
+		}
+
+
 		/// <summary>
 		/// 初期化処理
 		/// </summary>
@@ -189,6 +200,9 @@ namespace nsK2EngineLow {
 		DirectionLight				m_directionLig;						//ディレクショナルライトの構造体
 		LightCB						m_lightCB;
 		HemiSphereLight				m_hemiShereLig;
+		Bloom						m_bloom;							//ブルーム
+
+
 
 		RenderTarget				m_mainRenderTarget;					//メインレンダーターゲット
 		RenderTarget				m_2DRenderTarget;					//2Dレンダーターゲット

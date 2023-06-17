@@ -22,16 +22,16 @@ namespace nsK2EngineLow {
 		SetAmbient(1.0f);
 
 		//半球ライトの設定
-		/*SetHemiSphereLight(
-			Vector3(0.7f, 0.5f, 0.3f),
+		SetHemiSphereLight(
+			Vector3(1.0f, 0.5f, 0.3f),
 			Vector3(0.15f, 0.7f, 0.95f),
 			Vector3(0.0f, 1.0f, 0.0f)
-		);*/
+		);
 
 		m_lightCB.directionLig = m_directionLig.GetDirectionLig();
 
 		//メインレンダーターゲットを設定
-		/*float clearColor[4] = { 0.5f,0.5f,0.5f,1.0f };
+		float clearColor[4] = { 0.5f,0.5f,0.5f,1.0f };
 		m_mainRenderTarget.Create(
 			g_graphicsEngine->GetFrameBufferWidth(),
 			g_graphicsEngine->GetFrameBufferHeight(),
@@ -40,7 +40,12 @@ namespace nsK2EngineLow {
 			DXGI_FORMAT_R32G32B32A32_FLOAT,
 			DXGI_FORMAT_D32_FLOAT,
 			clearColor
-		);*/
+		);
+
+		//ブルームの設定
+		SetBloomThreshold(0.2f);
+		m_bloom.Init(m_mainRenderTarget);
+
 		
 		//Init2DRenderTarget();
 
@@ -90,9 +95,16 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
+		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
+		rc.SetRenderTargetAndViewport(m_mainRenderTarget);
+		rc.ClearRenderTargetView(m_mainRenderTarget);
 		ModelRendering(rc);
 		Render2D(rc);
 		FontRendering(rc);
+		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
+
+
+		m_bloom.Render(rc, m_mainRenderTarget);
 		m_spriteList.clear();
 		m_modeList.clear();
 		m_fontList.clear();
