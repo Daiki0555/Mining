@@ -52,7 +52,7 @@ public:
 	/// <summary>
 	/// ƒ‚ƒfƒ‹‚Ìİ’è
 	/// </summary>
-	void SetModekl(/*int number*/) {
+	void SetModel(/*int number*/) {
 	}
 
 private:
