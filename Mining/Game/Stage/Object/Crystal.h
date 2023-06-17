@@ -50,51 +50,9 @@ public:
 	}
 
 	/// <summary>
-	/// テクスチャの設定
+	/// モデルの設定
 	/// </summary>
-	void SetTexture(/*int number*/) {
-
-		int num = rand() % TEX_MAX;
-
-		//// objct.numberが0のとき
-		//if (number == 0) {
-		//	// ランダムに生成
-		//	num = rand() % TEX_MAX;
-		//}
-
-		wchar_t path[255];
-		wchar_t color[7];
-
-		switch (num) {
-		case 0:
-			// テクスチャを設定
-			wprintf_s(color, 7, L"Green");
-			break;
-		case 1:
-			// テクスチャを設定
-			wprintf_s(color, 7, L"Yellow");
-			break;
-		case 2:
-			// テクスチャを設定
-			wprintf_s(color, 7, L"Blue");
-			break;
-		case 3:
-			// テクスチャを設定
-			wprintf_s(color, 7, L"Pink");
-			break;
-		}
-
-		wprintf_s(
-			path,
-			255,
-			L"Asset/modelData/stage/Crystal/SmallCrystal_%lc.DDS",
-			color
-		);
-
-		m_texture.InitFromDDSFile(path);
-
-		// レア度を設定
-		SetRarity(num);
+	void SetModekl(/*int number*/) {
 	}
 
 private:
