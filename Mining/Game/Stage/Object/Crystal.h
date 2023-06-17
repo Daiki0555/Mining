@@ -3,6 +3,8 @@
 namespace
 {
 	const int TEX_MAX = 4;
+
+	const wchar_t FILEPATH[TEX_MAX][255] = { L"Green",L"Yellow",L"Blue",L"Pink" };
 }
 
 class Player;
@@ -52,7 +54,24 @@ public:
 	/// <summary>
 	/// モデルの設定
 	/// </summary>
-	void SetModel(/*int number*/) {
+	void SetTexture(/*int number*/) {
+
+		int num = rand() % TEX_MAX;
+		wchar_t path[255];
+		const wchar_t* hoge = FILEPATH[num];
+
+		//if (number == 0) {
+		//	num = rand() % TEX_MAX;
+		//}
+
+		swprintf_s(
+			path,
+			255,
+			L"Assets/modelData/stage/Crystal/SmallCrystal_%s.DDS",
+			hoge
+		);
+		
+		m_texture.InitFromDDSFile(path);
 	}
 
 private:
@@ -66,7 +85,8 @@ private:
 	}
 
 
-	ModelRender m_modelRender;						// モデルレンダー
+	ModelRender m_modelRenderCrystal;				// モデルレンダー。クリスタル
+	ModelRender	m_modelRenderRock;					// モデルレンダー。岩
 
 	Vector3		m_position = Vector3::Zero;			// 座標
 	Vector3		m_scale = Vector3::Zero;			// スケール
