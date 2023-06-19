@@ -28,5 +28,7 @@ private:
 	PointLight m_pointLight;
 	PointLight m_2pointLight;
 	SpotLight m_spotLight;
+
+	Quaternion m_rotition;
 };
 

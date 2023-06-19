@@ -58,7 +58,13 @@ void Debug::Update()
 	m_fontRender.SetShadowParam(true, 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 	m_timer += g_gameTime->GetFrameDeltaTime();
 	
-	
+	if (g_pad[0]->IsPress(enButtonA))
+	{
+		m_rotaition.AddRotationDegY(2.0f);
+	}
+
+	m_sampleRender.SetRotaition(m_rotaition);
+	m_sampleRender.Update();
 	m_modelRender.PlayAnimation(m_enAnimationClip_Idle, 0.5f);
 	m_modelRender.Update();
 	m_spriteRender.Update();
