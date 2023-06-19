@@ -94,7 +94,7 @@ Texture2D<float4> sceneTexture : register(t0); //シーンテクスチャ
      //基準テクセルからU座標を+13テクセルずらすためのオフセットを計算する
     Out.tex6.xy = float2(13.0f / texSize.x, 0.0f);
      //基準テクセルからU座標を+15テクセルずらすためのオフセットを計算する
-    Out.tex7.xy = float2(115.0f / texSize.x, 0.0f);
+    Out.tex7.xy = float2(15.0f / texSize.x, 0.0f);
 
     //オフセットにー１を掛けてマイナス方向のオフセットも計算する
     Out.tex0.zw=Out.tex0.xy*-1.0f;
