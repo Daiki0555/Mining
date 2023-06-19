@@ -4,6 +4,12 @@
     <Filter Include="system">
       <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{2e99cffe-1036-40c7-98d7-9fc8016d775d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{5b92bdbc-d843-413a-8a10-950dc2ccb504}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -12,6 +18,25 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Enemy\Enemy_Bee.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Enemy_Mushroom.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Enemy_Slime.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\EnemyBasic.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage\BackGround.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Stage\Object\Crystal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -19,5 +44,24 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Enemy\Enemy_Bee.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Enemy_Mushroom.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Enemy_Slime.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemyBasic.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage\BackGround.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Stage\Object\Crystal.h" />
   </ItemGroup>
 </Project>

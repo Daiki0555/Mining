@@ -224,7 +224,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Enemy\EnemyBasic.cpp" />
+    <ClCompile Include="Enemy\Enemy_Bee.cpp" />
+    <ClCompile Include="Enemy\Enemy_Mushroom.cpp" />
+    <ClCompile Include="Enemy\Enemy_Slime.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Stage\BackGround.cpp" />
+    <ClCompile Include="Stage\Object\Crystal.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -234,6 +243,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Enemy\EnemyBasic.h" />
+    <ClInclude Include="Enemy\Enemy_Bee.h" />
+    <ClInclude Include="Enemy\Enemy_Mushroom.h" />
+    <ClInclude Include="Enemy\Enemy_Slime.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Stage\BackGround.h" />
+    <ClInclude Include="Stage\Object\Crystal.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>
