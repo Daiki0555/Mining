@@ -6,6 +6,8 @@ namespace
 	const int	ATTACK_POWER = 5;							// 攻撃
 	const float BASIC_SPEED = 50.0f;						// 基本スピード
 
+	const float Y_UP = 50.0f;								// 地面から浮かせる値
+
 	const float CHARACTERCONTROLLER_RADIUS = 15.0f;			// 半径
 	const float CHARACTERCONTROLLER_HEIGHT = 15.0f;			// 高さ
 
@@ -33,7 +35,7 @@ bool Enemy_Bee::Start()
 		CHARACTERCONTROLLER_HEIGHT		// キャラクターコントローラーの高さ
 	);
 
-	m_position.y += 50.0f;				// 浮かせる
+	m_position.y += Y_UP;				// 浮かせる
 
 	return true;
 }
