@@ -93,6 +93,7 @@ private:
 		m_myRarity = rarity;
 	}
 
+	PhysicsStaticObject m_physicsStaticObjct;
 
 	ModelRender m_modelRenderCrystal;				// モデルレンダー。クリスタル
 	ModelRender	m_modelRenderRock;					// モデルレンダー。岩

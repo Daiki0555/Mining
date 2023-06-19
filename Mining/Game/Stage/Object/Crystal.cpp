@@ -34,6 +34,10 @@ bool Crystal::Start()
 	// テクスチャを変更
 	m_modelRenderCrystal.GetModel().ChangeAlbedoMap("", m_texture);
 
+	// 当たり判定を作成
+	m_physicsStaticObjct.CreateFromModel(m_modelRenderRock.GetModel(), m_modelRenderRock.GetModel().GetWorldMatrix(), 0.0f);
+	m_physicsStaticObjct.GetbtCollisionObject()->setUserIndex(enCollisionAttr_Crystal);
+
 	return true;
 }
 

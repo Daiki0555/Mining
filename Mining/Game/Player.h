@@ -35,6 +35,8 @@ public:
 	void Death();
 	void Clear();
 
+	void HitCrstal();
+
 	/// <summary>
 	/// À•W‚ğQÆ‚·‚é
 	/// </summary>
