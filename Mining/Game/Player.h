@@ -1,4 +1,19 @@
 #pragma once
+class Enemy_Slime;
+class Enemy_Mushroom;
+class Enemy_Bee;
+class Crystal;
+
+namespace 
+{
+	const int	HIT_POINT = 150;			// HP
+	const int	ATTACK_POWER = 25;			// 攻撃力
+	const float	STAMINA = 100.0f;			// スタミナ
+	const float BASIC_SPEED = 150.0f;		// 移動速度
+
+	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
+}
+
 class Player :public IGameObject
 {
 public:
@@ -50,22 +65,12 @@ public:
 	}
 
 	/// <summary>
-	/// クリスタルをlistに追加する
-	/// </summary>
-	/// <param name="number">自身のレアリティ</param>
-	void AddCrystal(const int& number) {
-		m_haveCrystals.emplace_back(number);
-	}
-
-	/// <summary>
 	/// クリスタルの総数を取得
 	/// </summary>
-	/// <returns></returns>
 	const int GetCrystalSum() const {
 		return m_haveCrystals.size();
 	}
 
-private:
 	enum ActionState {
 		m_ActionState_Idle,			// 待機
 		m_ActionState_Walk,			// 歩く
@@ -75,6 +80,24 @@ private:
 		m_ActionState_Death,		// 死亡
 		m_ActionState_Clear			// クリア
 	};
+
+	/// <summary>
+	/// 現在のステートを返す
+	/// </summary>
+	const ActionState GetActionState() const {
+		return m_actionState;
+	}
+
+private:
+	/// <summary>
+	/// クリスタルの数を追加
+	/// </summary>
+	/// <param name="num">レア度</param>
+	/// <returns></returns>
+	const int AddCrystalNum(int num) {
+		m_haveCrystals.push_back(num);
+	}
+
 	ActionState m_actionState;
 
 	enum EnAnimationClip {
@@ -90,29 +113,31 @@ private:
 	AnimationClip m_EnAnimationClips[m_en_AnimationClips_Num];
 
 // --------------------------------------------------------
-	ModelRender			m_modelRender;						// モデルレンダー
+	ModelRender			m_modelRender;							// モデルレンダー
 
-	CharacterController m_characterController;				// キャラクターコントローラー
+	CharacterController m_characterController;					// キャラクターコントローラー
 
-	Vector3				m_position = Vector3::Zero;			// 自身の座標
-	Vector3				m_scale = Vector3::One;				// 自身のスケール
-	Vector3				m_moveSpeed = Vector3::Zero;		// 移動速度
+	Vector3				m_position = Vector3::Zero;				// 自身の座標
+	Vector3				m_scale = Vector3::One;					// 自身のスケール
+	Vector3				m_moveSpeed = Vector3::Zero;			// 移動速度
 
-	Quaternion			m_rotation= Quaternion::Identity;	// 自身の回転
+	Quaternion			m_rotation= Quaternion::Identity;		// 自身の回転
+
+	Crystal*			m_crystal = nullptr;					// クリスタル
 
 	struct PlayerStatus {
-		int				m_hitPoint = 150;					// HP(150)
-		int				m_attackPower = 25;					// 攻撃力(25)
-		float			m_stamina = 100.0f;					// スタミナ(100.0f)
-		float			m_basicSpeed = 150.0f;				// 基本速度(120.0f)
+		int				m_hitPoint = HIT_POINT;					// HP
+		int				m_attackPower = ATTACK_POWER;			// 攻撃力
+		float			m_stamina = STAMINA;					// スタミナ
+		float			m_basicSpeed = BASIC_SPEED;				// 基本速度
 	};
-	PlayerStatus		playerStatus;						// プレイヤーのステータス
+	PlayerStatus		playerStatus;							// プレイヤーのステータス
 
-	float				m_invincibleTimer = 5.0f;			// 無敵時間
-	float				m_addSpped = 1.0f;					// 乗算速度
+	float				m_invincibleTimer = INVINCIBLE_TIMER;	// 無敵時間
+	float				m_addSpped = 0.0f;						// 乗算速度
 
-	bool				m_takeDamageflag = true;			// ダメージを受けるフラグ
+	bool				m_canDamageflag = true;					// ダメージを受けられるかどうか
 
-	std::list<int>		m_haveCrystals;						// 所持しているクリスタル
+	std::list<int>	m_haveCrystals;								// 所持しているクリスタル
 };
 

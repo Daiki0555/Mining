@@ -5,7 +5,7 @@
 namespace 
 {
 	const float		VALUE_Y = 50.0f;						// 持ち上げる値
-
+	const float		ROTATING_VELOCITY = 1.5f;				// 回転速度
 	const Vector3	VECTOR = { 0.0f, 150.0f, 300.0f };		// 始点から注視点へ向かうベクトル
 }
 
@@ -60,6 +60,6 @@ void GameCamera::CameraRotation()
 	float x = g_pad[0]->GetRStickXF();
 
 	Quaternion rotation;
-	rotation.SetRotationDeg(Vector3::AxisY, 1.5 * x);				// Y軸周りに回転
+	rotation.SetRotationDeg(Vector3::AxisY, ROTATING_VELOCITY * x);	// Y軸周りに回転
 	rotation.Apply(m_toCameraPosition);								// 作成した回転を適用
 }

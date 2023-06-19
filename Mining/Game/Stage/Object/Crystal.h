@@ -15,7 +15,6 @@ public:
 	~Crystal();
 
 	bool Start();
-	void Update();
 	void GetCrystal();					// 自身を獲得する処理
 	void Render(RenderContext& rc);
 
@@ -72,6 +71,16 @@ public:
 		);
 		
 		m_texture.InitFromDDSFile(path);
+
+		SetRarity(num);
+	}
+
+	/// <summary>
+	/// レア度を参照する
+	/// </summary>
+	/// <returns></returns>
+	const int GetRarity()const {
+		return m_myRarity;
 	}
 
 private:
@@ -95,5 +104,7 @@ private:
 	Texture		m_texture;							// テクスチャ
 
 	int			m_myRarity = 0;						// 自身のレアリティ
+
+	bool		m_canDrawFlag = true;				// 描画できるかどうか
 };
 

@@ -37,19 +37,18 @@ bool Crystal::Start()
 	return true;
 }
 
-void Crystal::Update()
-{
-	GetCrystal();
-}
-
 void Crystal::GetCrystal()
 {
-
+	m_canDrawFlag == false;
 }
 
 void Crystal::Render(RenderContext& rc)
 {
-	m_modelRenderCrystal.Draw(rc);
+	// ©g‚ªŠl“¾‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚Í•`‰æ‚·‚é
+	if (m_canDrawFlag) {
+		m_modelRenderCrystal.Draw(rc);
+	}
+
 	m_modelRenderRock.Draw(rc);
 }
 

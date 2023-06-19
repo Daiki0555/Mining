@@ -1,5 +1,15 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Enemy/Enemy_Slime.h"
+#include "Enemy/Enemy_Mushroom.h"
+#include "Enemy/Enemy_Bee.h"
+#include "Stage/Object/Crystal.h"
+
+namespace
+{
+	const float RUN_SPEED = 2.5f;			// ダッシュ時の移動速度
+	const float WALKING_SPEED = 1.0f;		// 歩いている時の移動速度
+}
 
 Player::Player() 
 {
@@ -11,6 +21,9 @@ Player::~Player()
 
 bool Player::Start()
 {
+	// インスタンスを探す
+	m_crystal = FindGO<Crystal>("crystal");
+
 	LoadAnimation();
 
 	m_modelRender.Init("Assets/modelData/player/unityChan.tkm", m_EnAnimationClips, m_en_AnimationClips_Num, enModelUpAxisY);
@@ -132,12 +145,12 @@ void Player::Move()
 	if (g_pad[0]->IsPress(enButtonA)) {
 		// ボタンを押している間ダッシュ
 		m_actionState = m_ActionState_Run;
-		m_addSpped = 2.5f;
+		m_addSpped = RUN_SPEED;
 	}
 	else {
 		// 押していないときは歩く
 		m_actionState = m_ActionState_Walk;
-		m_addSpped = 1.0f;
+		m_addSpped = WALKING_SPEED;
 	}
 
 	// スティックの入力量×移動速度×乗算速度で最終的な移動速度を計算する
@@ -159,7 +172,7 @@ void Player::Attack()
 void Player::Damage(int attackPower)
 {
 	// ダメージを受けない状態のとき
-	if (m_takeDamageflag == false) {
+	if (m_canDamageflag == false) {
 		// 以下の処理を実行しない
 		return;
 	}
@@ -167,13 +180,13 @@ void Player::Damage(int attackPower)
 	m_en_AnimationClips_Damage;					// 被弾モーションを再生
 
 	playerStatus.m_hitPoint-= attackPower;		// ダメージ量をHPから引く
-	m_takeDamageflag = false;					// 連続してダメージを受けない
+	m_canDamageflag = false;					// 連続してダメージを受けない
 
 	m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
 
 	// タイマーが0.0f以下のとき
 	if (m_invincibleTimer < 0.0f) {
-		m_takeDamageflag = true;
+		m_canDamageflag = true;
 	}
 }
 
@@ -185,6 +198,11 @@ void Player::Death()
 void Player::Dig()
 {
 	m_actionState = m_ActionState_Dig;
+
+	m_crystal->GetCrystal();					// クリスタルを取得
+	int rarity = m_crystal->GetRarity();		// 取得したクリスタルのレア度を取得
+
+	AddCrystalNum(rarity);						// listに追加
 }
 
 void Player::Clear()
