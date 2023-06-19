@@ -1,5 +1,11 @@
 #pragma once
 class Player;
+
+namespace
+{
+	const float STOP_TIME = 5.0f;		// 行動を停止する時間
+}
+
 class EnemyBasic:public IGameObject
 {
 public:
@@ -21,7 +27,7 @@ public:
 	void SearchPlayer();
 	void Attack();
 	void Damege();
-	void Dizzy();
+	void StopAction();
 
 	/// <summary>
 	/// 座標を設定
@@ -61,6 +67,7 @@ protected:
 		m_ActionState_Move,					// 移動
 		m_ActionState_Attack,				// 攻撃
 		m_ActionState_Damage,				// 被弾
+		m_ActionState_StopAction,			// 行動停止
 	};
 	ActionState m_actionState = m_ActionState_Idle;
 
@@ -88,6 +95,8 @@ protected:
 		int				m_attackPower = 0;						// 攻撃力
 		float			m_moveSpeed = 0.0f;						// 移動速度
 	};
-	EnemyStatus			enemyStatus;							// エネミーのステータス
+	EnemyStatus			m_enemyStatus;							// エネミーのステータス
+
+	float				m_StopTimer = STOP_TIME;				// 行動を停止するタイマー
 };
 

@@ -94,7 +94,7 @@ private:
 	/// </summary>
 	/// <param name="num">レア度</param>
 	/// <returns></returns>
-	const int AddCrystalNum(int num) {
+	void AddCrystalNum(const int& num){
 		m_haveCrystals.push_back(num);
 	}
 
@@ -131,7 +131,7 @@ private:
 		float			m_stamina = STAMINA;					// スタミナ
 		float			m_basicSpeed = BASIC_SPEED;				// 基本速度
 	};
-	PlayerStatus		playerStatus;							// プレイヤーのステータス
+	PlayerStatus		m_playerStatus;							// プレイヤーのステータス
 
 	float				m_invincibleTimer = INVINCIBLE_TIMER;	// 無敵時間
 	float				m_addSpped = 0.0f;						// 乗算速度

@@ -18,8 +18,8 @@ bool EnemyBasic::Start(int attackPower, float moveSpeed, float radius, float hei
 	m_player = FindGO<Player>("player");
 
 	// ステータスを設定
-	enemyStatus.m_attackPower = attackPower;
-	enemyStatus.m_moveSpeed = moveSpeed;
+	m_enemyStatus.m_attackPower = attackPower;
+	m_enemyStatus.m_moveSpeed = moveSpeed;
 	// キャラクターコントローラーを作成
 	m_characterController.Init(radius, height, m_position);
 
@@ -28,7 +28,7 @@ bool EnemyBasic::Start(int attackPower, float moveSpeed, float radius, float hei
 
 void EnemyBasic::Move()
 {
-
+	m_actionState = m_ActionState_Move;
 }
 
 void EnemyBasic::Attack()
@@ -36,7 +36,9 @@ void EnemyBasic::Attack()
 	m_actionState = m_ActionState_Attack;
 
 	// プレイヤーに攻撃する
-	m_player->Damage(enemyStatus.m_attackPower);
+	m_player->Damage(m_enemyStatus.m_attackPower);
+
+	m_actionState = m_ActionState_StopAction;
 }
 
 void EnemyBasic::Rotation(Vector3 rotation)
@@ -54,10 +56,25 @@ void EnemyBasic::SearchPlayer()
 
 void EnemyBasic::Damege()
 {
+	m_actionState = m_ActionState_Damage;
 
+	if (m_modelRender.IsPlayingAnimation()) {
+		return;
+	}
+
+	m_actionState = m_ActionState_StopAction;
 }
 
-void EnemyBasic::Dizzy()
+void EnemyBasic::StopAction()
 {
+	m_actionState = m_ActionState_Idle;
 
+	m_StopTimer -= g_gameTime->GetFrameDeltaTime();
+
+	// タイマーが0.0f以下になったら移行する
+	if (m_StopTimer >= 0.0f) {
+		return;
+	}
+
+	m_actionState = m_ActionState_Move;
 }

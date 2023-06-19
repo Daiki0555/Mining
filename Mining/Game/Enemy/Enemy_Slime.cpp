@@ -8,6 +8,8 @@ namespace
 
 	const float CHARACTERCONTROLLER_RADIUS = 50.0f;			// îºåa
 	const float CHARACTERCONTROLLER_HEIGHT = 50.0f;			// çÇÇ≥
+
+	const float LINEAR_COMPLETION = 1.0f;					// ê¸å`ï‚äÆ
 }
 
 Enemy_Slime::Enemy_Slime()
@@ -56,13 +58,13 @@ void Enemy_Slime::PlayAnimation()
 {
 	switch (m_actionState) {
 	case m_ActionState_Idle:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Move:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Move);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Move, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Damage:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage, LINEAR_COMPLETION);
 		break;
 	}
 }

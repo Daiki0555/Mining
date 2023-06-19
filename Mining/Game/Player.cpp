@@ -9,6 +9,8 @@ namespace
 {
 	const float RUN_SPEED = 2.5f;			// ダッシュ時の移動速度
 	const float WALKING_SPEED = 1.0f;		// 歩いている時の移動速度
+
+	const float LINEAR_COMPLETION = 1.0f;	// 線形補完
 }
 
 Player::Player() 
@@ -41,7 +43,7 @@ bool Player::Start()
 void Player::Update()
 {
 	// 体力が0のとき
-	if (playerStatus.m_hitPoint <= 0) {
+	if (m_playerStatus.m_hitPoint <= 0) {
 		// 死亡する
 		Death();
 		return;
@@ -87,25 +89,25 @@ void Player::PlayAnimation()
 {
 	switch (m_actionState) {
 	case m_ActionState_Idle:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Walk:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Walk);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Walk, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Run:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Run);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Run, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Dig:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Dig);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Dig, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Damage:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Death:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Death);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Death, LINEAR_COMPLETION);
 		break;
 	case m_ActionState_Clear:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Clear);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Clear, LINEAR_COMPLETION);
 		break;
 	}
 }
@@ -154,8 +156,8 @@ void Player::Move()
 	}
 
 	// スティックの入力量×移動速度×乗算速度で最終的な移動速度を計算する
-	right *= stickL.x * playerStatus.m_basicSpeed * m_addSpped;
-	forward *= stickL.y * playerStatus.m_basicSpeed * m_addSpped;
+	right *= stickL.x * m_playerStatus.m_basicSpeed * m_addSpped;
+	forward *= stickL.y * m_playerStatus.m_basicSpeed * m_addSpped;
 
 	// 移動速度に上記で計算したベクトルを加算
 	m_moveSpeed += right + forward;
@@ -179,7 +181,7 @@ void Player::Damage(int attackPower)
 
 	m_en_AnimationClips_Damage;					// 被弾モーションを再生
 
-	playerStatus.m_hitPoint-= attackPower;		// ダメージ量をHPから引く
+	m_playerStatus.m_hitPoint-= attackPower;		// ダメージ量をHPから引く
 	m_canDamageflag = false;					// 連続してダメージを受けない
 
 	m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
