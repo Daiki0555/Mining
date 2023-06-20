@@ -62,23 +62,23 @@ public:
 	}
 
 protected:
-	enum ActionState {
-		m_ActionState_Idle,					// ‘Ò‹@
-		m_ActionState_Move,					// ˆÚ“®
-		m_ActionState_Attack,				// UŒ‚
-		m_ActionState_Damage,				// ”í’e
-		m_ActionState_StopAction,			// s“®’â~
+	enum enActionState {
+		m_enActionState_Idle,					// ‘Ò‹@
+		m_enActionState_Move,					// ˆÚ“®
+		m_enActionState_Attack,				// UŒ‚
+		m_enActionState_Damage,				// ”í’e
+		m_enActionState_StopAction,			// s“®’â~
 	};
-	ActionState m_actionState = m_ActionState_Idle;
+	enActionState m_actionState = m_enActionState_Idle;
 
-	enum EnAnimationClip {
-		m_en_AnimationClips_Idle,			// ‘Ò‹@
-		m_en_AnimationClips_Move,			// ˆÚ“®
-		m_en_AnimationClips_Attack,			// UŒ‚
-		m_en_AnimationClips_Damage,			// ”í’e
-		m_en_AnimationClips_Num
+	enum enAnimationClip {
+		m_enAnimationClips_Idle,			// ‘Ò‹@
+		m_enAnimationClips_Move,			// ˆÚ“®
+		m_enAnimationClips_Attack,			// UŒ‚
+		m_enAnimationClips_Damage,			// ”í’e
+		m_enAnimationClips_Num
 	};
-	AnimationClip m_EnanimationClips[m_en_AnimationClips_Num];
+	AnimationClip m_enAnimationClips[m_enAnimationClips_Num];
 
 // -----------------------------------------------------------
 	Player*				m_player = nullptr;						// ƒvƒŒƒCƒ„[

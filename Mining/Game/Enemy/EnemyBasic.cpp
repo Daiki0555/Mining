@@ -28,17 +28,17 @@ bool EnemyBasic::Start(int attackPower, float moveSpeed, float radius, float hei
 
 void EnemyBasic::Move()
 {
-	m_actionState = m_ActionState_Move;
+	m_actionState = m_enActionState_Move;
 }
 
 void EnemyBasic::Attack()
 {
-	m_actionState = m_ActionState_Attack;
+	m_actionState = m_enActionState_Attack;
 
 	// ƒvƒŒƒCƒ„[‚ÉUŒ‚‚·‚é
 	m_player->Damage(m_enemyStatus.m_attackPower);
 
-	m_actionState = m_ActionState_StopAction;
+	m_actionState = m_enActionState_StopAction;
 }
 
 void EnemyBasic::Rotation(Vector3 rotation)
@@ -56,18 +56,18 @@ void EnemyBasic::SearchPlayer()
 
 void EnemyBasic::Damege()
 {
-	m_actionState = m_ActionState_Damage;
+	m_actionState = m_enActionState_Damage;
 
 	if (m_modelRender.IsPlayingAnimation()) {
 		return;
 	}
 
-	m_actionState = m_ActionState_StopAction;
+	m_actionState = m_enActionState_StopAction;
 }
 
 void EnemyBasic::StopAction()
 {
-	m_actionState = m_ActionState_Idle;
+	m_actionState = m_enActionState_Idle;
 
 	m_StopTimer -= g_gameTime->GetFrameDeltaTime();
 
@@ -76,5 +76,5 @@ void EnemyBasic::StopAction()
 		return;
 	}
 
-	m_actionState = m_ActionState_Move;
+	m_actionState = m_enActionState_Move;
 }

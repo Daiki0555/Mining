@@ -26,7 +26,7 @@ bool Enemy_Bee::Start()
 {
 	LoadAnimation();
 
-	m_modelRender.Init("Assets/modelData/enemy/bee/bee.tkm", m_EnanimationClips, m_en_AnimationClips_Num, enModelUpAxisZ);
+	m_modelRender.Init("Assets/modelData/enemy/bee/bee.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ);
 
 	EnemyBasic::Start(
 		ATTACK_POWER,					// çUåÇóÕ
@@ -42,33 +42,33 @@ bool Enemy_Bee::Start()
 
 void Enemy_Bee::LoadAnimation()
 {
-	m_EnanimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/enemy/bee/idle.tka");
-	m_EnanimationClips[m_en_AnimationClips_Idle].SetLoopFlag(true);
+	m_enAnimationClips[m_enAnimationClips_Idle].Load("Assets/animData/enemy/bee/idle.tka");
+	m_enAnimationClips[m_enAnimationClips_Idle].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Move].Load("Assets/animData/enemy/bee/move.tka");
-	m_EnanimationClips[m_en_AnimationClips_Move].SetLoopFlag(true);
+	m_enAnimationClips[m_enAnimationClips_Move].Load("Assets/animData/enemy/bee/move.tka");
+	m_enAnimationClips[m_enAnimationClips_Move].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Attack].Load("Assets/animData/enemy/bee/attack.tka");
-	m_EnanimationClips[m_en_AnimationClips_Attack].SetLoopFlag(false);
+	m_enAnimationClips[m_enAnimationClips_Attack].Load("Assets/animData/enemy/bee/attack.tka");
+	m_enAnimationClips[m_enAnimationClips_Attack].SetLoopFlag(false);
 
-	m_EnanimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/enemy/bee/damage.tka");
-	m_EnanimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
+	m_enAnimationClips[m_enAnimationClips_Damage].Load("Assets/animData/enemy/bee/damage.tka");
+	m_enAnimationClips[m_enAnimationClips_Damage].SetLoopFlag(false);
 }
 
 void Enemy_Bee::PlayAnimation()
 {
 	switch (m_actionState) {
-	case m_ActionState_Idle:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle, LINEAR_COMPLETION);
+	case m_enActionState_Idle:
+		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Move:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Move, LINEAR_COMPLETION);
+	case m_enActionState_Move:
+		m_modelRender.PlayAnimation(m_enAnimationClips_Move, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Attack:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Attack, LINEAR_COMPLETION);
+	case m_enActionState_Attack:
+		m_modelRender.PlayAnimation(m_enAnimationClips_Attack, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Damage:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage, LINEAR_COMPLETION);
+	case m_enActionState_Damage:
+		m_modelRender.PlayAnimation(m_enAnimationClips_Damage, LINEAR_COMPLETION);
 		break;
 	}
 }
@@ -76,13 +76,13 @@ void Enemy_Bee::PlayAnimation()
 void Enemy_Bee::Update()
 {
 	switch (m_actionState) {
-	case m_ActionState_Idle:
+	case m_enActionState_Idle:
 		break;
-	case m_ActionState_Move:
+	case m_enActionState_Move:
 		break;
-	case m_ActionState_Attack:
+	case m_enActionState_Attack:
 		break;
-	case m_ActionState_Damage:
+	case m_enActionState_Damage:
 		break;
 	}
 

@@ -35,7 +35,7 @@ public:
 	void Death();
 	void Clear();
 
-	void HitCrstal();
+	bool HitCrstal(Vector3 position);
 
 	/// <summary>
 	/// 座標を参照する
@@ -73,20 +73,20 @@ public:
 		return m_haveCrystals.size();
 	}
 
-	enum ActionState {
-		m_ActionState_Idle,			// 待機
-		m_ActionState_Walk,			// 歩く
-		m_ActionState_Run,			// 走る
-		m_ActionState_Dig,			// 掘る
-		m_ActionState_Damage,		// 被弾
-		m_ActionState_Death,		// 死亡
-		m_ActionState_Clear			// クリア
+	enum enActionState {
+		m_enActionState_Idle,			// 待機
+		m_enActionState_Walk,			// 歩く
+		m_enActionState_Run,			// 走る
+		m_enActionState_Dig,			// 掘る
+		m_enActionState_Damage,		// 被弾
+		m_enActionState_Death,		// 死亡
+		m_enActionState_Clear			// クリア
 	};
 
 	/// <summary>
 	/// 現在のステートを返す
 	/// </summary>
-	const ActionState GetActionState() const {
+	const enActionState GetActionState() const {
 		return m_actionState;
 	}
 
@@ -100,9 +100,9 @@ private:
 		m_haveCrystals.push_back(num);
 	}
 
-	ActionState m_actionState;
+	enActionState m_actionState;
 
-	enum EnAnimationClip {
+	enum enAnimationClip {
 		m_en_AnimationClips_Idle,		// 待機
 		m_en_AnimationClips_Walk,		// 歩く
 		m_en_AnimationClips_Run,		// 走る
@@ -112,12 +112,14 @@ private:
 		m_en_AnimationClips_Clear,		// クリア
 		m_en_AnimationClips_Num
 	};
-	AnimationClip m_EnAnimationClips[m_en_AnimationClips_Num];
+	AnimationClip m_enAnimationClips[m_en_AnimationClips_Num];
 
 // --------------------------------------------------------
 	ModelRender			m_modelRender;							// モデルレンダー
 
 	CharacterController m_characterController;					// キャラクターコントローラー
+	SphereCollider		m_sphereCollider;						// スフィアコライダー
+
 
 	Vector3				m_position = Vector3::Zero;				// 自身の座標
 	Vector3				m_scale = Vector3::One;					// 自身のスケール
@@ -140,6 +142,6 @@ private:
 
 	bool				m_canDamageflag = true;					// ダメージを受けられるかどうか
 
-	std::list<int>	m_haveCrystals;								// 所持しているクリスタル
+	std::list<int>		m_haveCrystals;							// 所持しているクリスタル
 };
 
