@@ -1,7 +1,4 @@
 #pragma once
-class Enemy_Slime;
-class Enemy_Mushroom;
-class Enemy_Bee;
 class Crystal;
 
 namespace 
@@ -88,6 +85,22 @@ public:
 	/// </summary>
 	const enActionState GetActionState() const {
 		return m_actionState;
+	}
+
+	/// <summary>
+	/// プレイヤーのHPを参照する
+	/// </summary>
+	/// <returns></returns>
+	const int GetHitPoint() const {
+		return m_playerStatus.m_hitPoint;
+	}
+
+	/// <summary>
+	/// プレイヤーのスタミナを参照する
+	/// </summary>
+	/// <returns></returns>
+	const int GetStamina() const {
+		return m_playerStatus.m_stamina;
 	}
 
 private:

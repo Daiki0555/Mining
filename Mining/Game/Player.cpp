@@ -1,8 +1,5 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "Enemy/Enemy_Slime.h"
-#include "Enemy/Enemy_Mushroom.h"
-#include "Enemy/Enemy_Bee.h"
 #include "Stage/Object/Crystal.h"
 
 namespace
