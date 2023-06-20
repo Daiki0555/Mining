@@ -240,6 +240,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="UI\GaugeBasic.cpp" />
     <ClCompile Include="UI\HitPointGauge.cpp" />
     <ClCompile Include="UI\StaminaGauge.cpp" />
   </ItemGroup>
@@ -256,6 +257,7 @@
     <ClInclude Include="Stage\Object\Crystal.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="UI\GaugeBasic.h" />
     <ClInclude Include="UI\HitPointGauge.h" />
     <ClInclude Include="UI\StaminaGauge.h" />
   </ItemGroup>
