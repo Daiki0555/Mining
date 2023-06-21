@@ -60,14 +60,15 @@ void Player::Update()
 
 		m_recoveryTimer -= g_gameTime->GetFrameDeltaTime();
 
-		if (m_recoveryTimer -= g_gameTime->GetFrameDeltaTime() <= 0.0f) {
+		if (m_recoveryTimer <= 0.0f) {
 			// スタミナを増やす
 			m_playerStatus.m_stamina += g_gameTime->GetFrameDeltaTime() * INCREASE_STAMINA_VALUE;
 		}
 	}
 	else {
-		m_addSpped = WALKING_SPEED;
+		m_recoveryTimer = RECOVERY_TIMER;		// タイマーをリセット
 	}
+
 
 	Move();					// 移動
 	Rotation();				// 回転
@@ -177,7 +178,7 @@ void Player::Move()
 		// 押していないときは歩く
 		m_actionState = m_enActionState_Walk;
 
-		m_recoveryTimer = RECOVERY_TIMER;		// タイマーをリセット
+		m_addSpped = WALKING_SPEED;
 	}
 
 	// スティックの入力量×移動速度×乗算速度で最終的な移動速度を計算する

@@ -8,7 +8,7 @@ namespace
 	const Vector4		FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
 
 	const Vector4		FONT_COLOR = { 0.0f,0.0f,0.0f,1.0f };				// フォントカラー
-	const float			FONT_SCALE = 0.5f;									// フォントのスケール
+	const float			FONT_SCALE = 0.6f;									// フォントのスケール
 
 	const Vector2		SPRITE_PIVOT = { 0.0f,0.5f };						// ビポットの位置
 }
@@ -41,25 +41,25 @@ bool Gauge::Start()
 
 	// HPゲージ
 	m_spriteRenderHitPointGauge.Init("Assets/Sprite/UI/Gauge/hpGauge.DDS", 358.0f, 48.0f);
-	m_spriteRenderHitPointGauge.SetPosition({ -660.0f,380.0f,0.0f });
+	m_spriteRenderHitPointGauge.SetPosition({ -670.0f,380.0f,0.0f });
 	m_spriteRenderHitPointGauge.SetPivot(SPRITE_PIVOT);
 	m_spriteRenderHitPointGauge.SetScale({ 1.0f,1.0f,1.0f });
 	m_spriteRenderHitPointGauge.Update();
 
 	m_spriteRenderHitPointGaugeBase.Init("Assets/Sprite/UI/Gauge/hpGauge_base.DDS", 358.0f, 48.0f);
-	m_spriteRenderHitPointGaugeBase.SetPosition({ -480.0f,380.0f,0.0f });
+	m_spriteRenderHitPointGaugeBase.SetPosition({ -490.0f,380.0f,0.0f });
 	m_spriteRenderHitPointGaugeBase.SetScale({ 1.0f,1.0f,1.0f });
 	m_spriteRenderHitPointGaugeBase.Update();
 
 	// スタミナ
 	m_spriteRenderStaminaGauge.Init("Assets/Sprite/UI/Gauge/staminaGauge.DDS", 296.0f, 28.0f);
-	m_spriteRenderStaminaGauge.SetPosition({ -643.0f,321.0f,0.0f });
+	m_spriteRenderStaminaGauge.SetPosition({ -653.0f,321.0f,0.0f });
 	m_spriteRenderStaminaGauge.SetPivot(SPRITE_PIVOT);
 	m_spriteRenderStaminaGauge.SetScale({ 1.0f,1.0f,1.0f });
 	m_spriteRenderStaminaGauge.Update();
 
 	m_spriteRenderStaminaGaugeBase.Init("Assets/Sprite/UI/Gauge/staminaGauge_base.DDS", 324.0f, 48.0f);
-	m_spriteRenderStaminaGaugeBase.SetPosition({ -495.0f,320.0f,0.0f });
+	m_spriteRenderStaminaGaugeBase.SetPosition({ -505.0f,320.0f,0.0f });
 	m_spriteRenderStaminaGaugeBase.SetScale({ 1.0f,1.0f,1.0f });
 	m_spriteRenderStaminaGaugeBase.Update();
 
@@ -96,12 +96,12 @@ void Gauge::DrawGaugeValue()
 	// 桁数の指定
 	swprintf_s(
 		HitPointText, 256, L"HP  %d / %d",
-		m_hitPointGauge.m_gaugeNowValue, 
+		m_hitPointGauge.m_gaugeDrawValue, 
 		m_hitPointGauge.m_gaugeMaxValue
 	);
 
 	m_fontRenderHitPoint.SetText(HitPointText);
-	m_fontRenderHitPoint.SetPosition({ -519.0f,490.0f,0.0f });
+	m_fontRenderHitPoint.SetPosition({ -569.0f,490.0f,0.0f });
 	m_fontRenderHitPoint.SetScale(FONT_SCALE);
 	m_fontRenderHitPoint.SetColor(FONT_COLOR);
 	m_fontRenderHitPoint.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
@@ -116,7 +116,7 @@ void Gauge::DrawGaugeValue()
 	);
 
 	m_fontRenderStamina.SetText(StaminaText);
-	m_fontRenderStamina.SetPosition({ -610.0f,420.0f,0.0f });
+	m_fontRenderStamina.SetPosition({ -670.0f,420.0f,0.0f });
 	m_fontRenderStamina.SetScale(FONT_SCALE);
 	m_fontRenderStamina.SetColor(FONT_COLOR);
 	m_fontRenderStamina.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
