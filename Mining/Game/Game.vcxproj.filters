@@ -37,9 +37,7 @@
     </ClCompile>
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Stage\Object\Crystal.cpp" />
-    <ClCompile Include="UI\HitPointGauge.cpp" />
-    <ClCompile Include="UI\StaminaGauge.cpp" />
-    <ClCompile Include="UI\GaugeBasic.cpp" />
+    <ClCompile Include="UI\Gauge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -66,8 +64,6 @@
     </ClInclude>
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Stage\Object\Crystal.h" />
-    <ClInclude Include="UI\HitPointGauge.h" />
-    <ClInclude Include="UI\StaminaGauge.h" />
-    <ClInclude Include="UI\GaugeBasic.h" />
+    <ClInclude Include="UI\Gauge.h" />
   </ItemGroup>
 </Project>

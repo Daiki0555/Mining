@@ -7,6 +7,7 @@
 #include "Enemy/Enemy_Mushroom.h"
 #include "Enemy/Enemy_Slime.h"
 #include "Stage/Object/Crystal.h"
+#include "UI/Gauge.h"
 
 Game::Game()
 {
@@ -26,15 +27,13 @@ void Game::Objct_DeleteGO()
 
 bool Game::Start()
 {
-	Objct_NewGO();
+	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
+
 	LevelDesign();
 
-	return true;
-}
+	m_gauge = NewGO<Gauge>(0, "gauge");
 
-void Game::Objct_NewGO()
-{
-	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
+	return true;
 }
 
 void Game::LevelDesign()
