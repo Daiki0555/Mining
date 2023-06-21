@@ -137,7 +137,7 @@ private:
 
 	Vector3				m_position = Vector3::Zero;						// 自身の座標
 	Vector3				m_scale = Vector3::One;							// 自身のスケール
-	Vector3				m_moveSpeed = Vector3::Zero;					// 移動速度
+	Vector3				m_basicSpeed = Vector3::Zero;					// 移動速度
 
 	Quaternion			m_rotation= Quaternion::Identity;				// 自身の回転
 

@@ -56,7 +56,7 @@ void Player::Update()
 
 	// スタミナが最大値でない　かつ　Aボタンが入力されていないとき
 	if (m_playerStatus.m_stamina < STAMINA_MAX && 
-		g_pad[0]->IsPress(enButtonA) <= 0.001f) {
+		m_actionState != m_enActionState_Run) {
 
 		m_recoveryTimer -= g_gameTime->GetFrameDeltaTime();
 
@@ -136,9 +136,9 @@ void Player::PlayAnimation()
 void Player::Rotation()
 {
 	// スティックの入力があったら
-	if (fabsf(m_moveSpeed.x) >= 0.001 || fabsf(m_moveSpeed.z) >= 0.001) {
+	if (fabsf(m_basicSpeed.x) >= 0.001 || fabsf(m_basicSpeed.z) >= 0.001) {
 		//　キャラクターの方向を変える
-		m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
+		m_rotation.SetRotationYFromDirectionXZ(m_basicSpeed);
 		m_modelRender.SetRotaition(m_rotation);
 	}
 	else {
@@ -149,8 +149,8 @@ void Player::Rotation()
 
 void Player::Move()
 {
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
+	m_basicSpeed.x = 0.0f;
+	m_basicSpeed.z = 0.0f;
 
 	// ゲームパッドの入力量を参照する
 	Vector3 stickL;
@@ -166,6 +166,10 @@ void Player::Move()
 	right.y = 0.0f;
 
 	if (g_pad[0]->IsPress(enButtonA) && m_playerStatus.m_stamina >= STAMINA_MIN) {
+		if (m_actionState == m_enActionState_Idle) {
+			return;
+		}
+
 		// ボタンを押している間ダッシュ
 		m_actionState = m_enActionState_Run;
 
@@ -186,9 +190,9 @@ void Player::Move()
 	forward *= stickL.y * m_playerStatus.m_basicSpeed * m_addSpped;
 
 	// 移動速度に上記で計算したベクトルを加算
-	m_moveSpeed += right + forward;
+	m_basicSpeed += right + forward;
 
-	m_position = m_characterController.Execute(m_moveSpeed, 1.0f / 60.0f);
+	m_position = m_characterController.Execute(m_basicSpeed, 1.0f / 60.0f);
 
 	m_modelRender.SetPosition(m_position);
 }
