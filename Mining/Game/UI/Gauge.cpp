@@ -95,7 +95,7 @@ void Gauge::DrawGaugeValue()
 	wchar_t HitPointText[256];
 	// Œ…”‚Ìw’è
 	swprintf_s(
-		HitPointText, 256, L"HP  %d / %d",
+		HitPointText, 256, L"HP  %03d / %d",
 		m_hitPointGauge.m_gaugeDrawValue, 
 		m_hitPointGauge.m_gaugeMaxValue
 	);
@@ -110,7 +110,7 @@ void Gauge::DrawGaugeValue()
 	wchar_t StaminaText[256];
 	// Œ…”‚Ìw’è
 	swprintf_s(
-		StaminaText, 256, L"STAMINA  %d / %d",
+		StaminaText, 256, L"STAMINA  %03d / %d",
 		m_staminaGauge.m_gaugeNowValue,
 		m_staminaGauge.m_gaugeMaxValue
 	);
