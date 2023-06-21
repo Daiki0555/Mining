@@ -4,12 +4,18 @@
 
 namespace
 {
-	const float RUN_SPEED = 2.5f;			// ダッシュ時の移動速度
-	const float WALKING_SPEED = 1.0f;		// 歩いている時の移動速度
+	const float RUN_SPEED = 2.5f;					// ダッシュ時の移動速度
+	const float WALKING_SPEED = 1.0f;				// 歩いている時の移動速度
 
-	const float LINEAR_COMPLETION = 1.0f;	// 線形補完
+	const float DECREASE_STAMINA_VALUE = 15.0f;		// ダッシュ時のスタミナ消費速度
+	const float INCREASE_STAMINA_VALUE = 10.0f;		// スタミナ回復速度
 
-	const float Y_POSITION = 25.0f;			// 衝突判定時のY座標
+	const float LINEAR_COMPLETION = 1.0f;			// 線形補完
+
+	const float Y_POSITION = 25.0f;					// 衝突判定時のY座標
+
+	const int	STAMINA_MIN = 1;					// スタミナの最低値
+	const int	STAMINA_MAX = STAMINA;				// スタミナの最大値
 }
 
 Player::Player() 
@@ -46,6 +52,21 @@ void Player::Update()
 		// 死亡する
 		Death();
 		return;
+	}
+
+	// スタミナが最大値でない　かつ　Aボタンが入力されていないとき
+	if (m_playerStatus.m_stamina < STAMINA_MAX && 
+		g_pad[0]->IsPress(enButtonA) <= 0.001f) {
+
+		m_recoveryTimer -= g_gameTime->GetFrameDeltaTime();
+
+		if (m_recoveryTimer -= g_gameTime->GetFrameDeltaTime() <= 0.0f) {
+			// スタミナを増やす
+			m_playerStatus.m_stamina += g_gameTime->GetFrameDeltaTime() * INCREASE_STAMINA_VALUE;
+		}
+	}
+	else {
+		m_addSpped = WALKING_SPEED;
 	}
 
 	Move();					// 移動
@@ -143,15 +164,20 @@ void Player::Move()
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
-	if (g_pad[0]->IsPress(enButtonA)) {
+	if (g_pad[0]->IsPress(enButtonA) && m_playerStatus.m_stamina >= STAMINA_MIN) {
 		// ボタンを押している間ダッシュ
 		m_actionState = m_enActionState_Run;
+
+		// スタミナを減らす
+		m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
+
 		m_addSpped = RUN_SPEED;
 	}
 	else {
 		// 押していないときは歩く
 		m_actionState = m_enActionState_Walk;
-		m_addSpped = WALKING_SPEED;
+
+		m_recoveryTimer = RECOVERY_TIMER;		// タイマーをリセット
 	}
 
 	// スティックの入力量×移動速度×乗算速度で最終的な移動速度を計算する
@@ -180,7 +206,7 @@ void Player::Damage(int attackPower)
 
 	m_en_AnimationClips_Damage;					// 被弾モーションを再生
 
-	m_playerStatus.m_hitPoint-= attackPower;		// ダメージ量をHPから引く
+	m_playerStatus.m_hitPoint-= attackPower;	// ダメージ量をHPから引く
 	m_canDamageflag = false;					// 連続してダメージを受けない
 
 	m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
@@ -188,6 +214,7 @@ void Player::Damage(int attackPower)
 	// タイマーが0.0f以下のとき
 	if (m_invincibleTimer < 0.0f) {
 		m_canDamageflag = true;
+		m_invincibleTimer = INVINCIBLE_TIMER;	// タイマーをリセット
 	}
 }
 

@@ -9,6 +9,7 @@ namespace
 	const float BASIC_SPEED = 150.0f;		// 移動速度
 
 	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
+	const float RECOVERY_TIMER = 5.0f;		// スタミナが回復するまでの時間
 }
 
 class Player :public IGameObject
@@ -128,33 +129,34 @@ private:
 	AnimationClip m_enAnimationClips[m_en_AnimationClips_Num];
 
 // --------------------------------------------------------
-	ModelRender			m_modelRender;							// モデルレンダー
+	ModelRender			m_modelRender;									// モデルレンダー
 
-	CharacterController m_characterController;					// キャラクターコントローラー
-	SphereCollider		m_sphereCollider;						// スフィアコライダー
+	CharacterController m_characterController;							// キャラクターコントローラー
+	SphereCollider		m_sphereCollider;								// スフィアコライダー
 
 
-	Vector3				m_position = Vector3::Zero;				// 自身の座標
-	Vector3				m_scale = Vector3::One;					// 自身のスケール
-	Vector3				m_moveSpeed = Vector3::Zero;			// 移動速度
+	Vector3				m_position = Vector3::Zero;						// 自身の座標
+	Vector3				m_scale = Vector3::One;							// 自身のスケール
+	Vector3				m_moveSpeed = Vector3::Zero;					// 移動速度
 
-	Quaternion			m_rotation= Quaternion::Identity;		// 自身の回転
+	Quaternion			m_rotation= Quaternion::Identity;				// 自身の回転
 
-	Crystal*			m_crystal = nullptr;					// クリスタル
+	Crystal*			m_crystal = nullptr;							// クリスタル
 
 	struct PlayerStatus {
-		int				m_hitPoint = HIT_POINT;					// HP
-		int				m_attackPower = ATTACK_POWER;			// 攻撃力
-		float			m_stamina = STAMINA;					// スタミナ
-		float			m_basicSpeed = BASIC_SPEED;				// 基本速度
+		int				m_hitPoint = HIT_POINT;							// HP
+		int				m_attackPower = ATTACK_POWER;					// 攻撃力
+		float			m_stamina = STAMINA;							// スタミナ
+		float			m_basicSpeed = BASIC_SPEED;						// 基本速度
 	};
-	PlayerStatus		m_playerStatus;							// プレイヤーのステータス
+	PlayerStatus		m_playerStatus;									// プレイヤーのステータス
 
-	float				m_invincibleTimer = INVINCIBLE_TIMER;	// 無敵時間
-	float				m_addSpped = 0.0f;						// 乗算速度
+	float				m_recoveryTimer = RECOVERY_TIMER;				// スタミナが回復し始めるまでの時間
+	float				m_invincibleTimer = INVINCIBLE_TIMER;			// 無敵時間
+	float				m_addSpped = 0.0f;								// 乗算速度
 
-	bool				m_canDamageflag = true;					// ダメージを受けられるかどうか
+	bool				m_canDamageflag = true;							// ダメージを受けられるかどうか
 
-	std::list<int>		m_haveCrystals;							// 所持しているクリスタル
+	std::list<int>		m_haveCrystals;									// 所持しているクリスタル
 };
 
