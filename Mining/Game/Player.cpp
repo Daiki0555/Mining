@@ -40,6 +40,9 @@ bool Player::Start()
 
 	m_characterController.Init(25.0f, 75.0f, m_position);	// キャラクターコントローラーを初期化
 
+	// スフィアコライダーを設定
+	m_sphereCollider.Create(10.0f);
+
 	m_modelRender.Update();
 
 	return true;
@@ -72,6 +75,8 @@ void Player::Update()
 
 	Move();					// 移動
 	Rotation();				// 回転
+
+	Dig();
 
 	PlayAnimation();		// アニメーション
 
@@ -239,7 +244,7 @@ struct CrashedCrystal :public btCollisionWorld::ConvexResultCallback
 	}
 };
 
-bool Player::HitCrstal(Vector3 position)
+bool Player::CrstalAndHit(Vector3 position)
 {
 	btTransform start, end;
 
@@ -260,7 +265,7 @@ bool Player::HitCrstal(Vector3 position)
 		callback);
 
 	// 衝突したならfalseを返す
-	if (callback.isHit) {
+	if (callback.isHit == true) {
 		return false;
 	}
 
@@ -269,9 +274,9 @@ bool Player::HitCrstal(Vector3 position)
 
 void Player::Dig()
 {
-	if (HitCrstal(m_position) != true) {
-		return;
-	}
+	//if (CrstalAndHit(m_position) != true) {
+	//	return;
+	//}
 
 	// UIを表示
 
@@ -281,8 +286,6 @@ void Player::Dig()
 
 		m_actionState = m_enActionState_Dig;
 	}
-
-	//if()
 
 	m_crystal->GetCrystal();					// クリスタルを取得
 	int rarity = m_crystal->GetRarity();		// 取得したクリスタルのレア度を取得

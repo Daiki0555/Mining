@@ -33,7 +33,7 @@ public:
 	void Death();
 	void Clear();
 
-	bool HitCrstal(Vector3 position);
+	bool CrstalAndHit(Vector3 position);
 
 	/// <summary>
 	/// À•W‚ğQÆ‚·‚é
