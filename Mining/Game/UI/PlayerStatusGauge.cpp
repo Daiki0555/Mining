@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Gauge.h"
+#include "PlayerStatusGauge.h"
 #include "Player.h"
 
 namespace
@@ -13,15 +13,15 @@ namespace
 	const Vector2		SPRITE_PIVOT = { 0.0f,0.5f };						// ビポットの位置
 }
 
-Gauge::Gauge()
+PlayerStatusGauge::PlayerStatusGauge()
 {
 }
 
-Gauge::~Gauge()
+PlayerStatusGauge::~PlayerStatusGauge()
 {
 }
 
-bool Gauge::Start()
+bool PlayerStatusGauge::Start()
 {
 	// インスタンスを探す
 	m_player = FindGO<Player>("player");
@@ -72,7 +72,7 @@ bool Gauge::Start()
 	return true;
 }
 
-void Gauge::Update()
+void PlayerStatusGauge::Update()
 {
 	m_hitPointGauge.m_gaugeNowValue = m_player->GetHitPoint();
 	m_staminaGauge.m_gaugeNowValue = m_player->GetStamina();
@@ -89,7 +89,7 @@ void Gauge::Update()
 	m_spriteRenderStaminaGauge.Update();
 }
 
-void Gauge::DrawGaugeValue()
+void PlayerStatusGauge::DrawGaugeValue()
 {
 	// 現在の残り体力・HPを表示する
 	wchar_t HitPointText[256];
@@ -122,7 +122,7 @@ void Gauge::DrawGaugeValue()
 	m_fontRenderStamina.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 }
 
-void Gauge::ChangeGaugeValue(GaugeStatus& gauge)
+void PlayerStatusGauge::ChangeGaugeValue(GaugeStatus& gauge)
 {
 	// スケールを計算
 	gauge.m_gaugeScaleX = (float)gauge.m_gaugeNowValue / (float)gauge.m_gaugeMaxValue;
@@ -148,7 +148,7 @@ void Gauge::ChangeGaugeValue(GaugeStatus& gauge)
 	gauge.m_gaugeDrawValue = gauge.m_gaugeNowValue;
 }
 
-void Gauge::Render(RenderContext& rc)
+void PlayerStatusGauge::Render(RenderContext& rc)
 {
 	// HP
 	m_spriteRenderHitPointGaugeBase.Draw(rc);

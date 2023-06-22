@@ -1,10 +1,10 @@
 #pragma once
 class Player;
-class Gauge:public IGameObject
+class PlayerStatusGauge:public IGameObject
 {
 public:
-	Gauge();
-	~Gauge();
+	PlayerStatusGauge();
+	~PlayerStatusGauge();
 
 	bool Start();
 	void Update();
