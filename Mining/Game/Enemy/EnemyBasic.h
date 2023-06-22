@@ -28,6 +28,7 @@ public:
 	void Attack();
 	void Damege();
 	void StopAction();
+	bool WallAndHit(Vector3 position);
 
 	/// <summary>
 	/// 座標を設定
@@ -84,6 +85,7 @@ protected:
 	Player*				m_player = nullptr;						// プレイヤー
 
 	CharacterController	m_characterController;					// キャラクターコントローラー
+	SphereCollider		m_sphereCollider;						// スフィアコライダー
 
 	ModelRender			m_modelRender;							// モデルレンダー
 
@@ -93,7 +95,7 @@ protected:
 
 	struct EnemyStatus {
 		int				m_attackPower = 0;						// 攻撃力
-		float			m_moveSpeed = 0.0f;						// 移動速度
+		float			m_basicSpeed = 0.0f;					// 移動速度
 	};
 	EnemyStatus			m_enemyStatus;							// エネミーのステータス
 

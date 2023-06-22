@@ -4,7 +4,7 @@
 namespace
 {
 	const int	ATTACK_POWER = 5;							// 攻撃
-	const float BASIC_SPEED = 50.0f;						// 基本スピード
+	const float BASIC_SPEED = 250.0f;						// 基本スピード
 
 	const float Y_UP = 50.0f;								// 地面から浮かせる値
 
@@ -75,17 +75,7 @@ void Enemy_Bee::PlayAnimation()
 
 void Enemy_Bee::Update()
 {
-	switch (m_actionState) {
-	case m_enActionState_Idle:
-		break;
-	case m_enActionState_Move:
-		break;
-	case m_enActionState_Attack:
-		break;
-	case m_enActionState_Damage:
-		break;
-	}
-
+	Move();
 	PlayAnimation();
 
 	m_modelRender.SetScale(m_scale);

@@ -3,8 +3,8 @@
 
 namespace
 {
-	const int	ATTACK_POWER = 0;							// 攻撃
-	const float BASIC_SPEED = 30.0f;						// 基本スピード
+	const int	ATTACK_POWER = 10;							// 攻撃
+	const float BASIC_SPEED = 200.0f;						// 基本スピード
 
 	const float CHARACTERCONTROLLER_RADIUS = 50.0f;			// 半径
 	const float CHARACTERCONTROLLER_HEIGHT = 50.0f;			// 高さ
@@ -61,6 +61,7 @@ void Enemy_Slime::PlayAnimation()
 		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Move:
+	case m_enActionState_Attack:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Move, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Damage:
@@ -71,15 +72,7 @@ void Enemy_Slime::PlayAnimation()
 
 void Enemy_Slime::Update()
 {
-	switch (m_actionState) {
-	case m_enActionState_Idle:
-		break;
-	case m_enActionState_Move:
-		break;
-	case m_enActionState_Damage:
-		break;
-	}
-
+	Move();
 	PlayAnimation();
 
 	m_modelRender.SetScale(m_scale);

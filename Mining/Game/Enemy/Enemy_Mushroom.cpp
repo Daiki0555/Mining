@@ -3,8 +3,8 @@
 
 namespace
 {
-	const int	ATTACK_POWER = 12;							// 攻撃
-	const float BASIC_SPEED = 20.0f;						// 基本スピード
+	const int	ATTACK_POWER = 20;							// 攻撃
+	const float BASIC_SPEED = 150.0f;						// 基本スピード
 
 	const float CHARACTERCONTROLLER_RADIUS = 50.0f;			// 半径
 	const float CHARACTERCONTROLLER_HEIGHT = 50.0f;			// 高さ
@@ -71,16 +71,7 @@ void Enemy_Mushroom::PlayAnimation()
 
 void Enemy_Mushroom::Update()
 {
-	switch (m_actionState) {
-	case m_enActionState_Idle:
-		break;
-	case m_enActionState_Move:
-		break;
-	case m_enActionState_Attack:
-		break;
-	case m_enActionState_Damage:
-		break;
-	}
+	Move();
 
 	PlayAnimation();
 
