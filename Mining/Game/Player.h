@@ -76,8 +76,8 @@ public:
 		m_enActionState_Walk,			// 歩く
 		m_enActionState_Run,			// 走る
 		m_enActionState_Dig,			// 掘る
-		m_enActionState_Damage,		// 被弾
-		m_enActionState_Death,		// 死亡
+		m_enActionState_Damage,			// 被弾
+		m_enActionState_Death,			// 死亡
 		m_enActionState_Clear			// クリア
 	};
 
@@ -102,6 +102,14 @@ public:
 	/// <returns></returns>
 	const int GetStamina() const {
 		return m_playerStatus.m_stamina;
+	}
+
+	/// <summary>
+	/// 獲得できるかどうかのフラグを参照する
+	/// </summary>
+	const bool GetCanGetCrystalFlag()
+	{
+		return m_canGetCrystalFlag;
 	}
 
 private:
@@ -156,6 +164,7 @@ private:
 	float				m_addSpped = 0.0f;								// 乗算速度
 
 	bool				m_canDamageflag = true;							// ダメージを受けられるかどうか
+	bool				m_canGetCrystalFlag = true;						// クリスタルを獲得できるかどうか
 
 	std::list<int>		m_haveCrystals;									// 所持しているクリスタル
 };

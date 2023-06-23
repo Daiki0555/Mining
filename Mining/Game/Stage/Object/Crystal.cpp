@@ -53,6 +53,6 @@ void Crystal::Render(RenderContext& rc)
 		m_modelRenderCrystal.Draw(rc);
 	}
 
+
 	m_modelRenderRock.Draw(rc);
 }
-

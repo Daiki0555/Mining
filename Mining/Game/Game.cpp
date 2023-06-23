@@ -7,7 +7,8 @@
 #include "Enemy/Enemy_Mushroom.h"
 #include "Enemy/Enemy_Slime.h"
 #include "Stage/Object/Crystal.h"
-#include "UI/Gauge.h"
+#include "UI/PlayerStatusGauge.h"
+#include "UI/PressAndHoldGauge.h"
 
 Game::Game()
 {
@@ -31,7 +32,8 @@ bool Game::Start()
 
 	LevelDesign();
 
-	m_gauge = NewGO<Gauge>(0, "gauge");
+	m_playerStatusGauge = NewGO<PlayerStatusGauge>(0, "playerStatusGauge");
+	m_circleGauge = NewGO<PressAndHoldGauge>(0, "pressAndHoldGauge");
 
 	return true;
 }
@@ -70,9 +72,9 @@ void Game::LevelDesign()
 			//m_slime->SetPosition(objData.position);
 			//m_slime->SetRotation(objData.rotaition);
 
-			Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
-			m_mushroom->SetPosition(objData.position);
-			m_mushroom->SetRotation(objData.rotaition);
+			//Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
+			//m_mushroom->SetPosition(objData.position);
+			//m_mushroom->SetRotation(objData.rotaition);
 			return true;
 		}
 		// –¼‘O‚ªcrystal‚Ì‚Æ‚«

@@ -22,27 +22,6 @@ public:
 
 	void ChangeGaugeValue(GaugeStatus& gauge);
 
-	enum enGaugeState {
-		enGaugeState_IncreaseStart,			// ゲージ増加開始
-		enGaugeState_IncreaseEnd,			// ゲージ増加終了s
-		enGaugeState_DecrementStart,		// ゲージ減少開始
-		enGaugeState_DecrementEnd			// ゲージ減少終了
-	};
-
-	/// <summary>
-	/// ステートを設定する
-	/// </summary>
-	void SetGaugeState(enGaugeState state) {
-		m_enGaugeState = state;
-	}
-
-	/// <summary>
-	/// 現在のステートを返す
-	/// </summary>s
-	const enGaugeState GetGaugeState() const{
-		return m_enGaugeState;
-	}
-
 private:
 	SpriteRender	m_spriteRenderHitPointGauge;		// スプライトレンダー(HP)
 	SpriteRender	m_spriteRenderHitPointGaugeBase;	// スプライトレンダー(HP)
@@ -52,8 +31,6 @@ private:
 
 	FontRender		m_fontRenderHitPoint;				// フォントレンダー(HP)
 	FontRender		m_fontRenderStamina;				// フォントレンダー(スタミナ)
-
-	enGaugeState	m_enGaugeState;						// ステート
 
 	Player*			m_player = nullptr;					// プレイヤー
 

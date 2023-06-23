@@ -37,7 +37,8 @@
     </ClCompile>
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Stage\Object\Crystal.cpp" />
-    <ClCompile Include="UI\Gauge.cpp" />
+    <ClCompile Include="UI\PlayerStatusGauge.cpp" />
+    <ClCompile Include="UI\PressAndHoldGauge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -64,6 +65,7 @@
     </ClInclude>
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Stage\Object\Crystal.h" />
-    <ClInclude Include="UI\Gauge.h" />
+    <ClInclude Include="UI\PlayerStatusGauge.h" />
+    <ClInclude Include="UI\PressAndHoldGauge.h" />
   </ItemGroup>
 </Project>

@@ -14,6 +14,8 @@ namespace
 
 	const float Y_POSITION = 25.0f;					// 衝突判定時のY座標
 
+	const float ADD_LENGTH = 50.0f;					// 加算する長さ
+
 	const int	STAMINA_MIN = 1;					// スタミナの最低値
 	const int	STAMINA_MAX = STAMINA;				// スタミナの最大値
 }
@@ -124,7 +126,7 @@ void Player::PlayAnimation()
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Run, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Dig:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Dig, LINEAR_COMPLETION);
+		//m_modelRender.PlayAnimation(m_en_AnimationClips_Dig, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Damage:
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage, LINEAR_COMPLETION);
@@ -170,18 +172,18 @@ void Player::Move()
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
-	if (g_pad[0]->IsPress(enButtonA) && m_playerStatus.m_stamina >= STAMINA_MIN) {
-		if (m_actionState == m_enActionState_Idle) {
-			return;
+	if (g_pad[0]->IsPress(enButtonA) && m_playerStatus.m_stamina > STAMINA_MIN) {
+
+		// スティックの入力があったとき
+		if (fabsf(stickL.x) >= 0.001 || fabsf(stickL.y) >= 0.001) {
+			// ボタンを押している間ダッシュ
+			m_actionState = m_enActionState_Run;
+
+			// スタミナを減らす
+			m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
+
+			m_addSpped = RUN_SPEED;
 		}
-
-		// ボタンを押している間ダッシュ
-		m_actionState = m_enActionState_Run;
-
-		// スタミナを減らす
-		m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
-
-		m_addSpped = RUN_SPEED;
 	}
 	else {
 		// 押していないときは歩く
@@ -274,16 +276,20 @@ bool Player::CrstalAndHit(Vector3 position)
 
 void Player::Dig()
 {
-	//if (CrstalAndHit(m_position) != true) {
-	//	return;
-	//}
+	Vector3 forward = g_camera3D->GetForward();
 
-	// UIを表示
+	// 自身の座標から前方向へ向かうベクトルを作成
+	Vector3 diff = forward - m_position;
+	diff.Normalize();
+
+	// 衝突していないなら中断
+	if (CrstalAndHit(m_position + (diff * ADD_LENGTH))) {
+		return;
+	}
+
+	m_canGetCrystalFlag = true;
 
 	if (g_pad[0]->IsPress(enButtonB)) {
-
-		// UIのゲージを増やす
-
 		m_actionState = m_enActionState_Dig;
 	}
 
