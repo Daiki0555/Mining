@@ -1,5 +1,6 @@
 #pragma once
 class Crystal;
+class PressAndHoldGauge;
 
 namespace 
 {
@@ -104,14 +105,6 @@ public:
 		return m_playerStatus.m_stamina;
 	}
 
-	/// <summary>
-	/// 獲得できるかどうかのフラグを参照する
-	/// </summary>
-	const bool GetCanGetCrystalFlag()
-	{
-		return m_canGetCrystalFlag;
-	}
-
 private:
 	/// <summary>
 	/// クリスタルの数を追加
@@ -150,6 +143,7 @@ private:
 	Quaternion			m_rotation= Quaternion::Identity;				// 自身の回転
 
 	Crystal*			m_crystal = nullptr;							// クリスタル
+	PressAndHoldGauge*	m_pressAndHoldGauge = nullptr;					// 円形ゲージ
 
 	struct PlayerStatus {
 		int				m_hitPoint = HIT_POINT;							// HP
@@ -164,7 +158,6 @@ private:
 	float				m_addSpped = 0.0f;								// 乗算速度
 
 	bool				m_canDamageflag = true;							// ダメージを受けられるかどうか
-	bool				m_canGetCrystalFlag = true;						// クリスタルを獲得できるかどうか
 
 	std::list<int>		m_haveCrystals;									// 所持しているクリスタル
 };

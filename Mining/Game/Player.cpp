@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Stage/Object/Crystal.h"
+#include "UI/PressAndHoldGauge.h"
 
 namespace
 {
@@ -32,6 +33,7 @@ bool Player::Start()
 {
 	// インスタンスを探す
 	m_crystal = FindGO<Crystal>("crystal");
+	m_pressAndHoldGauge = FindGO<PressAndHoldGauge>("pressAndHoldGauge");
 
 	LoadAnimation();
 
@@ -156,6 +158,11 @@ void Player::Rotation()
 
 void Player::Move()
 {
+	// ゲージが動いている間は動かさない
+	if (m_pressAndHoldGauge->GetNowStatus() == m_pressAndHoldGauge->enGaugeState_Increase) {
+		return;
+	}
+
 	m_basicSpeed.x = 0.0f;
 	m_basicSpeed.z = 0.0f;
 
@@ -276,21 +283,35 @@ bool Player::CrstalAndHit(Vector3 position)
 
 void Player::Dig()
 {
-	Vector3 forward = g_camera3D->GetForward();
-
 	// 自身の座標から前方向へ向かうベクトルを作成
-	Vector3 diff = forward - m_position;
+	Vector3 diff = m_crystal->Getposition() - m_position;
 	diff.Normalize();
 
 	// 衝突していないなら中断
 	if (CrstalAndHit(m_position + (diff * ADD_LENGTH))) {
+		// 円形ゲージを描画する
+		m_pressAndHoldGauge->SetCanDrawGauge(false);
 		return;
 	}
 
-	m_canGetCrystalFlag = true;
+	// 円形ゲージを描画する
+	m_pressAndHoldGauge->SetCanDrawGauge(true);
+	// 自身の座標を教える
+	m_pressAndHoldGauge->Set3DPosition(m_position);
 
 	if (g_pad[0]->IsPress(enButtonB)) {
+		// 角度を増やす
+		m_pressAndHoldGauge->SetChangeGaugeAngle(true);
 		m_actionState = m_enActionState_Dig;
+	}
+	else {
+		// 角度を減らす
+		m_pressAndHoldGauge->SetChangeGaugeAngle(false);
+	}
+
+	// ゲージが最大でないとき以下の処理は実行しない
+	if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Max) {
+		return;
 	}
 
 	m_crystal->GetCrystal();					// クリスタルを取得

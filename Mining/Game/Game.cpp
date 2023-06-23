@@ -29,11 +29,11 @@ void Game::Objct_DeleteGO()
 bool Game::Start()
 {
 	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
+	m_circleGauge = NewGO<PressAndHoldGauge>(0, "pressAndHoldGauge");
 
 	LevelDesign();
 
 	m_playerStatusGauge = NewGO<PlayerStatusGauge>(0, "playerStatusGauge");
-	m_circleGauge = NewGO<PressAndHoldGauge>(0, "pressAndHoldGauge");
 
 	return true;
 }
@@ -50,6 +50,16 @@ void Game::LevelDesign()
 			m_backGround->SetPosition(objData.position);
 			m_backGround->SetScale(objData.scale);
 			m_backGround->SetRotation(objData.rotaition);
+			return true;
+		}
+		// –¼‘O‚ªcrystal‚Ì‚Æ‚«
+		if (objData.EqualObjectName(L"crystal") == true) 
+		{
+			Crystal* m_crystal = NewGO<Crystal>(0, "crystal");
+			m_crystal->SetPosition(objData.position);
+			m_crystal->SetScale(objData.scale);
+			m_crystal->SetRotation(objData.rotaition);
+			m_crystal->SetTexture();
 			return true;
 		}
 		//–¼‘O‚ªplayer‚ÌŽž
@@ -75,16 +85,6 @@ void Game::LevelDesign()
 			//Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
 			//m_mushroom->SetPosition(objData.position);
 			//m_mushroom->SetRotation(objData.rotaition);
-			return true;
-		}
-		// –¼‘O‚ªcrystal‚Ì‚Æ‚«
-		if (objData.EqualObjectName(L"crystal") == true) 
-		{
-			Crystal* m_crystal = NewGO<Crystal>(0, "crystal");
-			m_crystal->SetPosition(objData.position);
-			m_crystal->SetScale(objData.scale);
-			m_crystal->SetRotation(objData.rotaition);
-			m_crystal->SetTexture();
 			return true;
 		}
 
