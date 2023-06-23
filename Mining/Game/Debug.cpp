@@ -75,6 +75,6 @@ void Debug::Render(RenderContext& rc)
 	//m_sampleRender.Draw(rc);
 	m_modelRender.Draw(rc);
 	m_backRender.Draw(rc);
-	m_spriteRender.Draw(rc);
+	//m_spriteRender.Draw(rc);
 	m_fontRender.Draw(rc);
 }

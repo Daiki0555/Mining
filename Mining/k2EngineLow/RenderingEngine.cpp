@@ -90,22 +90,22 @@ namespace nsK2EngineLow {
 			clearColor
 		);
 
-	//	//最終合成用スプライトの初期化
-	//	SpriteInitData finalSpriteInitData;
-	//	finalSpriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
-	//	// 解像度はmainRenderTargetの幅と高さ
-	//	finalSpriteInitData.m_width = m_mainRenderTarget.GetWidth();
-	//	finalSpriteInitData.m_height = m_mainRenderTarget.GetHeight();
-	//	// 2D用のシェーダーを使用する
-	//	finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
-	//	finalSpriteInitData.m_vsEntryPointFunc = "VSMain";
-	//	finalSpriteInitData.m_psEntryPoinFunc = "PSMain";
-	//	//上書き
-	//	finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
-	//	//レンダリングターゲットのフォーマット
-	//	finalSpriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
-	//	
-	//	m_2DSprite.Init(finalSpriteInitData);
+		////最終合成用スプライトの初期化
+		//SpriteInitData finalSpriteInitData;
+		//finalSpriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
+		//// 解像度はmainRenderTargetの幅と高さ
+		//finalSpriteInitData.m_width = m_mainRenderTarget.GetWidth();
+		//finalSpriteInitData.m_height = m_mainRenderTarget.GetHeight();
+		//// 2D用のシェーダーを使用する
+		//finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
+		//finalSpriteInitData.m_vsEntryPointFunc = "VSMain";
+		//finalSpriteInitData.m_psEntryPoinFunc = "PSMain";
+		////上書き
+		//finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
+		////レンダリングターゲットのフォーマット
+		//finalSpriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
+		//
+		//m_2DSprite.Init(finalSpriteInitData);
 
 	//	//2D統合用スプライトの初期化
 	//	SpriteInitData spriteInitData;
@@ -187,7 +187,7 @@ namespace nsK2EngineLow {
 		{
 			modelobj->OnRenderModel(rc);
 		}
-		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
+		//rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 	}
 
 	void RenderingEngine::RenderShadowMap(RenderContext& rc)
@@ -218,17 +218,17 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Render2D(RenderContext& rc)
 	{
-		//レンダリングターゲット書き込み待ち。
-		rc.WaitUntilToPossibleSetRenderTarget(m_2DRenderTarget);
-		rc.SetRenderTargetAndViewport(m_2DRenderTarget);
-		rc.ClearRenderTargetView(m_2DRenderTarget);
+		////レンダリングターゲット書き込み待ち。
+		//rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
+		//rc.SetRenderTargetAndViewport(m_mainRenderTarget);
+		//rc.ClearRenderTargetView(m_mainRenderTarget);
 
 		//描画処理
 		for (auto& sprites : m_renderObjects)
 		{
 			sprites->OnRender2D(rc);
 		}
-		rc.WaitUntilFinishDrawingToRenderTarget(m_2DRenderTarget);
+		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 
 	}
 }
