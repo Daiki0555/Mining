@@ -53,13 +53,15 @@ float4 PSCircleGauge(PSInput In) :Sv_Target0
 
 	// 2つのベクトルの内積の逆正弦を計算する
 	float Deg = acos(dot(Vector1, Vector2));
+	// 絶対値を計算
+	Deg = abs(Deg);
 
 	// 角度を計算
-	if(Vector2.x < Vector1.x){
+	if(Vector2.x > Vector1.x){
 		Deg = PI + (PI + Deg);
 	}
 
-	// 設定した角度より小さいなら
+	// 設定した角度より大きいなら
 	if(Deg >= Angle){
 		// ピクセルを破棄
 		clip(-1);

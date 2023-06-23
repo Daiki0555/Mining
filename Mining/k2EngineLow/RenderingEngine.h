@@ -33,7 +33,7 @@ namespace nsK2EngineLow {
 		// スプライト用の構造体
 		struct SpriteCB
 		{
-			float angle;
+			float angle;									// 角度
 		};
 
 	//private:
