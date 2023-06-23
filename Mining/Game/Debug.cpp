@@ -5,11 +5,11 @@ Debug::Debug()
 	//アニメーションを読み込む
 	m_animationClips[m_enAnimationClip_Idle].Load("Assets/animData/player/idle.tka");
 	m_animationClips[m_enAnimationClip_Idle].SetLoopFlag(true);
-	m_modelRender.Init("Assets/modelData/player/unityChan.tkm",m_animationClips, m_enAnimationClip_Num, enModelUpAxisY);
+	m_modelRender.Init("Assets/modelData/player/unityChan.tkm",m_animationClips, m_enAnimationClip_Num, enModelUpAxisY,true,false);
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotaition(m_rotaition);
-	m_backRender.Init("Assets/modelData/bg.tkm");
+	m_backRender.Init("Assets/modelData/bg/bg.tkm",0,0, enModelUpAxisZ,false,true);
 	m_backRender.SetPosition(Vector3::Zero);
 	m_backRender.SetScale(Vector3::One);
 	m_backRender.Update();
@@ -72,9 +72,9 @@ void Debug::Update()
 
 void Debug::Render(RenderContext& rc)
 {
-	m_sampleRender.Draw(rc);
-	//m_modelRender.Draw(rc);
-	//m_backRender.Draw(rc);
-	//m_spriteRender.Draw(rc);
-	//m_fontRender.Draw(rc);
+	//m_sampleRender.Draw(rc);
+	m_modelRender.Draw(rc);
+	m_backRender.Draw(rc);
+	m_spriteRender.Draw(rc);
+	m_fontRender.Draw(rc);
 }

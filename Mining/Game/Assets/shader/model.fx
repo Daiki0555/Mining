@@ -49,11 +49,19 @@ struct HemiLig
 	float3 groundNormal;		//地面の法線
 };
 
+//シャドウマップ
+struct Shadow
+{
+	float3 ligthPos;			//ライトの座標
+	float4x4 mLVP;				//ライトビュープロプロジェクション行列
+};
+
 cbuffer LightCb:register(b1){
 	DirectionLig dirLig;		//ディレクションライト用の定数バッファー
 	PointLig ptLig[2];			//ポイントライトの定数バッファー
 	SpotLig spLig[1];			//スポットライトの定数バッファー
 	HemiLig hemiLig;			//半球ライトの定数バッファー
+	Shadow shadow;
 	int ptNum;					//ポイントライトの数
 	int spNum;
 };
@@ -86,6 +94,9 @@ struct SPSIn{
 	float3 tangent	: TANGENT;		//接ベクトル
 	float3 biNormal	: BINORMAL;		//従ベクトル
 
+	float4 posInLVP : TEXCOORD3;	//ライトビュースクリーン空間でのピクセルの座標
+	float4 worldPos2 : TEXCOORD4;
+
 };
 
 ////////////////////////////////////////////////
@@ -96,6 +107,7 @@ StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
 sampler g_sampler : register(s0);	//サンプラステート。
 Texture2D<float4> g_normalMap : register(t1);
 Texture2D<float4> g_specularMap : register(t2);
+Texture2D<float4> g_shadowMap : register(t10);
 ////////////////////////////////////////////////
 // 関数定義。
 ////////////////////////////////////////////////
@@ -103,10 +115,11 @@ float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 norma
 float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldPos, float3 normal);
 float3 CalcLigFromPointLight(SPSIn psIn, float3 normal);
 float3 CalcLigFromSpotLight(SPSIn psIn, float3 normal);
-float3 CalcLigFromLimLight(float3 normal,float3 dirDirection,float3 dirColor,float3 normalInView);
+float CalcLim(float3 dirDirection, float3 normal, float3 normalInView);
 float3 CalcLigFromHemiSphereLight(float3 normal,float3 groundColor, float3 skyColor, float3 groundNormal);
 float3 CalcNormal(SPSIn psIn);
 float3 CalcSpecular(float2 uv);
+float4 ShadowMap(float4 posInLVP, float4 albedo);
 /// <summary>
 //スキン行列を計算する。
 /// </summary>
@@ -138,9 +151,12 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 	}else{
 		m = mWorld;
 	}
-	psIn.pos = mul(m, vsIn.pos);
-	psIn.worldPos = psIn.pos;
-	psIn.pos = mul(mView, psIn.pos);
+	float4 worldPos = mul(m, vsIn.pos);
+	//ライトビュースクリーン空間の座標を計算する
+	psIn.posInLVP = mul(shadow.mLVP, worldPos);
+	//psIn.posInLVP.w = 50.0f;
+	psIn.worldPos = worldPos;
+	psIn.pos = mul(mView, worldPos);
 	psIn.pos = mul(mProj, psIn.pos);
 
 	//頂点法線をピクセルシェーダーに渡す
@@ -149,6 +165,8 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 	//接ベクトルと従ベクトルをワールド空間に変換する
 	psIn.tangent=normalize(mul(m,vsIn.tangent));
 	psIn.biNormal=normalize(mul(m,vsIn.biNormal));
+
+	
 
 	psIn.uv = vsIn.uv;
 
@@ -175,8 +193,11 @@ SPSIn VSSkinMain( SVSIn vsIn )
 /// <summary>
 /// ピクセルシェーダーのエントリー関数。
 /// </summary>
-float4 PSMain( SPSIn psIn ) : SV_Target0
+float4 PSMainCore( SPSIn psIn,uniform bool hasShadow) : SV_Target0
 {
+	//アルベドマップを読み込む
+    float4 albedo = g_albedo.Sample(g_sampler, psIn.uv);
+	albedo.a = 1.0f;
 	//法線によるライティングを計算する
 	float3 normalMap=CalcNormal(psIn);
 	//スペキュラマップを計算する
@@ -191,11 +212,13 @@ float4 PSMain( SPSIn psIn ) : SV_Target0
 	//スポットライトによるライティングを計算する
 	float3 spotLight=CalcLigFromSpotLight(psIn,normalMap);
 	//リムライトによるライティングを計算する
-	float3 limLight=CalcLigFromLimLight(normalMap,dirLig.ligDirection,dirLig.ligColor,psIn.normalInView);
+	float limLight=CalcLim(dirLig.ligDirection,normalMap,psIn.normalInView);
 	//半球ライトによるライティングを計算する
 	float3 hemiSphereLight=CalcLigFromHemiSphereLight(normalMap,hemiLig.groundColor, hemiLig.skyColor, hemiLig.groundNormal);
 
 	
+	//最終的な反射光にリムライトの反射光を合算する
+	float3 limColor=limLight*dirLig.ligColor;
 
 
 
@@ -206,16 +229,34 @@ float4 PSMain( SPSIn psIn ) : SV_Target0
 				+dirLig.ambient
 				+pointLight
 				+spotLight
-				+limLight
+				+limColor
 				+hemiSphereLight;
 
 	lig=min(lig,10.0f);
 
-	float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
+	if(hasShadow){
+		albedo=ShadowMap(psIn.posInLVP,albedo);
+	}
 	
-	albedoColor.xyz*= lig;
+	albedo.xyz*= lig;
 	
-	return albedoColor;
+	return albedo;
+}
+
+/// <summary>
+/// シャドウ無しのエントリー関数。
+/// </summary>
+float4 PSMain( SPSIn psIn ) : SV_Target0
+{
+	return PSMainCore(psIn, false);
+}
+
+/// <summary>
+/// シャドウ有りのエントリー関数。
+/// </summary>
+float4 PSMainShadow( SPSIn psIn ) : SV_Target0
+{
+	return PSMainCore(psIn, true);
 }
 
 /// <summary>
@@ -379,7 +420,7 @@ float3 CalcLigFromSpotLight(SPSIn psIn, float3 normal)
 /// <summary>
 /// リムライトを計算する
 /// </summary>
-float3 CalcLigFromLimLight(float3 normal,float3 dirDirection,float3 dirColor,float3 normalInView)
+float CalcLim(float3 dirDirection, float3 normal, float3 normalInView)
 {
 	//サーフェイスの法線と光の入射方向に依存するリムの強さを求める
 	float power1=1.0f-max(0.0f,dot(dirDirection,normal));
@@ -391,13 +432,10 @@ float3 CalcLigFromLimLight(float3 normal,float3 dirDirection,float3 dirColor,flo
 	float limPower=power1*power2;
 
 	//pow()関数を使用して、強さの変化を指数関数的にする
-	limPower=pow(limPower,1.3f);
+	limPower=pow(limPower,3.0f);
 
-	//最終的な反射光にリムライトの反射光を合算する
-    //まずはリムライトのカラーを計算する
-	float3 limColor=limPower*dirLig.ligColor;
 
-	return limColor;
+	return limPower;
 }
 
 /// <summary>
@@ -456,4 +494,35 @@ float3 CalcSpecular(float2 uv)
 	float specPower=g_specularMap.Sample(g_sampler,uv).r;
 
 	return specPower*10.0f;
+}
+
+float4 ShadowMap(float4 posInLVP, float4 albedo)
+{
+	//ライトビュースクリーン空間の座標からUV空間に座標変換
+	//ライトビュースクリーン空間からUV座標空間に変換している
+	float2 shadowMapUV=posInLVP.xy/posInLVP.w;
+	shadowMapUV*=float2(0.5f,-0.5f);
+	shadowMapUV+=0.5f;
+
+	//ライトビュースクリーン空間でのZ値を計算する
+	float zInLVP=posInLVP.z/posInLVP.w;
+
+	//UV座標を使ってシャドウマップから影情報をサンプリング
+	if(shadowMapUV.x>0.0f&&shadowMapUV.x<1.0f
+	&&shadowMapUV.y>0.0f&&shadowMapUV.y<1.0f)
+	{
+		//シャドウマップに書き込まれているZ値と比較する
+		//計算したUV座標を使って、シャドウマップから深度値をサンプリング
+		float zInshadowMap=g_shadowMap.Sample(g_sampler,shadowMapUV).r;
+		if(zInLVP>zInshadowMap)
+		{
+			//遮蔽されている
+			albedo.xyz*=0.5f;
+
+		}
+	}
+	//return zInLVP;
+	return albedo;
+
+
 }

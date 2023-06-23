@@ -1,6 +1,6 @@
 #pragma once
 namespace nsK2EngineLow {
-	class SpriteRender
+	class SpriteRender : public IRenderer
 	{
 	public:
 		/// <summary>
@@ -117,12 +117,16 @@ namespace nsK2EngineLow {
 		/// <param name="rc">レンダーコンテキスト</param>
 		void Draw(RenderContext& rc);
 
-		void OnRender2D(RenderContext& rc)
+	
+	private:
+		/// <summary>
+		/// 2D描画パスから呼ばれる処理
+		/// </summary>
+		/// <param name="rc"></param>
+		void OnRender2D(RenderContext& rc) override
 		{
 			m_sprite.Draw(rc);
 		}
-	private:
-		
 	private:
 		Sprite			m_sprite;
 		Vector3			m_position = Vector3::Zero;

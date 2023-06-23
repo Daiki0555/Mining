@@ -9,6 +9,14 @@ namespace nsK2EngineLow {
 	class RenderingEngine:public Noncopyable
 	{
 	public:
+
+		struct ShadowParamCB
+		{
+			Vector3 lightPos = Vector3::Zero;
+			float pad0=0.0f;
+			Matrix mLVP = g_matIdentity;
+		};
+
 		//ライトの構造体
 		struct LightCB
 		{
@@ -16,6 +24,7 @@ namespace nsK2EngineLow {
 			PointLight::pointLight pointLig[2];
 			SpotLight::spotLight spotLig[1];
 			HemiSphereLight::hemiSphereLight hemiSphereLig;
+			ShadowParamCB shadowCB;
 			int ptNum;										//ポイントライトの数
 			int spNum;										//スポットライトの数
 		
@@ -58,40 +67,42 @@ namespace nsK2EngineLow {
 
 			return m_instance;
 		}
+		
 		/// <summary>
 		/// レンダーオブジェクトを追加
 		/// </summary>
-		/// <param name="modelRender"></param>
-		void AddSpriteRenderObject(SpriteRender* renderObject)
+		/// <param name="renderObject"></param>
+		void AddRenderObject(IRenderer* renderObject)
 		{
-			m_spriteList.emplace_back(renderObject);
+			m_renderObjects.emplace_back(renderObject);
 		}
+
 
 		/// <summary>
 		/// レンダーオブジェクトを追加
 		/// </summary>
-		/// <param name="modelRender"></param>
+		/// <param name="renderObject"></param>
 		void AddModelRenderObject(ModelRender* renderObject)
 		{
 			m_modeList.emplace_back(renderObject);
 		}
-		/// <summary>
-		/// レンダーオブジェクトを追加
-		/// </summary>
-		/// <param name="modelRender"></param>
-		void AddFontRenderObject(FontRender* renderObject)
-		{
-			m_fontList.emplace_back(renderObject);
-		}
 
+		/// <summary>
+		/// ライト用の構造体を取得
+		/// </summary>
+		/// <returns></returns>
 		LightCB& GetLightCB()
 		{
 			return m_lightCB;
 		}
 
-		DirectionLight::directionLight& GetDirectionLight()
+		/// <summary>
+		/// シャドウ用の構造体を取得
+		/// </summary>
+		/// <returns></returns>
+		ShadowParamCB& GetShadowParamCB()
 		{
-			return m_directionLig.GetDirectionLig();
+			return m_lightCB.shadowCB;
 		}
 
 		/// <summary>
@@ -162,6 +173,15 @@ namespace nsK2EngineLow {
 			m_bloom.SetThreshold(threshold);
 		}
 
+		/// <summary>
+		/// シャドウマップのレンダリングターゲットを取得
+		/// </summary>
+		/// <returns></returns>
+		RenderTarget& GetShadowMapRenderTarget()
+		{
+			return m_shadowMapRenderTarget;
+		}
+
 
 		/// <summary>
 		/// 初期化処理
@@ -175,6 +195,21 @@ namespace nsK2EngineLow {
 		void Execute(RenderContext& rc);
 	private:
 		/// <summary>
+		/// ライトの初期化
+		/// </summary>
+		void InitLight();
+
+		/// <summary>
+		/// メインレンダリングターゲットを初期化
+		/// </summary>
+		void InitMainRenderTarget();
+
+		/// <summary>
+		/// シャドウマップ用のレンダーターゲットを初期化。
+		/// </summary>
+		void InitShadowMapRenderTarget();
+
+		/// <summary>
 		/// 2Dレンダーターゲットを初期化
 		/// </summary>
 		void Init2DRenderTarget();
@@ -184,16 +219,18 @@ namespace nsK2EngineLow {
 		/// </summary>
 		/// <param name="rc"></param>
 		void ModelRendering(RenderContext& rc);
+
+		/// <summary>
+		/// シャドウマップの描画処理
+		/// </summary>
+		/// <param name="rc"></param>
+		void RenderShadowMap(RenderContext& rc);
+
 		/// <summary>
 		/// 2D描画処理
 		/// </summary>
 		/// <param name="rc"></param>
 		void Render2D(RenderContext& rc);
-		/// <summary>
-		/// フォントの描画
-		/// </summary>
-		/// <param name="rc"></param>
-		void FontRendering(RenderContext& rc);
 	private:
 		static RenderingEngine*		m_instance;							//ライト用の構造体
 		
@@ -201,16 +238,28 @@ namespace nsK2EngineLow {
 		LightCB						m_lightCB;
 		HemiSphereLight				m_hemiShereLig;
 		Bloom						m_bloom;							//ブルーム
-
+		
 
 
 		RenderTarget				m_mainRenderTarget;					//メインレンダーターゲット
 		RenderTarget				m_2DRenderTarget;					//2Dレンダーターゲット
+		RenderTarget				m_shadowMapRenderTarget;
+		
 		Sprite						m_2DSprite;							//2Dスプライト
 		Sprite						m_mainSprite;
+		Sprite sprite;
+		
+										
+		Camera						m_lightCamera;						//描画用のライトカメラを作成する
+
+
+
 		std::vector<SpriteRender*>  m_spriteList;						//レンダリングするオブジェクト
 		std::vector<ModelRender*>	m_modeList;							//モデルリスト
 		std::vector<FontRender*>	m_fontList;							//フォントリスト
+		std::vector<IRenderer*>		m_renderObjects;
+
+
 	};
 }
 

@@ -2,20 +2,28 @@
 
 namespace nsK2EngineLow {
 	
-	class ModelRender
+	class ModelRender : public IRenderer
 	{
 	public:
 		ModelRender();
 		~ModelRender();
+		
 		/// <summary>
-		/// モデルの初期化
+		/// 初期化処理
 		/// </summary>
-		/// <param name="filePath"></param>
+		/// <param name="filePath">ファイルパス</param>
+		/// <param name="animationClip">アニメーションクリップ</param>
+		/// <param name="numAnimationClips">アニメーションの数</param>
+		/// <param name="enModelUpAxis">モデルの上方向</param>
+		/// <param name="isShadow">trueなら影を与える</param>
+		/// <param name="isShadowReceiver">trueなら影を落とす</param>
 		void Init(
 			const char* filePath,
 			AnimationClip* animationClip = nullptr,
 			int numAnimationClips = 0,
-			EnModelUpAxis enModelUpAxis=enModelUpAxisZ
+			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
+			const bool isShadow = false,
+			const bool isShadowReceiver = false
 		);
 
 		/// <summary>
@@ -90,6 +98,7 @@ namespace nsK2EngineLow {
 		{
 			m_scale = scale;
 		}
+
 		/// <summary>
 		/// アニメーション再生の速度を設定する
 		/// </summary>
@@ -123,11 +132,23 @@ namespace nsK2EngineLow {
 		/// モデルを描画する(RenderingEngineで描画するときに呼び出す)
 		/// </summary>
 		/// <param name="rc"></param>
-		void OnRenderModel(RenderContext& rc)
+		void OnRenderModel(RenderContext& rc)override
 		{
 			if (m_model.IsInited())
 			{
 				m_model.Draw(rc);
+			}
+		}
+
+		/// <summary>
+		/// 影のあるモデルを描画する
+		/// </summary>
+		/// <param name="rc"></param>
+		void OnRenderShadowMap(RenderContext& rc, Camera& camera)override
+		{
+			if (m_shadowModel.IsInited())
+			{
+				m_shadowModel.Draw(rc, camera);
 			}
 		}
 
@@ -153,10 +174,26 @@ namespace nsK2EngineLow {
 		/// </summary>
 		/// <param name="tkmFilePath">ファイルパス</param>
 		/// <param name="modelUpAxis">モデルの上方向</param>
+		///<param name = "isShadow">trueなら影を与える< / param>
+		/// <param name=isShadowReceiver">trueなら影を落とす</param>
 		void InitModel(
+			const char* tkmFilePath,
+			EnModelUpAxis modelUpAxis,
+			const bool isShadow,
+			const bool isShadowReceiver
+		);
+
+		/// <summary>
+		/// シャドウ用のモデルの初期化
+		/// </summary>
+		/// <param name="tkmFilePath">ファイルパス</param>
+		/// <param name="modelUpAxis">モデルの上方向</param>
+		void InitShadowModel(
 			const char* tkmFilePath,
 			EnModelUpAxis modelUpAxis
 		);
+
+
 		/// <summary>
 		/// 各種モデルのワールド行列を更新する。
 		/// </summary>
@@ -172,10 +209,12 @@ namespace nsK2EngineLow {
 		EnModelUpAxis	m_enFbxUpAxis = enModelUpAxisZ;
 		Animation		m_animation;
 		Model			m_model;
+		Model			m_shadowModel;
 		bool			m_isUpdateAnimation = true;
 		Skeleton		m_skeleton;
 		float			m_animationSpeed=1.0f;
 
+		
 		RenderingEngine m_renderinEngine;
 	};
 }
