@@ -14,6 +14,7 @@ namespace nsK2EngineLow
 			Vector3 skyColor = Vector3::Zero;			//天球色
 			float pad1 = 0.0f;
 			Vector3 groundNormal = Vector3::Zero;		//地面の法線
+			float pad2;
 		};
 
 		HemiSphereLight();

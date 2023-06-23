@@ -62,7 +62,7 @@ namespace nsK2EngineLow{
 
 		//ぼかした画像を、通常の2Dとしてメインレンダリングターゲットに描画するので、
 		//2D用のシェーダーを使用する
-		finalSpriteInitData.m_fxFilePath = "Assets/shader/2D.fx";
+		finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
 
 		//加算合成で描画するので、アルファブレンディングモードに加算する
 		finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_Add;
@@ -80,7 +80,7 @@ namespace nsK2EngineLow{
 		initData.m_width = mainRenderTarget.GetWidth();
 		initData.m_height = mainRenderTarget.GetHeight();
 		//モノクロ用のシェーダーを指定する
-		initData.m_fxFilePath = "Assets/shader/2D.fx";
+		initData.m_fxFilePath = "Assets/shader/sprite.fx";
 		m_copyMainRtSprite.Init(initData);
 
 	}

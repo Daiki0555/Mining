@@ -4,7 +4,7 @@ namespace nsK2EngineLow {
 	/// <summary>
 	/// フォントレンダークラス
 	/// </summary>
-	class FontRender
+	class FontRender: public IRenderer
 	{
 	public:
 		static const int MAX_TEXT_SIZE = 256;	//文字の再々数
@@ -130,15 +130,18 @@ namespace nsK2EngineLow {
 			m_font.SetShadowParam(isDrawShadow, shadowOffset, shadowColor);
 		}
 
-		void OnRender(RenderContext& rc)
+		
+	private:
+		/// <summary>
+		/// 2D描画パスから呼ばれる処理
+		/// </summary>
+		/// <param name="rc"></param>
+		void OnRender2D(RenderContext& rc) override
 		{
 			m_font.Begin(rc);
 			m_font.Draw(m_text, Vector2(m_position.x, m_position.y), m_color, m_rotaition, m_scale, m_pivot);
 			m_font.End(rc);
 		}
-	private:
-
-		
 
 	private:
 		Font		m_font;								//フォント

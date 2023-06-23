@@ -7,6 +7,6 @@ namespace nsK2EngineLow {
 		if (m_text == nullptr) {
 			return;
 		}
-		RenderingEngine::GetInstance()->AddFontRenderObject(this);
+		RenderingEngine::GetInstance()->AddRenderObject(this);
 	}
 }
