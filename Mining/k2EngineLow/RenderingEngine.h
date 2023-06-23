@@ -30,7 +30,11 @@ namespace nsK2EngineLow {
 		
 		};
 
-
+		// スプライト用の構造体
+		struct SpriteCB
+		{
+			float angle;
+		};
 
 	//private:
 		RenderingEngine();
@@ -182,6 +186,15 @@ namespace nsK2EngineLow {
 			return m_shadowMapRenderTarget;
 		}
 
+		/// <summary>
+		/// スプライト用の構造体を取得
+		/// </summary>
+		/// <returns></returns>
+		SpriteCB& GetSpriteCB()
+		{
+			return m_spiteCB;
+		}
+
 
 		/// <summary>
 		/// 初期化処理
@@ -236,6 +249,7 @@ namespace nsK2EngineLow {
 		
 		DirectionLight				m_directionLig;						//ディレクショナルライトの構造体
 		LightCB						m_lightCB;
+		SpriteCB					m_spiteCB;							//スプライト用の構造体
 		HemiSphereLight				m_hemiShereLig;
 		Bloom						m_bloom;							//ブルーム
 		
