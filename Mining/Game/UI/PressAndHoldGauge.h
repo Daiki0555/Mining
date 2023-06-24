@@ -55,6 +55,7 @@ public:
 private:
 	SpriteRender	m_spriteRenderCircle;				// スプライトレンダー
 	SpriteRender	m_spriteRenderCircleBase;			// スプライトレンダー(ベース)
+	SpriteRender	m_spriteRenderCircleBack;			// スプライトレンダー(背景)
 	
 	FontRender		m_fontRender;						// フォントレンダー
 
@@ -67,7 +68,7 @@ private:
 	};
 	GaugeStatus		m_circleGauge;						// 円形ゲージのステータス
 
-	enGaugeState	m_enGaugeState = enGaugeState_Max;	// ゲージの今のステート
+	enGaugeState	m_enGaugeState = enGaugeState_Min;	// ゲージの今のステート
 
 	bool			m_changeGaugeAngleFlag = false;		// trueなら増加、falseなら減少させる
 	bool			m_canDrawGaugeFlag = false;			// 描画できるかどうか

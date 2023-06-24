@@ -9,7 +9,7 @@ namespace
 	const Vector3	TEX_SCALE = { 1.0f,1.0f,1.0f };						// テクスチャのスケール
 
 	const float		DECREASE_CIRCLE_ANGLE = 36.0f;						// 角度の減少速度
-	const float		INCREASE_CIRCLE_ANGLE = 120.0f;						// 角度の増加速度
+	const float		INCREASE_CIRCLE_ANGLE = 180.0f;						// 角度の増加速度
 
 	const float		FONT_SCALE = 0.5f;									// フォントのスケール 
 	const Vector4	FONT_COLOR = { 0.0f,0.0f,0.0f,1.0f };				// フォントのカラー
@@ -40,7 +40,7 @@ bool PressAndHoldGauge::Start()
 	m_circleGauge.m_minSize = CIRCLE_SIZE_MIN;
 
 	// 画像を設定
-	m_spriteRenderCircle.Init("Assets/Sprite/UI/Gauge/pushAndHoldGauge.DDS", 100, 100);
+	m_spriteRenderCircle.Init("Assets/Sprite/UI/Gauge/pushAndHoldGauge.DDS", 100, 100, AlphaBlendMode_Trans, 1);
 	m_spriteRenderCircle.SetScale(TEX_SCALE);
 	m_spriteRenderCircle.Update();
 
@@ -48,7 +48,11 @@ bool PressAndHoldGauge::Start()
 	m_spriteRenderCircleBase.SetScale(TEX_SCALE);
 	m_spriteRenderCircleBase.Update();
 
-	RenderingEngine::GetInstance()->GetSpriteCB().angle = (m_circleGauge.m_angle * PI) / 180.0f;
+	m_spriteRenderCircleBack.Init("Assets/Sprite/UI/Gauge/pushAndHoldGauge_back.DDS", 109, 109);
+	m_spriteRenderCircleBack.SetScale(TEX_SCALE);
+	m_spriteRenderCircleBack.Update();
+
+	RenderingEngine::GetInstance()->GetSpriteCB().clipSize.y = (m_circleGauge.m_angle * PI) / 180.0f;
 
 	return true;
 }
@@ -72,30 +76,26 @@ void PressAndHoldGauge::ChangeGaugeAngle()
 		m_enGaugeState = enGaugeState_Increase;
 		// 値を増加
 		m_circleGauge.m_angle -= INCREASE_CIRCLE_ANGLE * g_gameTime->GetFrameDeltaTime();
-		// max関数を使用して最大値を取得する
-		m_circleGauge.m_angle = max(m_circleGauge.m_angle, CIRCLE_SIZE_MAX);
+		// min関数を使用して最小値を取得する
+		m_circleGauge.m_angle = min(m_circleGauge.m_angle, CIRCLE_SIZE_MIN);
 	}
 	else{
 		// ステートを変更
 		m_enGaugeState = enGaugeState_Decrease;
 		// 値を減少
 		m_circleGauge.m_angle += DECREASE_CIRCLE_ANGLE * g_gameTime->GetFrameDeltaTime();
-		// min関数を使用して最小値を取得する
-		m_circleGauge.m_angle = min(m_circleGauge.m_angle, CIRCLE_SIZE_MIN);
+		// max関数を使用して最大値を取得する
+		m_circleGauge.m_angle = max(m_circleGauge.m_angle, CIRCLE_SIZE_MAX);
 	}
 
 	// 現在の値 - ゲージの最大値が一定以下だったとき
-	if (m_circleGauge.m_angle < 0.0f) {
+	if (m_circleGauge.m_angle < CIRCLE_SIZE_MAX) {
 		// ゲージは最大
 		m_enGaugeState = enGaugeState_Max;
 	}
-	else if(m_circleGauge.m_angle >= 360.0f) {
-		// ゲージは最大
-		m_enGaugeState = enGaugeState_Min;
-	}
 
 	// 角度を適応
-	RenderingEngine::GetInstance()->GetSpriteCB().angle = (m_circleGauge.m_angle * PI) / 180.0f;
+	RenderingEngine::GetInstance()->GetSpriteCB().clipSize.y = (m_circleGauge.m_angle * PI) / 180.0f;
 }
 
 void PressAndHoldGauge::ChangeGaugePosition()
@@ -110,6 +110,9 @@ void PressAndHoldGauge::ChangeGaugePosition()
 
 	m_spriteRenderCircleBase.SetPosition({ m_circleGauge.m_2Dposition.x, m_circleGauge.m_2Dposition.y, 0.0f });
 	m_spriteRenderCircleBase.Update();
+
+	m_spriteRenderCircleBack.SetPosition({ m_circleGauge.m_2Dposition.x, m_circleGauge.m_2Dposition.y, 0.0f });
+	m_spriteRenderCircleBack.Update();
 }
 
 void PressAndHoldGauge::SetFontRender()
@@ -125,6 +128,7 @@ void PressAndHoldGauge::SetFontRender()
 void PressAndHoldGauge::Render(RenderContext& rc)
 {
 	if (m_canDrawGaugeFlag) {
+		m_spriteRenderCircleBack.Draw(rc);
 		m_spriteRenderCircle.Draw(rc);
 		m_spriteRenderCircleBase.Draw(rc);
 		m_fontRender.Draw(rc);
