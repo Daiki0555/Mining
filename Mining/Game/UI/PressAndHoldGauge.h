@@ -62,7 +62,7 @@ private:
 	struct GaugeStatus {
 		Vector3		m_3Dposition = Vector3::Zero;		// 3D座標
 		Vector2		m_2Dposition = Vector2::Zero;		// 2D座標
-		float		m_angle = 0.0f;						// ゲージの角度
+		float		m_angle = 0.0f;						// ゲージの角度(初期値)
 		float		m_maxSize = 0.0f;					// ゲージの最大
 		float		m_minSize = 0.0f;					// ゲージの最小
 	};

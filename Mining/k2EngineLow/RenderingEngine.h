@@ -33,7 +33,8 @@ namespace nsK2EngineLow {
 		// スプライト用の構造体
 		struct SpriteCB
 		{
-			float angle;									// 角度
+			Vector3 clipSize;
+			int clipMode = 0;
 		};
 
 	//private:

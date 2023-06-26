@@ -14,7 +14,8 @@ namespace nsK2EngineLow {
 			const char* filePath,
 			const float w,
 			const float h,
-			AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans
+			AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans,
+			const int clipMode = 0			// クリップボード	
 		);
 
 		/// <summary>
@@ -117,6 +118,10 @@ namespace nsK2EngineLow {
 		/// <param name="rc">レンダーコンテキスト</param>
 		void Draw(RenderContext& rc);
 
+		/// <summary>
+		/// クリップボードの設定処理
+		/// </summary>
+		void ClipMode(SpriteInitData& initData, const int clipMode);
 	
 	private:
 		/// <summary>

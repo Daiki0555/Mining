@@ -35,7 +35,7 @@ PressAndHoldGauge::~PressAndHoldGauge()
 bool PressAndHoldGauge::Start()
 {
 	// ステータスを設定
-	m_circleGauge.m_angle = CIRCLE_SIZE_MIN;
+	m_circleGauge.m_angle = CIRCLE_SIZE_MAX;
 	m_circleGauge.m_maxSize = CIRCLE_SIZE_MAX;
 	m_circleGauge.m_minSize = CIRCLE_SIZE_MIN;
 
@@ -75,7 +75,7 @@ void PressAndHoldGauge::ChangeGaugeAngle()
 		// ステートを変更
 		m_enGaugeState = enGaugeState_Increase;
 		// 値を増加
-		m_circleGauge.m_angle -= INCREASE_CIRCLE_ANGLE * g_gameTime->GetFrameDeltaTime();
+		m_circleGauge.m_angle += INCREASE_CIRCLE_ANGLE * g_gameTime->GetFrameDeltaTime();
 		// min関数を使用して最小値を取得する
 		m_circleGauge.m_angle = min(m_circleGauge.m_angle, CIRCLE_SIZE_MIN);
 	}
@@ -83,13 +83,13 @@ void PressAndHoldGauge::ChangeGaugeAngle()
 		// ステートを変更
 		m_enGaugeState = enGaugeState_Decrease;
 		// 値を減少
-		m_circleGauge.m_angle += DECREASE_CIRCLE_ANGLE * g_gameTime->GetFrameDeltaTime();
+		m_circleGauge.m_angle -= DECREASE_CIRCLE_ANGLE * g_gameTime->GetFrameDeltaTime();
 		// max関数を使用して最大値を取得する
 		m_circleGauge.m_angle = max(m_circleGauge.m_angle, CIRCLE_SIZE_MAX);
 	}
 
 	// 現在の値 - ゲージの最大値が一定以下だったとき
-	if (m_circleGauge.m_angle < CIRCLE_SIZE_MAX) {
+	if (m_circleGauge.m_angle <= CIRCLE_SIZE_MAX) {
 		// ゲージは最大
 		m_enGaugeState = enGaugeState_Max;
 	}
@@ -105,6 +105,7 @@ void PressAndHoldGauge::ChangeGaugePosition()
 	// ワールド座標からスクリーン座標を計算
 	g_camera3D->CalcScreenPositionFromWorldPosition(m_circleGauge.m_2Dposition, m_worldPosition);
 
+	// 座標を設定する
 	m_spriteRenderCircle.SetPosition({ m_circleGauge.m_2Dposition.x, m_circleGauge.m_2Dposition.y, 0.0f });
 	m_spriteRenderCircle.Update();
 

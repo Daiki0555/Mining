@@ -6,7 +6,8 @@ namespace nsK2EngineLow {
 		const char* filePath,
 		const float w,
 		const float h,
-		AlphaBlendMode alphaBlendMode
+		AlphaBlendMode alphaBlendMode,
+		const int clipMode
 	)
 	{
 		SpriteInitData initData;
@@ -19,8 +20,21 @@ namespace nsK2EngineLow {
 		initData.m_height = static_cast<UINT>(h);
 		initData.m_alphaBlendMode = alphaBlendMode;
 
+		ClipMode(initData, clipMode);
+
 		//Sprite初期化オブジェクトを使用して、Spriteを初期化する
 		m_sprite.Init(initData);
+	}
+
+	void SpriteRender::ClipMode(SpriteInitData& initData, const int clipMode)
+	{
+		switch (clipMode) {
+		case 1:
+			initData.m_psEntryPoinFunc = "PSCircleGauge";
+			initData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
+			initData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
+			break;
+		}
 	}
 
 	void SpriteRender::Draw(RenderContext& rc)

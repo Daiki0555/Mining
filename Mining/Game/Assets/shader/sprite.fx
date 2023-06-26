@@ -9,7 +9,7 @@ cbuffer cb : register(b0){
 
 cbuffer SpriteCB:register(b1)
 {
-	float Angle;		// 角度
+	float3 clipSize;
 }
 
 struct VSInput{
@@ -58,11 +58,11 @@ float4 PSCircleGauge(PSInput In) :Sv_Target0
 
 	// 角度を計算
 	if(Vector2.x > Vector1.x){
-		Deg = PI + (PI + Deg);
+		Deg = PI + (PI - Deg);
 	}
 
 	// 設定した角度より大きいなら
-	if(Deg >= Angle){
+	if(Deg >= clipSize.y){
 		// ピクセルを破棄
 		clip(-1);
 	}

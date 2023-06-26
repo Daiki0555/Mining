@@ -90,6 +90,38 @@ namespace nsK2EngineLow {
 			clearColor
 		);
 
+		//円形ゲージ用に一旦コメントアウト
+		//最終合成用スプライトの初期化
+		SpriteInitData finalSpriteInitData;
+		finalSpriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
+		// 解像度はmainRenderTargetの幅と高さ
+		finalSpriteInitData.m_width = m_mainRenderTarget.GetWidth();
+		finalSpriteInitData.m_height = m_mainRenderTarget.GetHeight();
+		// 2D用のシェーダーを使用する
+		finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
+		finalSpriteInitData.m_vsEntryPointFunc = "VSMain";
+		finalSpriteInitData.m_psEntryPoinFunc = "PSMain";
+		// 円形ゲージ用の構造体の情報を渡す
+		finalSpriteInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
+		finalSpriteInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
+		//上書き
+		finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
+		//レンダリングターゲットのフォーマット
+		finalSpriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
+		
+		m_2DSprite.Init(finalSpriteInitData);
+
+		//2D統合用スプライトの初期化
+		SpriteInitData spriteInitData;
+		spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
+		spriteInitData.m_width = m_2DRenderTarget.GetWidth();
+		spriteInitData.m_height = m_2DRenderTarget.GetHeight();
+		spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
+		spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
+		spriteInitData.m_colorBufferFormat[0] = m_2DRenderTarget.GetColorBufferFormat();
+		
+		m_mainSprite.Init(spriteInitData);
+
 		////最終合成用スプライトの初期化
 		//SpriteInitData finalSpriteInitData;
 		//finalSpriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
