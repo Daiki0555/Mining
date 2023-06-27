@@ -58,7 +58,7 @@ namespace nsK2EngineLow {
 		SetDirectionLight(Vector3(1, -1, 1), Vector3(0.5f, 0.5f, 0.5f));
 
 		//環境光の設定
-		SetAmbient(0.6f);
+		SetAmbient(0.2f);
 
 		//半球ライトの設定
 	/*	SetHemiSphereLight(
@@ -70,7 +70,7 @@ namespace nsK2EngineLow {
 		m_lightCB.directionLig = m_directionLig.GetDirectionLig();
 
 		//ブルームの設定
-		SetBloomThreshold(0.2f);
+		SetBloomThreshold(0.1f);
 		m_bloom.Init(m_mainRenderTarget);
 
 	}
