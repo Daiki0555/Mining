@@ -18,6 +18,14 @@ public:
 	void GetCrystal();					// 自身を獲得する処理
 	void Render(RenderContext& rc);
 
+	// レアリティ
+	enum EnCrystalRarity {
+		EnCrystalRarity_Normal,			// 10
+		EnCrystalRarity_HyperNormal,	// 15
+		EnCrystalRarity_Rare,			// 20
+		EnCrystalRarity_HyperRare,		// 25
+	};
+
 	/// <summary>
 	/// 座標を設定する
 	/// </summary>
@@ -76,36 +84,53 @@ public:
 	}
 
 	/// <summary>
-	/// レア度を参照する
+	/// レアリティを取得する
 	/// </summary>
 	/// <returns></returns>
-	const int GetRarity()const {
-		return m_myRarity;
+	const EnCrystalRarity GetRarity()const {
+		return m_crystalRarity;
 	}
 
 private:
-
 	/// <summary>
 	/// レアリティを設定する
 	/// </summary>
 	/// <param name="rarity">自身のレア度</param>
-	void SetRarity(const int& rarity) {
-		m_myRarity = rarity;
+	void SetRarity(const int rarity) {
+
+		EnCrystalRarity myRarity;
+
+		switch (rarity) {
+		case 0:
+			myRarity = EnCrystalRarity_Normal;
+			break;
+		case 1:
+			myRarity = EnCrystalRarity_HyperNormal;
+			break;
+		case 2:
+			myRarity = EnCrystalRarity_Rare;
+			break;
+		case 3:
+			myRarity = EnCrystalRarity_HyperRare;
+			break;
+		}
+
+		m_crystalRarity = myRarity;
 	}
 
 	PhysicsStaticObject m_physicsStaticObjct;
 
-	ModelRender m_modelRenderCrystal;				// モデルレンダー。クリスタル
-	ModelRender	m_modelRenderRock;					// モデルレンダー。岩
+	ModelRender			m_modelRenderCrystal;				// モデルレンダー。クリスタル
+	ModelRender			m_modelRenderRock;					// モデルレンダー。岩
 
-	Vector3		m_position = Vector3::Zero;			// 座標
-	Vector3		m_scale = Vector3::Zero;			// スケール
-	Quaternion	m_rotation = Quaternion::Identity;	// 回転
+	Vector3				m_position = Vector3::Zero;			// 座標
+	Vector3				m_scale = Vector3::Zero;			// スケール
+	Quaternion			m_rotation = Quaternion::Identity;	// 回転
 
-	Texture		m_texture;							// テクスチャ
+	Texture				m_texture;							// テクスチャ
 
-	int			m_myRarity = 0;						// 自身のレアリティ
+	EnCrystalRarity		m_crystalRarity;					// レアリティ
 
-	bool		m_canDrawFlag = true;				// 描画できるかどうか
+	bool				m_canDrawFlag = true;				// 描画できるかどうか
 };
 

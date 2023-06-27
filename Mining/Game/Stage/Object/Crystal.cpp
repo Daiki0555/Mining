@@ -18,14 +18,14 @@ Crystal::~Crystal()
 bool Crystal::Start()
 {
 	// クリスタルのモデル
-	m_modelRenderCrystal.Init("Assets/modelData/stage/Crystal/Crystal.tkm");
+	m_modelRenderCrystal.Init("Assets/modelData/stage/Crystal/Crystal.tkm", 0, 0, enModelUpAxisZ, true);
 	m_modelRenderCrystal.SetPosition(m_position);
 	m_modelRenderCrystal.SetScale(m_scale);
 	m_modelRenderCrystal.SetRotaition(m_rotation);
 	m_modelRenderCrystal.Update();
 
 	// 岩のモデル
-	m_modelRenderRock.Init("Assets/modelData/stage/Crystal/Crystal_Rock.tkm");
+	m_modelRenderRock.Init("Assets/modelData/stage/Crystal/Crystal_Rock.tkm", 0, 0, enModelUpAxisZ, true);
 	m_modelRenderRock.SetPosition(m_position);
 	m_modelRenderRock.SetScale(m_scale);
 	m_modelRenderRock.SetRotaition(m_rotation);
@@ -52,7 +52,6 @@ void Crystal::Render(RenderContext& rc)
 	if (m_canDrawFlag) {
 		m_modelRenderCrystal.Draw(rc);
 	}
-
 
 	m_modelRenderRock.Draw(rc);
 }

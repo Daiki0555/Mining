@@ -6,7 +6,7 @@ namespace
 {
 	const int	HIT_POINT = 150;			// HP
 	const int	ATTACK_POWER = 25;			// 攻撃力
-	const float	STAMINA = 100.0f;			// スタミナ
+	const float	STAMINA = 100000.0f;			// スタミナ
 	const float BASIC_SPEED = 150.0f;		// 移動速度
 
 	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
@@ -109,7 +109,6 @@ private:
 	/// <summary>
 	/// クリスタルの数を追加
 	/// </summary>
-	/// <param name="num">レア度</param>
 	/// <returns></returns>
 	void AddCrystalNum(const int& num){
 		m_haveCrystals.push_back(num);

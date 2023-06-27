@@ -14,7 +14,7 @@ bool BackGround::Start()
 	m_scale *= 1.5f;
 
 	// ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
-	m_modelRender.Init("Assets/modelData/stage/stage.tkm");
+	m_modelRender.Init("Assets/modelData/stage/stage.tkm", 0, 0, enModelUpAxisZ, false, true);
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotaition(m_rotaion);

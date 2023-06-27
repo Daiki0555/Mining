@@ -37,7 +37,7 @@ bool Player::Start()
 
 	LoadAnimation();
 
-	m_modelRender.Init("Assets/modelData/player/unityChan.tkm", m_enAnimationClips, m_en_AnimationClips_Num, enModelUpAxisY);
+	m_modelRender.Init("Assets/modelData/player/unityChan.tkm", m_enAnimationClips, m_en_AnimationClips_Num, enModelUpAxisY, true);
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetRotaition(m_rotation);
 	m_modelRender.SetScale(m_scale);
@@ -54,33 +54,40 @@ bool Player::Start()
 
 void Player::Update()
 {
+	//// デバッグ用
+	//if (g_pad[0]->IsPress(enButtonA)) {
+	//	m_playerStatus.m_hitPoint -= 5;
+	//}
+
 	// 体力が0のとき
 	if (m_playerStatus.m_hitPoint <= 0) {
-		// 死亡する
-		Death();
-		return;
-	}
 
-	// スタミナが最大値でない　かつ　Aボタンが入力されていないとき
-	if (m_playerStatus.m_stamina < STAMINA_MAX && 
-		m_actionState != m_enActionState_Run) {
+		// 補正
+		m_playerStatus.m_hitPoint = 0;
 
-		m_recoveryTimer -= g_gameTime->GetFrameDeltaTime();
-
-		if (m_recoveryTimer <= 0.0f) {
-			// スタミナを増やす
-			m_playerStatus.m_stamina += g_gameTime->GetFrameDeltaTime() * INCREASE_STAMINA_VALUE;
-		}
+		Death();				// 死亡する
 	}
 	else {
-		m_recoveryTimer = RECOVERY_TIMER;		// タイマーをリセット
+		Move();					// 移動
+		Rotation();				// 回転
+
+		Dig();
+
+		// スタミナが最大値でない　かつ　Aボタンが入力されていないとき
+		if (m_playerStatus.m_stamina < STAMINA_MAX &&
+			m_actionState != m_enActionState_Run) {
+
+			m_recoveryTimer -= g_gameTime->GetFrameDeltaTime();
+
+			if (m_recoveryTimer <= 0.0f) {
+				// スタミナを増やす
+				m_playerStatus.m_stamina += g_gameTime->GetFrameDeltaTime() * INCREASE_STAMINA_VALUE;
+			}
+		}
+		else {
+			m_recoveryTimer = RECOVERY_TIMER;		// タイマーをリセット
+		}
 	}
-
-
-	Move();					// 移動
-	Rotation();				// 回転
-
-	Dig();
 
 	PlayAnimation();		// アニメーション
 
