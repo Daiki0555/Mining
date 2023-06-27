@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "system/system.h"
 #include "Debug.h"
-#include "Game.h"
+#include "Scene/Game.h"
 
 // K2EngineLowのグローバルアクセスポイント。
 K2EngineLow* g_k2EngineLow = nullptr;

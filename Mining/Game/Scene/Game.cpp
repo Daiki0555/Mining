@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "GameClear.h"
+#include "GameOver.h"
 #include "Player.h"
 #include "Stage/BackGround.h"
 #include "GameCamera.h"
@@ -16,6 +18,8 @@ Game::Game()
 
 Game::~Game()
 {
+	m_crystalList.clear();
+
 	Objct_DeleteGO();
 }
 
@@ -24,6 +28,10 @@ void Game::Objct_DeleteGO()
 	DeleteGO(m_player);
 	DeleteGO(m_backGround);
 	DeleteGO(m_gameCamera);
+
+	//for (int i = 0; i < m_crystalList.size(); i++) {
+	//	DeleteGO(m_crystalList[i]);
+	//}
 }
 
 bool Game::Start()
@@ -52,6 +60,11 @@ void Game::LevelDesign()
 			m_backGround->SetRotation(objData.rotaition);
 			return true;
 		}
+		// –¼‘O‚ªghost‚Ì‚Æ‚«
+		if (objData.EqualObjectName(L"ghost") == true)
+		{
+			
+		}
 		// –¼‘O‚ªcrystal‚Ì‚Æ‚«
 		if (objData.EqualObjectName(L"crystal") == true) 
 		{
@@ -60,6 +73,9 @@ void Game::LevelDesign()
 			m_crystal->SetScale(objData.scale);
 			m_crystal->SetRotation(objData.rotaition);
 			m_crystal->SetTexture();
+
+			// ‘”‚ð’Ç‰Á
+			m_crystalList.push_back(m_crystal);
 			return true;
 		}
 		//–¼‘O‚ªplayer‚ÌŽž
@@ -91,4 +107,11 @@ void Game::LevelDesign()
 		return true;
 		}
 	);
+}
+
+void Game::Update()
+{
+	if (m_player->GetHitPoint() <= 0) {
+		m_enGameState = m_enGameState_GameOver;
+	}
 }

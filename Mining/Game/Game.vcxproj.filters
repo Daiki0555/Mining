@@ -19,7 +19,6 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Enemy\Enemy_Bee.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
@@ -39,6 +38,10 @@
     <ClCompile Include="Stage\Object\Crystal.cpp" />
     <ClCompile Include="UI\PlayerStatusGauge.cpp" />
     <ClCompile Include="UI\PressAndHoldGauge.cpp" />
+    <ClCompile Include="Scene\Game.cpp" />
+    <ClCompile Include="Scene\GameClear.cpp" />
+    <ClCompile Include="Scene\GameOver.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -47,7 +50,6 @@
     </ClInclude>
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Enemy\Enemy_Bee.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -67,5 +69,9 @@
     <ClInclude Include="Stage\Object\Crystal.h" />
     <ClInclude Include="UI\PlayerStatusGauge.h" />
     <ClInclude Include="UI\PressAndHoldGauge.h" />
+    <ClInclude Include="Scene\Game.h" />
+    <ClInclude Include="Scene\GameClear.h" />
+    <ClInclude Include="Scene\GameOver.h" />
+    <ClInclude Include="Scene\Title.h" />
   </ItemGroup>
 </Project>
