@@ -57,7 +57,7 @@ float4 PSCircleGauge(PSInput In) :Sv_Target0
 	Deg = abs(Deg);
 
 	// 角度を計算
-	if(Vector2.x > Vector1.x){
+	if(Vector2.x < Vector1.x){
 		Deg = PI + (PI - Deg);
 	}
 
