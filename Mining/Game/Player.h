@@ -23,18 +23,49 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+	/// <summary>
+	/// アニメーションのロード
+	/// </summary>
 	void LoadAnimation();
+	/// <summary>
+	/// アニメーションの再生
+	/// </summary>
 	void PlayAnimation();
-
+	/// <summary>
+	/// 回転処理
+	/// </summary>
 	void Rotation();
+	/// <summary>
+	/// 移動処理
+	/// </summary>
 	void Move();
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
 	void Attack();
+	/// <summary>
+	/// 被弾処理
+	/// </summary>
+	/// <param name="attackPower">相手の攻撃力</param>
 	void Damage(int attackPower);
+	/// <summary>
+	/// 採掘処理
+	/// </summary>
 	void Dig();
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
 	void Death();
+	/// <summary>
+	/// クリア処理
+	/// </summary>
 	void Clear();
-
-	bool CrstalAndHit(Vector3 position);
+	/// <summary>
+	/// クリスタルとの衝突判定
+	/// </summary>
+	/// <param name="targetPosition">目的の座標</param>
+	/// <returns></returns>
+	bool CrstalAndHit(Vector3 targetPosition);
 
 	/// <summary>
 	/// 座標を参照する

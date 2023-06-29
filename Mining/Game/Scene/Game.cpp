@@ -111,7 +111,9 @@ void Game::LevelDesign()
 
 void Game::Update()
 {
+	// プレイヤーの体力がないなら
 	if (m_player->GetHitPoint() <= 0) {
+		// ゲームオーバー
 		m_enGameState = m_enGameState_GameOver;
 	}
 }

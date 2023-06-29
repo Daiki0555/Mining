@@ -9,7 +9,9 @@ public:
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
-
+	/// <summary>
+	/// 値を表示する
+	/// </summary>
 	void DrawGaugeValue();
 
 	struct GaugeStatus {
@@ -20,6 +22,10 @@ public:
 		float		m_gaugeScaleX = 0.0f;				// ゲージのスケール
 	};
 
+	/// <summary>
+	/// 値を変更する
+	/// </summary>
+	/// <param name="gauge">値を変更するゲージ</param>
 	void ChangeGaugeValue(GaugeStatus& gauge);
 
 private:

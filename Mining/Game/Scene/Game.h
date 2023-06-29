@@ -1,4 +1,5 @@
 #pragma once
+
 class Player;
 class BackGround;
 class GameCamera;
@@ -14,8 +15,14 @@ public:
 	bool Start();
 	void Update();
 
-	void Objct_DeleteGO();											// オブジェクトの削除
-	void LevelDesign();												// レベルデザイン
+	/// <summary>
+	/// オブジェクトの削除
+	/// </summary>
+	void Objct_DeleteGO();
+	/// <summary>
+	/// レベルデザイン
+	/// </summary>
+	void LevelDesign();
 	
 private:
 	enum enGameState {

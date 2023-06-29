@@ -3,9 +3,6 @@
 
 namespace
 {
-	const float		CIRCLE_SIZE_MAX = 0.0f;								// 円形ゲージの最大
-	const float		CIRCLE_SIZE_MIN = 360.0f;							// 円形ゲージの最小
-
 	const Vector3	TEX_SCALE = { 1.0f,1.0f,1.0f };						// テクスチャのスケール
 
 	const float		DECREASE_CIRCLE_ANGLE = 36.0f;						// 角度の減少速度
@@ -34,11 +31,6 @@ PressAndHoldGauge::~PressAndHoldGauge()
 
 bool PressAndHoldGauge::Start()
 {
-	// ステータスを設定
-	m_circleGauge.m_angle = CIRCLE_SIZE_MAX;
-	m_circleGauge.m_maxSize = CIRCLE_SIZE_MAX;
-	m_circleGauge.m_minSize = CIRCLE_SIZE_MIN;
-
 	// 画像を設定
 	m_spriteRenderCircle.Init("Assets/Sprite/UI/Gauge/pushAndHoldGauge.DDS", 100, 100, AlphaBlendMode_Trans, 1);
 	m_spriteRenderCircle.SetScale(TEX_SCALE);
@@ -88,10 +80,10 @@ void PressAndHoldGauge::ChangeGaugeAngle()
 		m_circleGauge.m_angle = max(m_circleGauge.m_angle, CIRCLE_SIZE_MAX);
 	}
 
-	// 現在の値 - ゲージの最大値が一定以下だったとき
-	if (m_circleGauge.m_angle <= CIRCLE_SIZE_MAX) {
-		// ゲージは最大
-		m_enGaugeState = enGaugeState_Max;
+	// ゲージの最大値が一定以下だったとき
+	if (m_circleGauge.m_angle >= CIRCLE_SIZE_MIN) {
+		// ゲージは最小
+		m_enGaugeState = enGaugeState_Min;
 	}
 
 	// 角度を適応

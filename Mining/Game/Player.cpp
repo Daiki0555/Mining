@@ -6,7 +6,7 @@
 namespace
 {
 	const float RUN_SPEED = 2.5f;					// ダッシュ時の移動速度
-	const float WALKING_SPEED = 1.0f;				// 歩いている時の移動速度
+	const float WALKING_SPEED = 10.0f;				// 歩いている時の移動速度
 
 	const float DECREASE_STAMINA_VALUE = 15.0f;		// ダッシュ時のスタミナ消費速度
 	const float INCREASE_STAMINA_VALUE = 10.0f;		// スタミナ回復速度
@@ -260,7 +260,7 @@ struct CrashedCrystal :public btCollisionWorld::ConvexResultCallback
 	}
 };
 
-bool Player::CrstalAndHit(Vector3 position)
+bool Player::CrstalAndHit(Vector3 targetPosition)
 {
 	btTransform start, end;
 
@@ -269,7 +269,7 @@ bool Player::CrstalAndHit(Vector3 position)
 
 	// 始点と終点を設定
 	start.setOrigin(btVector3(m_position.x, Y_POSITION, m_position.z));
-	end.setOrigin(btVector3(position.x, Y_POSITION, position.z));
+	end.setOrigin(btVector3(targetPosition.x, Y_POSITION, targetPosition.z));
 
 	CrashedCrystal callback;
 
@@ -317,7 +317,7 @@ void Player::Dig()
 	}
 
 	// ゲージが最大でないとき以下の処理は実行しない
-	if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Max) {
+	if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Min) {
 		return;
 	}
 
@@ -325,6 +325,9 @@ void Player::Dig()
 	int rarity = m_crystal->GetRarity();		// 取得したクリスタルのレア度を取得
 
 	AddCrystalNum(rarity);						// listに追加
+
+	// 円形ゲージをリセットする
+	m_pressAndHoldGauge->ResetGaugeAngle();
 }
 
 void Player::Death()
