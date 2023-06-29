@@ -15,7 +15,10 @@ public:
 	~Crystal();
 
 	bool Start();
-	void GetCrystal();					// 自身を獲得する処理
+	/// <summary>
+	/// 自身を獲得する処理
+	/// </summary>
+	void GetCrystal();
 	void Render(RenderContext& rc);
 
 	// レアリティ

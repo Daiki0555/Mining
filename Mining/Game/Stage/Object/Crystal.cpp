@@ -43,7 +43,7 @@ bool Crystal::Start()
 
 void Crystal::GetCrystal()
 {
-	m_canDrawFlag == false;
+	m_canDrawFlag = false;
 }
 
 void Crystal::Render(RenderContext& rc)
