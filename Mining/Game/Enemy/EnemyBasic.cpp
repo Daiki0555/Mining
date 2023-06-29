@@ -37,22 +37,38 @@ bool EnemyBasic::Start(int attackPower, float moveSpeed, float radius, float hei
 
 void EnemyBasic::Move()
 {
-	m_actionState = m_enActionState_Move;
-
 	// プレイヤーへ向かうベクトルを作成
 	Vector3 moveSpeed = m_player->GetPosition() - m_position;
 	moveSpeed.y = 0.0f;
 	moveSpeed.Normalize();
 
+	// プレイヤーと自身との間に壁があったら
 	if (WallAndHit(m_position + (moveSpeed* ADD_LENGTH)) == false) {
+		// 移動を停止する
 		m_actionState = m_enActionState_Idle;
 		return;
 	}
 
+	// 移動させる
 	m_position = m_characterController.Execute(moveSpeed, g_gameTime->GetFrameDeltaTime() * m_enemyStatus.m_basicSpeed);
 
 	// 回転
 	Rotation(moveSpeed);
+}
+
+void EnemyBasic::Idle()
+{
+	// プレイヤーへ向かうベクトルを作成
+	Vector3 moveSpeed = m_player->GetPosition() - m_position;
+	moveSpeed.y = 0.0f;
+	moveSpeed.Normalize();
+
+	if (WallAndHit(m_position + (moveSpeed * ADD_LENGTH)) == false) {
+		return;
+	}
+
+	// 移動を開始する
+	m_actionState = m_enActionState_Move;
 }
 
 struct SweepResultWall :public btCollisionWorld::ConvexResultCallback
@@ -74,7 +90,7 @@ struct SweepResultWall :public btCollisionWorld::ConvexResultCallback
 	}
 };
 
-bool EnemyBasic::WallAndHit(Vector3 position)
+bool EnemyBasic::WallAndHit(Vector3 targetPosition)
 {
 	btTransform start, end;
 
@@ -85,7 +101,7 @@ bool EnemyBasic::WallAndHit(Vector3 position)
 	start.setOrigin(btVector3(m_position.x, Y_POSITION, m_position.z));
 
 	// 終点はプレイヤーの座標
-	end.setOrigin(btVector3(position.x, Y_POSITION, position.z));
+	end.setOrigin(btVector3(targetPosition.x, Y_POSITION, targetPosition.z));
 
 	SweepResultWall callback;
 
@@ -118,12 +134,6 @@ void EnemyBasic::Rotation(Vector3 rotation)
 	m_modelRender.SetRotaition(m_rotation);
 }
 
-
-void EnemyBasic::SearchPlayer()
-{
-
-}
-
 void EnemyBasic::Damege()
 {
 	if (m_modelRender.IsPlayingAnimation()) {
@@ -135,8 +145,6 @@ void EnemyBasic::Damege()
 
 void EnemyBasic::StopAction()
 {
-	m_actionState = m_enActionState_Idle;
-
 	m_StopTimer -= g_gameTime->GetFrameDeltaTime();
 
 	// タイマーが0.0f以下になったら移行する

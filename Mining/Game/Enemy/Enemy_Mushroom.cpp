@@ -24,7 +24,11 @@ bool Enemy_Mushroom::Start()
 {
 	LoadAnimation();
 
-	m_modelRender.Init("Assets/modelData/enemy/MushroomMan/MushroomMan.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ);
+	m_modelRender.Init("Assets/modelData/enemy/MushroomMan/MushroomMan.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ, true);
+	m_modelRender.SetScale(m_scale);
+	m_modelRender.SetRotaition(m_rotation);
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.Update();
 
 	EnemyBasic::Start(
 		ATTACK_POWER,					// çUåÇóÕ
@@ -69,10 +73,30 @@ void Enemy_Mushroom::PlayAnimation()
 	}
 }
 
+void Enemy_Mushroom::Action()
+{
+	switch (m_actionState) {
+	case m_enActionState_Idle:
+		Idle();
+		break;
+	case m_enActionState_Move:
+		Move();
+		break;
+	case m_enActionState_Attack:
+		Attack();
+		break;
+	case m_enActionState_Damage:
+		Damege();
+		break;
+	case m_enActionState_StopAction:
+		StopAction();
+		break;
+	}
+}
+
 void Enemy_Mushroom::Update()
 {
-	Move();
-
+	Action();
 	PlayAnimation();
 
 	m_modelRender.SetScale(m_scale);
@@ -80,6 +104,7 @@ void Enemy_Mushroom::Update()
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.Update();
 }
+
 
 void Enemy_Mushroom::Render(RenderContext& rc)
 {

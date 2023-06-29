@@ -13,7 +13,7 @@ public:
 	virtual ~EnemyBasic() = 0;
 
 	/// <summary>
-	/// 
+	/// 初期化
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
 	/// <param name="moveSpeed">基本移動速度</param>
@@ -21,14 +21,36 @@ public:
 	/// <param name="hight">キャラクターコントローラーの高さ</param>
 	/// <returns></returns>
 	bool Start(int attackPower, float moveSpeed, float radius, float height);
-
+	/// <summary>
+	/// 回転処理
+	/// </summary>
 	void Rotation(Vector3 rotaion);
+	/// <summary>
+	/// 移動処理
+	/// </summary>
 	void Move();
-	void SearchPlayer();
+	/// <summary>
+	/// 待機時の処理
+	/// </summary>
+	void Idle();
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
 	void Attack();
+	/// <summary>
+	/// 被弾処理
+	/// </summary>
 	void Damege();
+	/// <summary>
+	/// 行動を停止する
+	/// </summary>
 	void StopAction();
-	bool WallAndHit(Vector3 position);
+	/// <summary>
+	/// 壁との衝突判定
+	/// </summary>
+	/// <param name="targetPosition">目的の座標</param>
+	/// <returns></returns>
+	bool WallAndHit(Vector3 targetPosition);
 
 	/// <summary>
 	/// 座標を設定
@@ -64,13 +86,13 @@ public:
 
 protected:
 	enum enActionState {
-		m_enActionState_Idle,					// 待機
-		m_enActionState_Move,					// 移動
+		m_enActionState_Idle,				// 待機
+		m_enActionState_Move,				// 移動
 		m_enActionState_Attack,				// 攻撃
 		m_enActionState_Damage,				// 被弾
 		m_enActionState_StopAction,			// 行動停止
 	};
-	enActionState m_actionState = m_enActionState_Idle;
+	enActionState		m_actionState = m_enActionState_Move;			// 行動ルーチン
 
 	enum enAnimationClip {
 		m_enAnimationClips_Idle,			// 待機
@@ -79,26 +101,26 @@ protected:
 		m_enAnimationClips_Damage,			// 被弾
 		m_enAnimationClips_Num
 	};
-	AnimationClip m_enAnimationClips[m_enAnimationClips_Num];
+	AnimationClip		m_enAnimationClips[m_enAnimationClips_Num];		// アニメーションクリップ
 
 // -----------------------------------------------------------
-	Player*				m_player = nullptr;						// プレイヤー
+	Player*				m_player = nullptr;								// プレイヤー
 
-	CharacterController	m_characterController;					// キャラクターコントローラー
-	SphereCollider		m_sphereCollider;						// スフィアコライダー
+	CharacterController	m_characterController;							// キャラクターコントローラー
+	SphereCollider		m_sphereCollider;								// スフィアコライダー
 
-	ModelRender			m_modelRender;							// モデルレンダー
+	ModelRender			m_modelRender;									// モデルレンダー
 
-	Vector3				m_position = Vector3::Zero;				// 自身の座標
-	Vector3				m_scale = Vector3::One;					// 自身のスケール
-	Quaternion			m_rotation = Quaternion::Identity;		// 自身の回転
+	Vector3				m_position = Vector3::Zero;						// 自身の座標
+	Vector3				m_scale = Vector3::One;							// 自身のスケール
+	Quaternion			m_rotation = Quaternion::Identity;				// 自身の回転
 
 	struct EnemyStatus {
-		int				m_attackPower = 0;						// 攻撃力
-		float			m_basicSpeed = 0.0f;					// 移動速度
+		int				m_attackPower = 0;								// 攻撃力
+		float			m_basicSpeed = 0.0f;							// 移動速度
 	};
-	EnemyStatus			m_enemyStatus;							// エネミーのステータス
+	EnemyStatus			m_enemyStatus;									// エネミーのステータス
 
-	float				m_StopTimer = STOP_TIME;				// 行動を停止するタイマー
+	float				m_StopTimer = STOP_TIME;						// 行動を停止するタイマー
 };
 

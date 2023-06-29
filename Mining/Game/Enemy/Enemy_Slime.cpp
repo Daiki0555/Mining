@@ -3,13 +3,15 @@
 
 namespace
 {
-	const int	ATTACK_POWER = 10;							// 攻撃
-	const float BASIC_SPEED = 200.0f;						// 基本スピード
+	const int		ATTACK_POWER = 10;							// 攻撃
+	const float		BASIC_SPEED = 200.0f;						// 基本スピード
 
-	const float CHARACTERCONTROLLER_RADIUS = 50.0f;			// 半径
-	const float CHARACTERCONTROLLER_HEIGHT = 50.0f;			// 高さ
+	const Vector3	SCALE = { 5.0f,5.0f,5.0f };					// スケール
 
-	const float LINEAR_COMPLETION = 1.0f;					// 線形補完
+	const float		CHARACTERCONTROLLER_RADIUS = 50.0f;			// 半径
+	const float		CHARACTERCONTROLLER_HEIGHT = 50.0f;			// 高さ
+
+	const float		LINEAR_COMPLETION = 1.0f;					// 線形補完
 }
 
 Enemy_Slime::Enemy_Slime()
@@ -24,12 +26,13 @@ bool Enemy_Slime::Start()
 {
 	LoadAnimation();
 
-	m_scale = { 5.0f,5.0f,5.0f };
+	m_scale = SCALE;
 
-	m_modelRender.Init("Assets/modelData/enemy/SlimeRabbit/SlimeRabbit.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ);
+	m_modelRender.Init("Assets/modelData/enemy/SlimeRabbit/SlimeRabbit.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ, true);
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotaition(m_rotation);
 	m_modelRender.SetPosition(m_position);
+	m_modelRender.Update();
 
 	EnemyBasic::Start(
 		ATTACK_POWER,					// 攻撃力
@@ -70,9 +73,30 @@ void Enemy_Slime::PlayAnimation()
 	}
 }
 
+void Enemy_Slime::Action()
+{
+	switch (m_actionState) {
+	case m_enActionState_Idle:
+		Idle();
+		break;
+	case m_enActionState_Move:
+		Move();
+		break;
+	case m_enActionState_Attack:
+		Attack();
+		break;
+	case m_enActionState_Damage:
+		Damege();
+		break;
+	case m_enActionState_StopAction:
+		StopAction();
+		break;
+	}
+}
+
 void Enemy_Slime::Update()
 {
-	Move();
+	Action();
 	PlayAnimation();
 
 	m_modelRender.SetScale(m_scale);

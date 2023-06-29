@@ -3,15 +3,17 @@
 
 namespace
 {
-	const int	ATTACK_POWER = 5;							// 攻撃
-	const float BASIC_SPEED = 250.0f;						// 基本スピード
+	const int		ATTACK_POWER = 5;							// 攻撃
+	const float		BASIC_SPEED = 250.0f;						// 基本スピード
 
-	const float Y_UP = 50.0f;								// 地面から浮かせる値
 
-	const float CHARACTERCONTROLLER_RADIUS = 15.0f;			// 半径
-	const float CHARACTERCONTROLLER_HEIGHT = 15.0f;			// 高さ
+	const Vector3	SCALE = { 1.3f,1.3f,1.3f };					// スケール
+	const float		Y_UP = 100.0f;								// 地面から浮かせる値
 
-	const float LINEAR_COMPLETION = 1.0f;					// 線形補完
+	const float		CHARACTERCONTROLLER_RADIUS = 15.0f;			// 半径
+	const float		CHARACTERCONTROLLER_HEIGHT = 15.0f;			// 高さ
+
+	const float		LINEAR_COMPLETION = 1.0f;					// 線形補完
 }
 
 Enemy_Bee::Enemy_Bee()
@@ -26,7 +28,14 @@ bool Enemy_Bee::Start()
 {
 	LoadAnimation();
 
-	m_modelRender.Init("Assets/modelData/enemy/bee/bee.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ);
+	m_scale = SCALE;
+	m_position.y += Y_UP;				// 浮かせる
+
+	m_modelRender.Init("Assets/modelData/enemy/bee/bee.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ, true);
+	m_modelRender.SetScale(m_scale);
+	m_modelRender.SetRotaition(m_rotation);
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.Update();
 
 	EnemyBasic::Start(
 		ATTACK_POWER,					// 攻撃力
@@ -34,8 +43,6 @@ bool Enemy_Bee::Start()
 		CHARACTERCONTROLLER_RADIUS,		// キャラクターコントローラーの半径
 		CHARACTERCONTROLLER_HEIGHT		// キャラクターコントローラーの高さ
 	);
-
-	m_position.y += Y_UP;				// 浮かせる
 
 	return true;
 }
@@ -59,6 +66,7 @@ void Enemy_Bee::PlayAnimation()
 {
 	switch (m_actionState) {
 	case m_enActionState_Idle:
+	case m_enActionState_StopAction:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Move:
@@ -73,9 +81,30 @@ void Enemy_Bee::PlayAnimation()
 	}
 }
 
+void Enemy_Bee::Action()
+{
+	switch (m_actionState) {
+	case m_enActionState_Idle:
+		Idle();
+		break;
+	case m_enActionState_Move:
+		Move();
+		break;
+	case m_enActionState_Attack:
+		Attack();
+		break;
+	case m_enActionState_Damage:
+		Damege();
+		break;
+	case m_enActionState_StopAction:
+		StopAction();
+		break;
+	}
+}
+
 void Enemy_Bee::Update()
 {
-	Move();
+	Action();
 	PlayAnimation();
 
 	m_modelRender.SetScale(m_scale);
