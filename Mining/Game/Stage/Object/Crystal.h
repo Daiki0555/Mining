@@ -23,10 +23,10 @@ public:
 
 	// レアリティ
 	enum EnCrystalRarity {
-		EnCrystalRarity_Normal,			// 10
-		EnCrystalRarity_HyperNormal,	// 15
-		EnCrystalRarity_Rare,			// 20
-		EnCrystalRarity_HyperRare,		// 25
+		EnCrystalRarity_Normal,
+		EnCrystalRarity_HyperNormal,
+		EnCrystalRarity_Rare,
+		EnCrystalRarity_HyperRare,
 	};
 
 	/// <summary>
@@ -87,10 +87,26 @@ public:
 	}
 
 	/// <summary>
+	/// 描画フラグを設定する
+	/// </summary>
+	/// <param name="flag">trueなら描画する</param>
+	void SetDrawFlag(const bool flag) {
+		m_canDrawFlag = flag;
+	}
+
+	/// <summary>
+	/// 描画フラグを取得する
+	/// </summary>
+	/// <returns></returns>
+	bool GetDrawFlag() {
+		return m_canDrawFlag;
+	}
+
+	/// <summary>
 	/// レアリティを取得する
 	/// </summary>
 	/// <returns></returns>
-	const EnCrystalRarity GetRarity()const {
+	const int GetRarity()const {
 		return m_crystalRarity;
 	}
 
@@ -101,12 +117,9 @@ private:
 	/// <param name="rarity">自身のレア度</param>
 	void SetRarity(const int rarity) {
 
-		EnCrystalRarity myRarity;
+		int myRarity = EnCrystalRarity_Normal;
 
 		switch (rarity) {
-		case 0:
-			myRarity = EnCrystalRarity_Normal;
-			break;
 		case 1:
 			myRarity = EnCrystalRarity_HyperNormal;
 			break;
@@ -132,7 +145,7 @@ private:
 
 	Texture				m_texture;							// テクスチャ
 
-	EnCrystalRarity		m_crystalRarity;					// レアリティ
+	int					m_crystalRarity;					// レアリティ
 
 	bool				m_canDrawFlag = true;				// 描画できるかどうか
 };

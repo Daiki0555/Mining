@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Scene/Game.h"
 #include "Stage/Object/Crystal.h"
 #include "UI/PressAndHoldGauge.h"
+
+#define	DELTA_TIME 1.0f/60.0f						// 経過時間
 
 namespace
 {
 	const float RUN_SPEED = 2.5f;					// ダッシュ時の移動速度
-	const float WALKING_SPEED = 10.0f;				// 歩いている時の移動速度
+	const float WALKING_SPEED = 1.0f;				// 歩いている時の移動速度
 
 	const float DECREASE_STAMINA_VALUE = 15.0f;		// ダッシュ時のスタミナ消費速度
 	const float INCREASE_STAMINA_VALUE = 10.0f;		// スタミナ回復速度
@@ -16,9 +19,12 @@ namespace
 	const float Y_POSITION = 25.0f;					// 衝突判定時のY座標
 
 	const float ADD_LENGTH = 50.0f;					// 加算する長さ
+	const float CANGET_LENGTH = 100.0f;				// 獲得できる長さ
 
 	const int	STAMINA_MIN = 1;					// スタミナの最低値
 	const int	STAMINA_MAX = STAMINA;				// スタミナの最大値
+
+	const int	HP_MIN = 0;							// HPの最低値
 }
 
 Player::Player() 
@@ -32,6 +38,7 @@ Player::~Player()
 bool Player::Start()
 {
 	// インスタンスを探す
+	m_game = FindGO<Game>("game");
 	m_crystal = FindGO<Crystal>("crystal");
 	m_pressAndHoldGauge = FindGO<PressAndHoldGauge>("pressAndHoldGauge");
 
@@ -60,10 +67,10 @@ void Player::Update()
 	//}
 
 	// 体力が0のとき
-	if (m_playerStatus.m_hitPoint <= 0) {
+	if (m_playerStatus.m_hitPoint <= HP_MIN) {
 
 		// 補正
-		m_playerStatus.m_hitPoint = 0;
+		m_playerStatus.m_hitPoint = HP_MIN;
 
 		Death();				// 死亡する
 	}
@@ -213,7 +220,7 @@ void Player::Move()
 	// 移動速度に上記で計算したベクトルを加算
 	m_basicSpeed += right + forward;
 
-	m_position = m_characterController.Execute(m_basicSpeed, 1.0f / 60.0f);
+	m_position = m_characterController.Execute(m_basicSpeed, DELTA_TIME);
 
 	m_modelRender.SetPosition(m_position);
 }
@@ -290,44 +297,49 @@ bool Player::CrstalAndHit(Vector3 targetPosition)
 
 void Player::Dig()
 {
-	// 自身の座標から前方向へ向かうベクトルを作成
-	Vector3 diff = m_crystal->Getposition() - m_position;
-	diff.Normalize();
+	Vector3 diff;
+	int rarity;
 
-	// 衝突していないなら中断
-	if (CrstalAndHit(m_position + (diff * ADD_LENGTH))) {
+	for (int i = 0; i < m_game->GetCrystalList().size(); i++) {
+
+		// 自身の座標から前方向へ向かうベクトルを作成
+		diff = m_game->GetCrystalList()[i]->Getposition() - m_position;
+
+		// 衝突していないなら中断
+		if (CrstalAndHit(m_position + (diff * ADD_LENGTH))) {
+			// 円形ゲージを描画する
+			m_pressAndHoldGauge->SetCanDrawGauge(false);
+			break;
+		}
+
 		// 円形ゲージを描画する
+		m_pressAndHoldGauge->SetCanDrawGauge(true);
+		// 自身の座標を教える
+		m_pressAndHoldGauge->Set3DPosition(m_position);
+
+		if (g_pad[0]->IsPress(enButtonB)) {
+			// 角度を増やす
+			m_pressAndHoldGauge->SetChangeGaugeAngle(true);
+			m_actionState = m_enActionState_Dig;
+		}
+		else {
+			// 角度を減らす
+			m_pressAndHoldGauge->SetChangeGaugeAngle(false);
+		}
+
+		// ゲージが最大でないとき以下の処理は実行しない
+		if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Min) {
+			break;
+		}
+
+		m_game->GetCrystalList()[i]->SetDrawFlag(false);			// クリスタルを取得
+		AddCrystal(m_game->GetCrystalList()[i]->GetRarity());		// listにレアリティを追加
+
+		// 円形ゲージをリセットする
 		m_pressAndHoldGauge->SetCanDrawGauge(false);
-		return;
+		m_pressAndHoldGauge->ResetGaugeAngle();
+		break;
 	}
-
-	// 円形ゲージを描画する
-	m_pressAndHoldGauge->SetCanDrawGauge(true);
-	// 自身の座標を教える
-	m_pressAndHoldGauge->Set3DPosition(m_position);
-
-	if (g_pad[0]->IsPress(enButtonB)) {
-		// 角度を増やす
-		m_pressAndHoldGauge->SetChangeGaugeAngle(true);
-		m_actionState = m_enActionState_Dig;
-	}
-	else {
-		// 角度を減らす
-		m_pressAndHoldGauge->SetChangeGaugeAngle(false);
-	}
-
-	// ゲージが最大でないとき以下の処理は実行しない
-	if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Min) {
-		return;
-	}
-
-	m_crystal->GetCrystal();					// クリスタルを取得
-	int rarity = m_crystal->GetRarity();		// 取得したクリスタルのレア度を取得
-
-	AddCrystalNum(rarity);						// listに追加
-
-	// 円形ゲージをリセットする
-	m_pressAndHoldGauge->ResetGaugeAngle();
 }
 
 void Player::Death()
