@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "GameClear.h"
-#include "GameOver.h"
 #include "Player.h"
 #include "Stage/BackGround.h"
 #include "GameCamera.h"
@@ -153,14 +151,12 @@ void Game::ClearGame()
 {
 	m_fontRender.SetText(L"GAME CLEAR");
 	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f});
-	//GameClear* m_gameClear = NewGO<GameClear>(0, "gameClear");
 }
 
 void Game::OverGame()
 {
 	m_fontRender.SetText(L"GAME OVER");
 	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f });
-	//GameOver* m_gameOver = NewGO<GameOver>(0, "gameOver");
 }
 
 void Game::Render(RenderContext& rc) 

@@ -7,8 +7,6 @@ class PlayerStatusGauge;
 class PressAndHoldGauge;
 class Crystal;
 class PhysicsGhost;
-class GameClear;
-class GameOver;
 class EnemyBasic;
 class Game:public IGameObject
 {
