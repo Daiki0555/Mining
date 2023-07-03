@@ -11,6 +11,7 @@
 #include "Stage/Object/Crystal.h"
 #include "UI/PlayerStatusGauge.h"
 #include "UI/PressAndHoldGauge.h"
+#include "Stage/PhysicsGhost.h"
 
 Game::Game()
 {
@@ -63,11 +64,18 @@ void Game::LevelDesign()
 		// 名前がghostのとき
 		if (objData.EqualObjectName(L"ghost") == true)
 		{
-			
+			// ゴーストを作成
+			m_physicsGhost = NewGO<PhysicsGhost>(0, "physicsGhost");
+			m_physicsGhost->SetPosition(objData.position);
+			m_physicsGhost->SetScale(objData.scale);
+			m_physicsGhost->SetRotation(objData.rotaition);
+			m_ghostList.push_back(m_physicsGhost);
+			return true;
 		}
 		// 名前がcrystalのとき
 		if (objData.EqualObjectName(L"crystal") == true) 
 		{
+			// オブジェクトを作成
 			Crystal* m_crystal = NewGO<Crystal>(0, "crystal");
 			m_crystal->SetPosition(objData.position);
 			m_crystal->SetScale(objData.scale);
@@ -81,7 +89,7 @@ void Game::LevelDesign()
 		//名前がplayerの時
 		if (objData.EqualObjectName(L"player") == true)
 		{
-			// プレイヤーを生成
+			// プレイヤーを作成
 			m_player = NewGO<Player>(0, "player");
 			m_player->SetPosition(objData.position);
 			m_player->SetRotation(objData.rotaition);
@@ -111,9 +119,51 @@ void Game::LevelDesign()
 
 void Game::Update()
 {
-	// プレイヤーの体力がないなら
-	if (m_player->GetHitPoint() <= 0) {
+	// プレイヤーが死亡しているなら
+	if (m_player->GetActionState() == m_player->m_enActionState_Death) {
 		// ゲームオーバー
 		m_enGameState = m_enGameState_GameOver;
 	}
+
+	// ゴールにたどり着いたなら
+	if (m_player->GetActionState() == m_player->m_enActionState_Clear) {
+		// ゲームクリア
+		m_enGameState = m_enGameState_GameClear;
+	}
+
+	switch (m_enGameState) {
+	case m_enGameState_Play:
+		PlayGame();
+		break;
+	case m_enGameState_GameClear:
+		ClearGame();
+		break;
+	case m_enGameState_GameOver:
+		OverGame();
+		break;
+	}
+}
+
+void Game::PlayGame()
+{
+
+}
+
+void Game::ClearGame()
+{
+	m_fontRender.SetText(L"GAME CLEAR");
+	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f});
+	//GameClear* m_gameClear = NewGO<GameClear>(0, "gameClear");
+}
+
+void Game::OverGame()
+{
+	m_fontRender.SetText(L"GAME OVER");
+	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f });
+	//GameOver* m_gameOver = NewGO<GameOver>(0, "gameOver");
+}
+
+void Game::Render(RenderContext& rc) 
+{
+	m_fontRender.Draw(rc);
 }
