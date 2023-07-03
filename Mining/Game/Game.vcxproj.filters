@@ -42,6 +42,7 @@
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Stage\PhysicsGhost.cpp" />
     <ClCompile Include="Scene\GameResult.cpp" />
+    <ClCompile Include="SaveDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -73,5 +74,6 @@
     <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Stage\PhysicsGhost.h" />
     <ClInclude Include="Scene\GameResult.h" />
+    <ClInclude Include="SaveDataManager.h" />
   </ItemGroup>
 </Project>

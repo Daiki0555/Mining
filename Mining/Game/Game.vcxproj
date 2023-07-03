@@ -231,6 +231,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SaveDataManager.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
     <ClCompile Include="Scene\GameResult.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="Enemy\Enemy_Slime.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SaveDataManager.h" />
     <ClInclude Include="Scene\Game.h" />
     <ClInclude Include="Scene\GameResult.h" />
     <ClInclude Include="Scene\Title.h" />
