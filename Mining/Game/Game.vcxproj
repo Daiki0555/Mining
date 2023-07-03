@@ -232,11 +232,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
-    <ClCompile Include="Scene\GameClear.cpp" />
-    <ClCompile Include="Scene\GameOver.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Stage\BackGround.cpp" />
     <ClCompile Include="Stage\Object\Crystal.cpp" />
+    <ClCompile Include="Stage\PhysicsGhost.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -255,11 +254,10 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene\Game.h" />
-    <ClInclude Include="Scene\GameClear.h" />
-    <ClInclude Include="Scene\GameOver.h" />
     <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Stage\BackGround.h" />
     <ClInclude Include="Stage\Object\Crystal.h" />
+    <ClInclude Include="Stage\PhysicsGhost.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="UI\PlayerStatusGauge.h" />

@@ -39,9 +39,8 @@
     <ClCompile Include="UI\PlayerStatusGauge.cpp" />
     <ClCompile Include="UI\PressAndHoldGauge.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
-    <ClCompile Include="Scene\GameClear.cpp" />
-    <ClCompile Include="Scene\GameOver.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="Stage\PhysicsGhost.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -70,8 +69,7 @@
     <ClInclude Include="UI\PlayerStatusGauge.h" />
     <ClInclude Include="UI\PressAndHoldGauge.h" />
     <ClInclude Include="Scene\Game.h" />
-    <ClInclude Include="Scene\GameClear.h" />
-    <ClInclude Include="Scene\GameOver.h" />
     <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="Stage\PhysicsGhost.h" />
   </ItemGroup>
 </Project>
