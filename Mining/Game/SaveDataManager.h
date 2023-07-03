@@ -16,7 +16,7 @@ public:
 	/// </summary>
 	struct SaveData
 	{
-		float score[SCORE_MAX + 1];	//スコア。
+		std::array< float, SCORE_MAX + 1 > score;	//スコア。
 	};
 
 public:
@@ -55,7 +55,7 @@ public:
 	void Sort(SaveData& data, float newScore)
 	{
 		float tmp = 0.0f;
-		data.score[10] = newScore;
+		data.score[SCORE_MAX] = newScore;
 
 		//数値を降順にソート。
 		for (int i = 0; i < SCORE_MAX + 1; i++)
