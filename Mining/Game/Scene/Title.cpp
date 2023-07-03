@@ -14,7 +14,7 @@ Title::~Title()
 
 bool Title::Start()
 {
-	
+	return true;
 }
 
 void Title::Update()
