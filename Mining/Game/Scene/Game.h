@@ -46,7 +46,7 @@ public:
 	{
 		return m_crystalList;
 	}
-	
+
 private:
 	enum enGameState {
 		m_enGameState_Play,												// ƒvƒŒƒC’†

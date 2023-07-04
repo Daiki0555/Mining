@@ -41,7 +41,7 @@ public:
 	/// À•W‚ğQÆ‚·‚é
 	/// </summary>
 	/// <returns></returns>
-	const Vector3 Getposition() const {
+	const Vector3 GetPosition() const {
 		return m_position;
 	}
 

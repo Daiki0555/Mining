@@ -78,7 +78,11 @@ void Player::Update()
 		Move();					// 移動
 		Rotation();				// 回転
 
-		Dig();
+		// Bボタンが押されたとき
+		if (g_pad[0]->IsPress(enButtonB)) {
+			// 採掘する
+			Dig();
+		}
 
 		// スタミナが最大値でない　かつ　Aボタンが入力されていないとき
 		if (m_playerStatus.m_stamina < STAMINA_MAX &&
@@ -232,7 +236,7 @@ void Player::Attack()
 void Player::Damage(int attackPower)
 {
 	// ダメージを受けない状態のとき
-	if (m_canDamageflag == false) {
+	if (m_canAddDamage == false) {
 		// 以下の処理を実行しない
 		return;
 	}
@@ -240,13 +244,13 @@ void Player::Damage(int attackPower)
 	m_en_AnimationClips_Damage;					// 被弾モーションを再生
 
 	m_playerStatus.m_hitPoint-= attackPower;	// ダメージ量をHPから引く
-	m_canDamageflag = false;					// 連続してダメージを受けない
+	m_canAddDamage = false;					// 連続してダメージを受けない
 
 	m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
 
 	// タイマーが0.0f以下のとき
 	if (m_invincibleTimer < 0.0f) {
-		m_canDamageflag = true;
+		m_canAddDamage = true;
 		m_invincibleTimer = INVINCIBLE_TIMER;	// タイマーをリセット
 	}
 }
@@ -297,26 +301,56 @@ bool Player::CrstalAndHit(Vector3 targetPosition)
 
 void Player::Dig()
 {
-	Vector3 diff;
-	int rarity;
+	Vector3 diff = Vector3::Zero;
+	int rarity = 0;
+	int number = 0;
 
-	for (int i = 0; i < m_game->GetCrystalList().size(); i++) {
+	if (!m_isDig) {
+		// クリスタルの母数を取得
+		int crystalNum = m_game->GetCrystalList().size();
 
-		// 自身の座標から前方向へ向かうベクトルを作成
-		diff = m_game->GetCrystalList()[i]->Getposition() - m_position;
+		for (int i = 0; i < crystalNum; i++) {
+
+			// 座標を取得
+			Vector3 crystalPos = m_game->GetCrystalList()[i]->GetPosition();
+			// 自身の座標からクリスタルへ向かうベクトルを作成
+			diff = crystalPos - m_position;
+
+			// 衝突していないなら中断
+			if (CrstalAndHit(m_position + (diff * ADD_LENGTH))) {
+				// 円形ゲージを描画しない
+				m_pressAndHoldGauge->SetCanDrawGauge(false);
+				break;
+			}
+
+			// 円形ゲージを描画する
+			m_pressAndHoldGauge->SetCanDrawGauge(true);
+			// 円形ゲージを描画する
+			m_pressAndHoldGauge->SetCanDrawGauge(true);
+			// 自身の座標を教える
+			m_pressAndHoldGauge->Set3DPosition(m_position);
+			// クリスタルの位置を保存
+			m_crystalPosition = crystalPos;
+			// レアリティを保存
+			rarity = m_game->GetCrystalList()[i]->GetRarity();
+			// 番号を保存
+			number = i;
+			m_isDig = true;
+		}
+	}
+	else {
+		// 自身の座標からクリスタルへ向かうベクトルを作成
+		diff = m_crystalPosition - m_position;
 
 		// 衝突していないなら中断
 		if (CrstalAndHit(m_position + (diff * ADD_LENGTH))) {
-			// 円形ゲージを描画する
+			// 円形ゲージを描画しない
 			m_pressAndHoldGauge->SetCanDrawGauge(false);
-			break;
+			// 採掘しない
+			m_isDig = false;
+			return;
 		}
-
-		// 円形ゲージを描画する
-		m_pressAndHoldGauge->SetCanDrawGauge(true);
-		// 自身の座標を教える
-		m_pressAndHoldGauge->Set3DPosition(m_position);
-
+		
 		if (g_pad[0]->IsPress(enButtonB)) {
 			// 角度を増やす
 			m_pressAndHoldGauge->SetChangeGaugeAngle(true);
@@ -329,16 +363,18 @@ void Player::Dig()
 
 		// ゲージが最大でないとき以下の処理は実行しない
 		if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Min) {
-			break;
+			return;
 		}
 
-		m_game->GetCrystalList()[i]->SetDrawFlag(false);			// クリスタルを取得
-		AddCrystal(m_game->GetCrystalList()[i]->GetRarity());		// listにレアリティを追加
+		// クリスタルを取得する
+		m_game->GetCrystalList()[number]->SetDrawFlag(false);
+		//m_game->GetCrystalList().erase(m_game->GetCrystalList().begin() + number);
+		// listにレアリティを追加
+		AddCrystal(rarity);
 
 		// 円形ゲージをリセットする
 		m_pressAndHoldGauge->SetCanDrawGauge(false);
 		m_pressAndHoldGauge->ResetGaugeAngle();
-		break;
 	}
 }
 

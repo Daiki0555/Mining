@@ -170,6 +170,7 @@ private:
 	Vector3					m_position = Vector3::Zero;						// 自身の座標
 	Vector3					m_scale = Vector3::One;							// 自身のスケール
 	Vector3					m_basicSpeed = Vector3::Zero;					// 移動速度
+	Vector3					m_crystalPosition = Vector3::Zero;				// 獲得するクリスタルの座標
 
 	Quaternion				m_rotation= Quaternion::Identity;				// 自身の回転
 
@@ -189,7 +190,8 @@ private:
 	float					m_invincibleTimer = INVINCIBLE_TIMER;			// 無敵時間
 	float					m_addSpped = 0.0f;								// 乗算速度
 
-	bool					m_canDamageflag = true;							// ダメージを受けられるかどうか
+	bool					m_canAddDamage = true;							// ダメージを受けられるかどうか
+	bool					m_isDig = false;							// 採掘しているかどうか
 
 	std::list<int>			m_haveCrystals;									// 所持しているクリスタル
 };
