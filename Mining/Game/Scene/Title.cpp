@@ -6,6 +6,7 @@
 namespace 
 {
 	const Vector3	TEX_POSITION = { -150.0f,-200.0f,0.0f };		// 座標
+	const Vector3	TEX_SCALE = { 0.5f,0.5f,0.5f };					// スケール
 
 	const float		ALPHA_VALUE = 0.01f;							// α値
 }
@@ -27,7 +28,7 @@ bool Title::Start()
 
 	m_spriteRenderMessage.Init("Assets/Sprite/UI/Button/StartMessage.DDS", 716.0f, 59.0f);
 	m_spriteRenderMessage.SetPosition(TEX_POSITION);
-	m_spriteRenderTitle.SetScale({ 1.0f,1.0f,1.0f });
+	m_spriteRenderMessage.SetScale(TEX_SCALE);
 	m_spriteRenderMessage.Update();
 
 	return true;

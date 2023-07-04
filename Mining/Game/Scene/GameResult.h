@@ -1,9 +1,8 @@
 #pragma once
 
-#include"SaveDataManager.h"
-
 class GameResult:public IGameObject
 {
+public:
 	GameResult();
 	~GameResult();
 
@@ -12,19 +11,26 @@ class GameResult:public IGameObject
 	void Render(RenderContext& rc);
 
 	/// <summary>
-	/// 新しいスコアを設定する
+	/// 獲得した数を設定する
 	/// </summary>
-	/// <param name="score"></param>
-	void SetNewScore(float score) {
-		m_newScore = score;
+	void SetScore(const int blueNum, const int pinkNum, const int yellowNum, const int greenNum) {
+		m_newScore.m_crystalBlue = blueNum;
+		m_newScore.m_crystalPink = pinkNum;
+		m_newScore.m_crystalYellow = yellowNum;
+		m_newScore.m_crystalGreen = greenNum;
 	}
 
 private:
-	SpriteRender				m_spriteRender;
-	FontRender					m_fontRender;
+	SpriteRender	m_spriteRender;			// スプライトレンダー
+	FontRender		m_fontRender;			// フォントレンダー
 
-	SaveDataManager::SaveData	m_saveData;				// セーブデータの構造体
-
-	int							m_newScore = 0;			// 新しいスコア
+	struct Score {
+		int			m_crystalBlue = 0;	
+		int			m_crystalPink = 0;
+		int			m_crystalYellow = 0;
+		int			m_crystalGreen = 0;
+		int			m_scoreSum = 0;			// スコアの総数
+	};
+	Score			m_newScore;				// スコア
 };
 

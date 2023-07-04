@@ -12,6 +12,8 @@ namespace
 
 	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
 	const float RECOVERY_TIMER = 2.0f;		// スタミナが回復するまでの時間
+
+	const float ADDSPEED = 0.5f;			// ダッシュ時の加算速度
 }
 
 class Player :public IGameObject
@@ -138,14 +140,6 @@ public:
 	}
 
 private:
-	/// <summary>
-	/// クリスタルの数を追加
-	/// </summary>
-	/// <returns></returns>
-	void AddCrystal(const int& rarity){
-		m_haveCrystals.push_back(rarity);
-	}
-
 	enActionState			m_actionState;
 
 	enum enAnimationClip {
@@ -189,10 +183,11 @@ private:
 	float					m_recoveryTimer = RECOVERY_TIMER;				// スタミナが回復し始めるまでの時間
 	float					m_invincibleTimer = INVINCIBLE_TIMER;			// 無敵時間
 	float					m_addSpped = 0.0f;								// 乗算速度
+	float					m_addValue = ADDSPEED;
 
 	bool					m_canAddDamage = true;							// ダメージを受けられるかどうか
-	bool					m_isDig = false;							// 採掘しているかどうか
+	bool					m_isDig = false;								// 採掘しているかどうか
 
-	std::list<int>			m_haveCrystals;									// 所持しているクリスタル
+	std::list<Crystal*>			m_haveCrystals;									// 所持しているクリスタル
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 
+class GameResult;
 class Player;
 class BackGround;
 class GameCamera;
@@ -32,13 +33,13 @@ public:
 	/// </summary>
 	void PlayGame();
 	/// <summary>
-	/// クリア時の処理
+	/// ゲームの終了処理
 	/// </summary>
-	void ClearGame();
+	void QuitGame();
 	/// <summary>
-	/// 死亡時の処理
+	/// スコア計算
 	/// </summary>
-	void OverGame();
+	void Score();
 
 	/// <summary>
 	/// クリスタルのリストを取得する
@@ -58,7 +59,7 @@ private:
 
 	LevelRender					m_levelRender;							// レベルレンダー
 
-
+	GameResult*					m_gameResult = nullptr;					// リザルト画面
 	Player*						m_player = nullptr;						// プレイヤー
 	BackGround*					m_backGround = nullptr;					// 背景
 	GameCamera*					m_gameCamera = nullptr;					// ゲームカメラ

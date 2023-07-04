@@ -33,6 +33,11 @@ Player::Player()
 
 Player::~Player()
 {
+	//m_haveCrystals.clear();
+
+	//for (int i = 0; i < m_haveCrystals.size(); i++) {
+	//	DeleteGO(m_haveCrystals[i]);
+	//}
 }
 
 bool Player::Start()
@@ -77,6 +82,10 @@ void Player::Update()
 		if (g_pad[0]->IsPress(enButtonB)) {
 			// 採掘する
 			Dig();
+		}
+		else {
+			// 角度を減らす
+			m_pressAndHoldGauge->SetChangeGaugeAngle(false);
 		}
 
 		// スタミナが最大値でない　かつ　Aボタンが入力されていないとき
@@ -202,7 +211,8 @@ void Player::Move()
 			// スタミナを減らす
 			//m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
 
-			m_addSpped = RUN_SPEED;
+			m_addValue += ADDSPEED;
+			m_addSpped = min(m_addValue, RUN_SPEED);
 		}
 	}
 	else {
@@ -239,7 +249,7 @@ void Player::Damage(int attackPower)
 	m_en_AnimationClips_Damage;					// 被弾モーションを再生
 
 	m_playerStatus.m_hitPoint-= attackPower;	// ダメージ量をHPから引く
-	m_canAddDamage = false;					// 連続してダメージを受けない
+	m_canAddDamage = false;						// 連続してダメージを受けない
 
 	m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
 
@@ -297,8 +307,6 @@ bool Player::CrstalAndHit(Vector3 targetPosition)
 void Player::Dig()
 {
 	Vector3 diff = Vector3::Zero;
-	int rarity = 0;
-	int number = 0;
 
 	if (!m_isDig) {
 		// クリスタルの母数を取得
@@ -326,10 +334,6 @@ void Player::Dig()
 			m_pressAndHoldGauge->Set3DPosition(m_position);
 			// クリスタルの位置を保存
 			m_crystalPosition = crystalPos;
-			// レアリティを保存
-			rarity = m_game->GetCrystalList()[i]->GetRarity();
-			// 番号を保存
-			number = i;
 			m_isDig = true;
 		}
 	}
@@ -351,21 +355,11 @@ void Player::Dig()
 			m_pressAndHoldGauge->SetChangeGaugeAngle(true);
 			m_actionState = m_enActionState_Dig;
 		}
-		else {
-			// 角度を減らす
-			m_pressAndHoldGauge->SetChangeGaugeAngle(false);
-		}
 
 		// ゲージが最大でないとき以下の処理は実行しない
 		if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Min) {
 			return;
 		}
-
-		// クリスタルを取得する
-		m_game->GetCrystalList()[number]->SetDrawFlag(false);
-		//m_game->GetCrystalList().erase(m_game->GetCrystalList().begin() + number);
-		// listにレアリティを追加
-		AddCrystal(rarity);
 
 		// 円形ゲージをリセットする
 		m_pressAndHoldGauge->SetCanDrawGauge(false);

@@ -85,6 +85,10 @@ void PressAndHoldGauge::ChangeGaugeAngle()
 		// ÉQÅ[ÉWÇÕç≈è¨
 		m_enGaugeState = enGaugeState_Min;
 	}
+	else if (m_circleGauge.m_angle <= CIRCLE_SIZE_MAX) {
+		// ÇªÇ§Ç≈Ç»Ç¢Ç∆Ç´ÇÕç≈ëÂ
+		m_enGaugeState = enGaugeState_Max;
+	}
 
 	// äpìxÇìKâû
 	RenderingEngine::GetInstance()->GetSpriteCB().clipSize.y = (m_circleGauge.m_angle * PI) / 180.0f;

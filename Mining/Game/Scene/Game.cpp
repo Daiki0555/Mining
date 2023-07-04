@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 
+#include "Scene/GameResult.h"
 #include "Player.h"
 #include "Stage/BackGround.h"
 #include "GameCamera.h"
@@ -12,6 +13,11 @@
 #include "UI/PressAndHoldGauge.h"
 #include "Stage/PhysicsGhost.h"
 
+namespace
+{
+	const int ENEMY_MAX = 3;
+}
+
 Game::Game()
 {
 }
@@ -19,6 +25,8 @@ Game::Game()
 Game::~Game()
 {
 	m_crystalList.clear();
+	m_enemyList.clear();
+	m_ghostList.clear();
 
 	Objct_DeleteGO();
 }
@@ -31,6 +39,14 @@ void Game::Objct_DeleteGO()
 
 	for (int i = 0; i < m_crystalList.size(); i++) {
 		DeleteGO(m_crystalList[i]);
+	}
+
+	for (int i = 0; i < m_enemyList.size(); i++) {
+		DeleteGO(m_enemyList[i]);
+	}
+
+	for (int i = 0; i < m_ghostList.size(); i++) {
+		DeleteGO(m_ghostList[i]);
 	}
 }
 
@@ -69,6 +85,7 @@ void Game::LevelDesign()
 			m_physicsGhost->SetScale(objData.scale);
 			m_physicsGhost->SetRotation(objData.rotaition);
 			m_ghostList.push_back(m_physicsGhost);
+
 			return true;
 		}
 		// 名前がcrystalのとき
@@ -97,9 +114,9 @@ void Game::LevelDesign()
 		// 名前がenemyのとき
 		if (objData.EqualObjectName(L"enemy") == true)
 		{
-			//Enemy_Bee* m_bee = NewGO<Enemy_Bee>(0, "bee");
-			//m_bee->SetPosition(objData.position);
-			//m_bee->SetRotation(objData.rotaition);
+			Enemy_Bee* m_bee = NewGO<Enemy_Bee>(0, "bee");
+			m_bee->SetPosition(objData.position);
+			m_bee->SetRotation(objData.rotaition);
 
 			//Enemy_Slime* m_slime = NewGO<Enemy_Slime>(0, "slime");
 			//m_slime->SetPosition(objData.position);
@@ -135,10 +152,8 @@ void Game::Update()
 		PlayGame();
 		break;
 	case m_enGameState_GameClear:
-		ClearGame();
-		break;
 	case m_enGameState_GameOver:
-		OverGame();
+		QuitGame();
 		break;
 	}
 }
@@ -148,24 +163,30 @@ void Game::PlayGame()
 
 }
 
-void Game::ClearGame()
+void Game::QuitGame()
 {
-	m_fontRender.SetText(L"GAME CLEAR");
+	switch (m_enGameState) {
+	m_enGameState_GameClear:	
+		m_fontRender.SetText(L"GAME CLEAR");
+		break;
+	m_enGameState_GameOver:
+		m_fontRender.SetText(L"GAME OVER");
+		break;
+
+	}
 	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f});
+	Score();
 
 	if (g_pad[0]->IsTrigger(enButtonA)) {
 		// リザルトに移行
+		m_gameResult = NewGO<GameResult>(0, "gameResult");
+		DeleteGO(this);
 	}
 }
 
-void Game::OverGame()
+void Game::Score()
 {
-	m_fontRender.SetText(L"GAME OVER");
-	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f });
-
-	if (g_pad[0]->IsTrigger(enButtonA)) {
-		// リザルトに移行
-	}
+	m_player->GetCrystalSum();
 }
 
 void Game::Render(RenderContext& rc) 
