@@ -1,8 +1,6 @@
 #pragma once
 
-namespace
-{
-}
+#include"SaveDataManager.h"
 
 class GameResult:public IGameObject
 {
@@ -12,10 +10,6 @@ class GameResult:public IGameObject
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
-	/// <summary>
-	/// ソート
-	/// </summary>
-	void Sort();
 
 	/// <summary>
 	/// 新しいスコアを設定する
@@ -26,14 +20,11 @@ class GameResult:public IGameObject
 	}
 
 private:
-	SpriteRender			m_spriteRender;
-	FontRender				m_fontRender;
+	SpriteRender				m_spriteRender;
+	FontRender					m_fontRender;
 
-	struct ScoreBord {
-		int					m_score = 0;			// スコア
-	};
+	SaveDataManager::SaveData	m_saveData;				// セーブデータの構造体
 
-	int						m_newScore = 0;			// 新しいスコア
-	std::vector<ScoreBord>	m_rankingList;			// ランキング
+	int							m_newScore = 0;			// 新しいスコア
 };
 

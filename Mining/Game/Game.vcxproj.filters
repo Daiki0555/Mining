@@ -43,6 +43,7 @@
     <ClCompile Include="Stage\PhysicsGhost.cpp" />
     <ClCompile Include="Scene\GameResult.cpp" />
     <ClCompile Include="SaveDataManager.cpp" />
+    <ClCompile Include="Scene\ScoreRanking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -75,5 +76,6 @@
     <ClInclude Include="Stage\PhysicsGhost.h" />
     <ClInclude Include="Scene\GameResult.h" />
     <ClInclude Include="SaveDataManager.h" />
+    <ClInclude Include="Scene\ScoreRanking.h" />
   </ItemGroup>
 </Project>

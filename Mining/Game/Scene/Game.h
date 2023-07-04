@@ -8,6 +8,7 @@ class PressAndHoldGauge;
 class Crystal;
 class PhysicsGhost;
 class EnemyBasic;
+
 class Game:public IGameObject
 {
 public:

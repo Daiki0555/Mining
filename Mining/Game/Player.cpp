@@ -61,11 +61,6 @@ bool Player::Start()
 
 void Player::Update()
 {
-	//// デバッグ用
-	//if (g_pad[0]->IsPress(enButtonA)) {
-	//	m_playerStatus.m_hitPoint -= 5;
-	//}
-
 	// 体力が0のとき
 	if (m_playerStatus.m_hitPoint <= HP_MIN) {
 
@@ -205,7 +200,7 @@ void Player::Move()
 			m_actionState = m_enActionState_Run;
 
 			// スタミナを減らす
-			m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
+			//m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
 
 			m_addSpped = RUN_SPEED;
 		}

@@ -1,9 +1,11 @@
 #pragma once
+
 namespace 
 {
 	const float		CIRCLE_SIZE_MAX = 0.0f;								// Й~М`ГQБ[ГWВћН≈Се
 	const float		CIRCLE_SIZE_MIN = 360.0f;							// Й~М`ГQБ[ГWВћН≈Пђ
 }
+
 class PressAndHoldGauge:public IGameObject
 {
 public:

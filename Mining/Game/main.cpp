@@ -2,6 +2,7 @@
 #include "system/system.h"
 #include "Debug.h"
 #include "Scene/Game.h"
+#include "Scene/Title.h"
 #include "SaveDataManager.h"
 
 // K2EngineLowのグローバルアクセスポイント。
@@ -27,7 +28,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	RenderingEngine::GetInstance()->Init();
 	//NewGO<Debug>(0,"debug");
-	NewGO<Game>(0, "game");
+	//NewGO<Game>(0, "game");
+	NewGO<Title>(0, "title");
 
 	// ここからゲームループ。
 	while (DispatchWindowMessage())

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Game.h"
+
 #include "Player.h"
 #include "Stage/BackGround.h"
 #include "GameCamera.h"
@@ -28,9 +29,9 @@ void Game::Objct_DeleteGO()
 	DeleteGO(m_backGround);
 	DeleteGO(m_gameCamera);
 
-	//for (int i = 0; i < m_crystalList.size(); i++) {
-	//	DeleteGO(m_crystalList[i]);
-	//}
+	for (int i = 0; i < m_crystalList.size(); i++) {
+		DeleteGO(m_crystalList[i]);
+	}
 }
 
 bool Game::Start()
@@ -151,12 +152,20 @@ void Game::ClearGame()
 {
 	m_fontRender.SetText(L"GAME CLEAR");
 	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f});
+
+	if (g_pad[0]->IsTrigger(enButtonA)) {
+		// リザルトに移行
+	}
 }
 
 void Game::OverGame()
 {
 	m_fontRender.SetText(L"GAME OVER");
 	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f });
+
+	if (g_pad[0]->IsTrigger(enButtonA)) {
+		// リザルトに移行
+	}
 }
 
 void Game::Render(RenderContext& rc) 

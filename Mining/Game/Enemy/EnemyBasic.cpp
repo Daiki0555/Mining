@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "EnemyBasic.h"
+
 #include "Player.h"
 
 namespace
 {
-	const float Y_POSITION = 25.0f;		// レイの高さ
-	const float ADD_LENGTH = 100.0f;	// 乗算するベクトルの長さ
+	const float Y_POSITION = 25.0f;				// レイの高さ
+	const float ADD_LENGTH = 100.0f;			// 乗算するベクトルの長さ
+
+	const float CAN_ATTACK_LENGTH = 150.0f;		// 攻撃できる範囲
 }
 
 EnemyBasic::EnemyBasic()
@@ -39,6 +42,13 @@ void EnemyBasic::Move()
 {
 	// プレイヤーへ向かうベクトルを作成
 	Vector3 moveSpeed = m_player->GetPosition() - m_position;
+
+	// 一定距離のとき
+	if (moveSpeed.Length() <= CAN_ATTACK_LENGTH) {
+		// 攻撃をする
+		m_actionState = m_enActionState_Attack;
+	}
+
 	moveSpeed.y = 0.0f;
 	moveSpeed.Normalize();
 

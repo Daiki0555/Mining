@@ -1,5 +1,7 @@
 #pragma once
+
 class Player;
+
 class PlayerStatusGauge:public IGameObject
 {
 public:

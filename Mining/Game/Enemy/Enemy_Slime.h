@@ -1,4 +1,5 @@
 #pragma once
+
 #include "EnemyBasic.h"
 
 class Enemy_Slime:public EnemyBasic

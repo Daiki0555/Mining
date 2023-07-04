@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlayerStatusGauge.h"
+
 #include "Player.h"
 
 namespace
