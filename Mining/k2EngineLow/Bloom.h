@@ -51,7 +51,7 @@ namespace nsK2EngineLow
 	private:
 		RenderTarget m_luminanceRenderTarget;
 		LuminanceCB m_luminanceCB;
-		GaussianBlur m_gaussianBlur;
+		GaussianBlur m_gaussianBlur[4];
 		Sprite m_finalSprite;
 		Sprite m_luminanceSprite;
 
