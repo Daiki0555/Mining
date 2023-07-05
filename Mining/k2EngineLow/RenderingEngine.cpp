@@ -58,7 +58,7 @@ namespace nsK2EngineLow {
 		SetDirectionLight(Vector3(1, -1, 1), Vector3(0.5f, 0.5f, 0.5f));
 
 		//�����̐ݒ�
-		SetAmbient(1.0f);
+		SetAmbient(0.5f);
 
 		//�������C�g�̐ݒ�
 	/*	SetHemiSphereLight(
