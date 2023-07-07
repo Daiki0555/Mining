@@ -68,7 +68,7 @@ public:
 	/// </summary>
 	/// <param name="targetPosition">目的の座標</param>
 	/// <returns></returns>
-	bool CrstalAndHit(Vector3 targetPosition);
+	bool CrystalAndHit(Vector3 targetPosition);
 
 	/// <summary>
 	/// 座標を参照する
@@ -102,8 +102,8 @@ public:
 	/// <summary>
 	/// クリスタルの総数を取得
 	/// </summary>
-	const int GetCrystalSum() const {
-		return m_haveCrystals.size();
+	inline std::vector<Crystal*> GetCrystalSumList() const {
+		return m_haveCrystals;
 	}
 
 	enum enActionState {
@@ -112,6 +112,7 @@ public:
 		m_enActionState_Run,			// 走る
 		m_enActionState_Dig,			// 掘る
 		m_enActionState_Damage,			// 被弾
+		m_enActionState_Invincible,		// 無敵状態
 		m_enActionState_Death,			// 死亡
 		m_enActionState_Clear			// クリア
 	};
@@ -137,6 +138,14 @@ public:
 	/// <returns></returns>
 	const int GetStamina() const {
 		return m_playerStatus.m_stamina;
+	}
+
+	/// <summary>
+	/// ダメージを受けられるかどうかのフラグを参照する
+	/// </summary>
+	/// <returns></returns>
+	const bool GetCanDamege() const {
+		return m_canAddDamage;
 	}
 
 private:
@@ -170,6 +179,7 @@ private:
 
 	Game*					m_game = nullptr;								// ゲーム
 	Crystal*				m_crystal = nullptr;							// クリスタル
+	Crystal*				m_getCrystal = nullptr;							// 獲得したクリスタル
 	PressAndHoldGauge*		m_pressAndHoldGauge = nullptr;					// 円形ゲージ
 
 	struct PlayerStatus {
@@ -188,6 +198,6 @@ private:
 	bool					m_canAddDamage = true;							// ダメージを受けられるかどうか
 	bool					m_isDig = false;								// 採掘しているかどうか
 
-	std::list<Crystal*>			m_haveCrystals;									// 所持しているクリスタル
+	std::vector<Crystal*>	m_haveCrystals;									// 所持しているクリスタル
 };
 
