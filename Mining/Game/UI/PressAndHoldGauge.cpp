@@ -17,6 +17,8 @@ namespace
 	const float		FONT_DOWN_Y = 8.0f;									// 下に移動させる値
 
 	const float		PI = 3.14159;										// 円周率
+
+	const float		CHANGE_STATE_TIME = 10.0f;							// ステートを変更する待ち時間
 }
 
 PressAndHoldGauge::PressAndHoldGauge()
@@ -80,13 +82,13 @@ void PressAndHoldGauge::ChangeGaugeAngle()
 		m_circleGauge.m_angle = max(m_circleGauge.m_angle, CIRCLE_SIZE_MAX);
 	}
 
-	// ゲージの最大値が一定以下だったとき
+	// ゲージの最大値が一定以上だったとき
 	if (m_circleGauge.m_angle >= CIRCLE_SIZE_MIN) {
-		// ゲージは最小
+		// ゲージは最小(360)
 		m_enGaugeState = enGaugeState_Min;
 	}
-	else if (m_circleGauge.m_angle <= CIRCLE_SIZE_MAX) {
-		// そうでないときは最大
+	else if(m_circleGauge.m_angle <= CIRCLE_SIZE_MAX) {
+		// ゲージは最大(0)
 		m_enGaugeState = enGaugeState_Max;
 	}
 

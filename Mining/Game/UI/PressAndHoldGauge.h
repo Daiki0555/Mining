@@ -32,8 +32,12 @@ public:
 	/// 角度のリセット
 	/// </summary>
 	void ResetGaugeAngle() {
+		// 描画しない
+		m_canDrawGaugeFlag = false;
+
 		// ステータスを再設定
 		m_circleGauge.m_angle = CIRCLE_SIZE_MAX;
+		m_enGaugeState = enGaugeState_Reset;
 	};
 
 	/// <summary>
@@ -60,11 +64,20 @@ public:
 		m_circleGauge.m_3Dposition = position;
 	}
 
+	/// <summary>
+	/// 座標を参照する
+	/// </summary>
+	/// <returns></returns>
+	const Vector3 Get3DPosition()const {
+		return m_circleGauge.m_3Dposition;
+	}
+
 	enum enGaugeState {
 		enGaugeState_Max,								// ゲージ最大
 		enGaugeState_Min,								// ゲージ最小
 		enGaugeState_Increase,							// ゲージ増加中
-		enGaugeState_Decrease							// ゲージ減少中
+		enGaugeState_Decrease,							// ゲージ減少中
+		enGaugeState_Reset								// ゲージリセット
 	};
 
 	/// <summary>
