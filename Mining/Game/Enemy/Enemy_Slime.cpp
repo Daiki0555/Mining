@@ -61,6 +61,7 @@ void Enemy_Slime::PlayAnimation()
 {
 	switch (m_actionState) {
 	case m_enActionState_Idle:
+	case m_enActionState_StopAction:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Move:

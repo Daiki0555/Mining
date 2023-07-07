@@ -120,6 +120,8 @@ protected:
 		int				m_attackPower = 0;								// 攻撃力
 		float			m_basicSpeed = 0.0f;							// 移動速度
 	};
+
+private:
 	EnemyStatus			m_enemyStatus;									// エネミーのステータス
 
 	float				m_StopTimer = STOP_TIME;						// 行動を停止するタイマー
