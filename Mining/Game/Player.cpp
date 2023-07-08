@@ -325,6 +325,12 @@ void Player::Dig()
 		// ƒNƒŠƒXƒ^ƒ‹‚Ì•ê”‚ðŽæ“¾
 		int crystalNum = m_game->GetCrystalList().size();
 
+		// ï¿½ÌŒ@ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚ï¿½
+		if (m_isDig) {
+			m_isDig = false;
+			return;
+		}
+
 		for (int i = 0; i < crystalNum; i++) {
 			// À•W‚ðŽæ“¾
 			Vector3 crystalPos = m_game->GetCrystalList()[i]->GetPosition();
@@ -387,7 +393,6 @@ void Player::Dig()
 		// ‰~Œ`ƒQ[ƒW‚ðƒŠƒZƒbƒg‚·‚é
 		m_pressAndHoldGauge->ResetGaugeAngle();
 
-		m_isDig = false;
 		m_getCrystal = nullptr;
 	}
 }
