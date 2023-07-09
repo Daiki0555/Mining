@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GameResult.h"
 
+#include "Title.h"
+
 GameResult::GameResult()
 {
 
@@ -13,8 +15,9 @@ GameResult::~GameResult()
 
 bool GameResult::Start()
 {
-	m_spriteRender.Init("Asseets/Sprite/UI/Scene/result.DDS", 1920, 1080);
+	m_spriteRender.Init("Assets/Sprite/UI/Scene/result.DDS", 1920.0f, 1080.0f);
 	m_spriteRender.SetPosition({ 0.0f, 0.0f, 0.0f });
+	m_spriteRender.SetScale({ 1.0f,1.0f,1.0f });
 	m_spriteRender.Update();
 
 	return true;
@@ -22,7 +25,11 @@ bool GameResult::Start()
 
 void GameResult::Update()
 {
-
+	if (g_pad[0]->IsTrigger(enButtonA)) {
+		// ƒ^ƒCƒgƒ‹‚Ö–ß‚é
+		m_title = NewGO<Title>(0, "title");
+		DeleteGO(this);
+	}
 }
 
 void GameResult::Render(RenderContext& rc)
