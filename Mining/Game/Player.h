@@ -60,6 +60,10 @@ public:
 	/// </summary>
 	void Death();
 	/// <summary>
+	/// クリアしているかどうかを判定
+	/// </summary>
+	void IsClear();
+	/// <summary>
 	/// クリア処理
 	/// </summary>
 	void Clear();
@@ -182,6 +186,8 @@ private:
 	Crystal*				m_getCrystal = nullptr;							// 獲得したクリスタル
 	PressAndHoldGauge*		m_pressAndHoldGauge = nullptr;					// 円形ゲージ
 
+	std::vector<Crystal*>	m_haveCrystals;									// 所持しているクリスタル
+
 	struct PlayerStatus {
 		int					m_hitPoint = HIT_POINT;							// HP
 		int					m_attackPower = ATTACK_POWER;					// 攻撃力
@@ -192,12 +198,10 @@ private:
 
 	float					m_recoveryTimer = RECOVERY_TIMER;				// スタミナが回復し始めるまでの時間
 	float					m_invincibleTimer = INVINCIBLE_TIMER;			// 無敵時間
-	float					m_addSpped = 0.0f;								// 乗算速度
-	float					m_addValue = ADDSPEED;
+	float					m_addSpped = 0.0f;								// 乗算する移動速度
+	float					m_addValue = ADDSPEED;							// 移動速度と比較するための変数
 
 	bool					m_canAddDamage = true;							// ダメージを受けられるかどうか
 	bool					m_isDig = false;								// 採掘しているかどうか
-
-	std::vector<Crystal*>	m_haveCrystals;									// 所持しているクリスタル
 };
 

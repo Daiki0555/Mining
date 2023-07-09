@@ -3,6 +3,7 @@
 #include "Scene/Game.h"
 #include "Stage/Object/Crystal.h"
 #include "UI/PressAndHoldGauge.h"
+#include "Stage/PhysicsGhost.h"
 
 #define	DELTA_TIME 1.0f/60.0f						// Œo‰ßŠÔ
 
@@ -18,8 +19,10 @@ namespace
 
 	const float Y_POSITION = 25.0f;					// Õ“Ë”»’è‚ÌYÀ•W
 
-	const float ADD_LENGTH = 0.7f;					// ‰ÁZ‚·‚é’·‚³
+	const float ADD_LENGTH = 0.5f;					// ‰ÁZ‚·‚é’·‚³
 	const float NOT_DRAW_LENGTH = 100.0f;			// •`‰æ‚µ‚È‚¢’·‚³
+
+	const float CLEAR_LENGTH = 100.0f;				// ƒNƒŠƒA‚µ‚½‚Æ‚İ‚È‚³‚ê‚é‹——£
 
 	const int	STAMINA_MIN = 1;					// ƒXƒ^ƒ~ƒi‚ÌÅ’á’l
 	const int	STAMINA_MAX = STAMINA;				// ƒXƒ^ƒ~ƒi‚ÌÅ‘å’l
@@ -44,6 +47,7 @@ bool Player::Start()
 {
 	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ’T‚·
 	m_game = FindGO<Game>("game");
+
 	m_crystal = FindGO<Crystal>("crystal");
 	m_pressAndHoldGauge = FindGO<PressAndHoldGauge>("pressAndHoldGauge");
 
@@ -66,17 +70,23 @@ bool Player::Start()
 
 void Player::Update()
 {
+	if (g_pad[0]->IsTrigger(enButtonStart)) {
+		m_playerStatus.m_hitPoint = 0.0f;
+	}
+
+	if (m_actionState == m_enActionState_Clear) {
+	}
 	// ‘Ì—Í‚ª0‚Ì‚Æ‚«
-	if (m_playerStatus.m_hitPoint <= HP_MIN) {
+	else if (m_playerStatus.m_hitPoint <= HP_MIN) {
 
 		// •â³
 		m_playerStatus.m_hitPoint = HP_MIN;
-
 		Death();				// €–S‚·‚é
 	}
 	else {
 		Move();					// ˆÚ“®
 		Rotation();				// ‰ñ“]
+		//IsClear();				// ƒNƒŠƒA”»’è
 
 		// Bƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«
 		if (g_pad[0]->IsPress(enButtonB)) {
@@ -143,9 +153,6 @@ void Player::LoadAnimation()
 	m_enAnimationClips[m_en_AnimationClips_Run].Load("Assets/animData/player/run.tka");
 	m_enAnimationClips[m_en_AnimationClips_Run].SetLoopFlag(true);
 
-	//m_EnAnimationClips[m_en_AnimationClips_Dig].Load("Assets/animData/player/dig.tka");
-	//m_EnAnimationClips[m_en_AnimationClips_Dig].SetLoopFlag(true);
-
 	m_enAnimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/player/damage.tka");
 	m_enAnimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
 
@@ -169,7 +176,6 @@ void Player::PlayAnimation()
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Run, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Dig:
-		//m_modelRender.PlayAnimation(m_en_AnimationClips_Dig, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Damage:
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage, LINEAR_COMPLETION);
@@ -325,12 +331,6 @@ void Player::Dig()
 		// ƒNƒŠƒXƒ^ƒ‹‚Ì•ê”‚ğæ“¾
 		int crystalNum = m_game->GetCrystalList().size();
 
-		// ï¿½ÌŒ@ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚ï¿½
-		if (m_isDig) {
-			m_isDig = false;
-			return;
-		}
-
 		for (int i = 0; i < crystalNum; i++) {
 			// À•W‚ğæ“¾
 			Vector3 crystalPos = m_game->GetCrystalList()[i]->GetPosition();
@@ -394,6 +394,19 @@ void Player::Dig()
 		m_pressAndHoldGauge->ResetGaugeAngle();
 
 		m_getCrystal = nullptr;
+		m_isDig = false;
+	}
+}
+
+void Player::IsClear()
+{
+	for (int i = 0; i < m_game->GetGhostList().size(); i++) {
+		// ƒNƒŠƒAÀ•W‚ÖŒü‚©‚¤ƒxƒNƒgƒ‹‚ğì¬
+		Vector3 diff = m_game->GetGhostList()[i]->GetPosition() - m_position;
+		
+		if (diff.Length() <= CLEAR_LENGTH) {
+			Clear();
+		}
 	}
 }
 

@@ -10,6 +10,14 @@ public:
 	bool Start();
 
 	/// <summary>
+	/// À•W‚ğæ“¾‚·‚é
+	/// </summary>
+	/// <returns></returns>
+	const Vector3 GetPosition() const {
+		return m_position;
+	}
+
+	/// <summary>
 	/// À•W‚ğİ’è‚·‚é
 	/// </summary>
 	void SetPosition(const Vector3& position) {
