@@ -106,7 +106,7 @@ public:
 	/// <summary>
 	/// クリスタルの総数を取得
 	/// </summary>
-	inline std::vector<Crystal*> GetCrystalSumList() const {
+	inline std::vector<Crystal*> GetCrystalList() const {
 		return m_haveCrystals;
 	}
 
@@ -153,7 +153,7 @@ public:
 	}
 
 private:
-	enActionState			m_actionState;
+	enActionState			m_actionState = m_enActionState_Idle;
 
 	enum enAnimationClip {
 		m_en_AnimationClips_Idle,		// 待機
