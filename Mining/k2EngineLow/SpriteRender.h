@@ -135,7 +135,7 @@ namespace nsK2EngineLow {
 	private:
 		Sprite			m_sprite;
 		Vector3			m_position = Vector3::Zero;
-		Vector3			m_scale = Vector3::Zero;
+		Vector3			m_scale = Vector3::One;
 		Quaternion		m_rotaition = Quaternion::Identity;
 		Vector2			m_pivot = Sprite::DEFAULT_PIVOT;
 	};

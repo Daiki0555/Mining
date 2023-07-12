@@ -4,6 +4,8 @@
 #include "Scene/Game.h"
 #include "Scene/Title.h"
 #include "SaveDataManager.h"
+#include "NameEntry.h"
+#include "Ranking.h"
 
 // K2EngineLowのグローバルアクセスポイント。
 K2EngineLow* g_k2EngineLow = nullptr;
@@ -27,9 +29,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 
 	RenderingEngine::GetInstance()->Init();
+
 	//NewGO<Debug>(0,"debug");
-	NewGO<Game>(0, "game");
+	//NewGO<Game>(0, "game");
 	//NewGO<Title>(0, "title");
+
+	NewGO<NameEntry>(0, "nameEntry");
+	//NewGO<Ranking>(0, "ranking");
+
 
 	// ここからゲームループ。
 	while (DispatchWindowMessage())

@@ -230,7 +230,9 @@
     <ClCompile Include="Enemy\Enemy_Slime.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NameEntry.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="SaveDataManager.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
     <ClCompile Include="Scene\GameResult.cpp" />
@@ -255,7 +257,9 @@
     <ClInclude Include="Enemy\Enemy_Mushroom.h" />
     <ClInclude Include="Enemy\Enemy_Slime.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="NameEntry.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Ranking.h" />
     <ClInclude Include="SaveDataManager.h" />
     <ClInclude Include="Scene\Game.h" />
     <ClInclude Include="Scene\GameResult.h" />
