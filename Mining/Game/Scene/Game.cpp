@@ -15,7 +15,8 @@
 
 namespace
 {
-	const int ENEMY_MAX = 3;
+	const Vector3 LIGHT_COLOR = { 10.0f,10.0f,10.0f };		// ï¿½ï¿½ï¿½Cï¿½gï¿½ÌƒJï¿½ï¿½ï¿½[
+	const float	Y_UP = 0.0f;								// ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã‚°ï¿½ï¿½l
 }
 
 Game::Game()
@@ -24,11 +25,11 @@ Game::Game()
 
 Game::~Game()
 {
+	Objct_DeleteGO();
+
 	m_crystalList.clear();
 	m_enemyList.clear();
 	m_ghostList.clear();
-
-	Objct_DeleteGO();
 }
 
 void Game::Objct_DeleteGO()
@@ -36,6 +37,7 @@ void Game::Objct_DeleteGO()
 	DeleteGO(m_player);
 	DeleteGO(m_backGround);
 	DeleteGO(m_gameCamera);
+	DeleteGO(m_playerStatusGauge);
 
 	for (int i = 0; i < m_crystalList.size(); i++) {
 		DeleteGO(m_crystalList[i]);
@@ -64,67 +66,72 @@ bool Game::Start()
 
 void Game::LevelDesign()
 {
-	// ƒŒƒxƒ‹ƒfƒUƒCƒ“ˆ—
+	// ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½fï¿½Uï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	m_levelRender.Init("Assets/level/levelData.tkl", [&](LevelObjeData& objData){
-		//–¼‘O‚ªstage‚Ì
+		//ï¿½ï¿½ï¿½Oï¿½ï¿½stageï¿½Ìï¿½
 		if (objData.EqualObjectName(L"stage") == true)
 		{
-			// ”wŒi‚ğ•`‰æ
+			// ï¿½wï¿½iï¿½ï¿½`ï¿½ï¿½
 			m_backGround = NewGO<BackGround>(0, "backGround");
 			m_backGround->SetPosition(objData.position);
 			m_backGround->SetScale(objData.scale);
-			m_backGround->SetRotation(objData.rotaition);
+			//m_backGround->SetRotation(objData.rotaition);
 			return true;
 		}
-		// –¼‘O‚ªghost‚Ì‚Æ‚«
-		if (objData.EqualObjectName(L"ghost") == true)
+		// ï¿½ï¿½ï¿½Oï¿½ï¿½ghostï¿½Ì‚Æ‚ï¿½
+		if (objData.ForwardMatchName(L"ghost") == true)
 		{
-			// ƒS[ƒXƒg‚ğì¬
-			m_physicsGhost = NewGO<PhysicsGhost>(0, "physicsGhost");
+			// ï¿½Sï¿½[ï¿½Xï¿½gï¿½ï¿½ì¬
+			PhysicsGhost* m_physicsGhost = NewGO<PhysicsGhost>(0, "physicsGhost");
 			m_physicsGhost->SetPosition(objData.position);
 			m_physicsGhost->SetScale(objData.scale);
-			m_physicsGhost->SetRotation(objData.rotaition);
+			//m_physicsGhost->SetRotation(objData.rotaition);
 			m_ghostList.push_back(m_physicsGhost);
+
+			//// ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½zï¿½u
+			//m_pointLight.SetPosition(Vector3(objData.position.x, objData.position.y + Y_UP, objData.position.z));
+			//m_pointLight.SetColor(LIGHT_COLOR);
+			//m_pointLight.SetNumber(objData.number);
 
 			return true;
 		}
-		// –¼‘O‚ªcrystal‚Ì‚Æ‚«
+		// ï¿½ï¿½ï¿½Oï¿½ï¿½crystalï¿½Ì‚Æ‚ï¿½
 		if (objData.EqualObjectName(L"crystal") == true) 
 		{
-			// ƒIƒuƒWƒFƒNƒg‚ğì¬
+			// ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ì¬
 			Crystal* m_crystal = NewGO<Crystal>(0, "crystal");
 			m_crystal->SetPosition(objData.position);
 			m_crystal->SetScale(objData.scale);
-			m_crystal->SetRotation(objData.rotaition);
+			//m_crystal->SetRotation(objData.rotaition);
 			m_crystal->SetTexture();
 
-			// ‘”‚ğ’Ç‰Á
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‰ï¿½
 			m_crystalList.push_back(m_crystal);
 			return true;
 		}
-		//–¼‘O‚ªplayer‚Ì
+		//ï¿½ï¿½ï¿½Oï¿½ï¿½playerï¿½Ìï¿½
 		if (objData.EqualObjectName(L"player") == true)
 		{
-			// ƒvƒŒƒCƒ„[‚ğì¬
+			// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ì¬
 			m_player = NewGO<Player>(0, "player");
 			m_player->SetPosition(objData.position);
 			m_player->SetRotation(objData.rotaition);
 			return true;
 		}
-		// –¼‘O‚ªenemy‚Ì‚Æ‚«
+		// ï¿½ï¿½ï¿½Oï¿½ï¿½enemyï¿½Ì‚Æ‚ï¿½
 		if (objData.EqualObjectName(L"enemy") == true)
 		{
-			Enemy_Bee* m_bee = NewGO<Enemy_Bee>(0, "bee");
-			m_bee->SetPosition(objData.position);
-			m_bee->SetRotation(objData.rotaition);
+			//Enemy_Bee* m_bee = NewGO<Enemy_Bee>(0, "bee");
+			//m_bee->SetPosition(objData.position);
+			//m_bee->SetRotation(objData.rotaition);
 
 			//Enemy_Slime* m_slime = NewGO<Enemy_Slime>(0, "slime");
 			//m_slime->SetPosition(objData.position);
 			//m_slime->SetRotation(objData.rotaition);
 
-			//Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
-			//m_mushroom->SetPosition(objData.position);
-			//m_mushroom->SetRotation(objData.rotaition);
+	/*		Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
+			m_mushroom->SetPosition(objData.position);
+			m_mushroom->SetRotation(objData.rotaition);*/
 			return true;
 		}
 
@@ -135,15 +142,15 @@ void Game::LevelDesign()
 
 void Game::Update()
 {
-	// ƒvƒŒƒCƒ„[‚ª€–S‚µ‚Ä‚¢‚é‚È‚ç
+	// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½È‚ï¿½
 	if (m_player->GetActionState() == m_player->m_enActionState_Death) {
-		// ƒQ[ƒ€ƒI[ƒo[
+		// ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[
 		m_enGameState = m_enGameState_GameOver;
 	}
 
-	// ƒS[ƒ‹‚É‚½‚Ç‚è’…‚¢‚½‚È‚ç
+	// ï¿½Sï¿½[ï¿½ï¿½ï¿½É‚ï¿½ï¿½Ç‚è’…ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 	if (m_player->GetActionState() == m_player->m_enActionState_Clear) {
-		// ƒQ[ƒ€ƒNƒŠƒA
+		// ï¿½Qï¿½[ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½A
 		m_enGameState = m_enGameState_GameClear;
 	}
 
@@ -166,10 +173,10 @@ void Game::PlayGame()
 void Game::QuitGame()
 {
 	switch (m_enGameState) {
-	m_enGameState_GameClear:	
+	case m_enGameState_GameClear:	
 		m_fontRender.SetText(L"GAME CLEAR");
 		break;
-	m_enGameState_GameOver:
+	case m_enGameState_GameOver:
 		m_fontRender.SetText(L"GAME OVER");
 		break;
 
@@ -178,7 +185,7 @@ void Game::QuitGame()
 	Score();
 
 	if (g_pad[0]->IsTrigger(enButtonA)) {
-		// ƒŠƒUƒ‹ƒg‚ÉˆÚs
+		// ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½ÉˆÚs
 		m_gameResult = NewGO<GameResult>(0, "gameResult");
 		DeleteGO(this);
 	}
@@ -186,7 +193,7 @@ void Game::QuitGame()
 
 void Game::Score()
 {
-	//m_player->GetCrystalSum();
+	m_player->GetCrystalSumList();
 }
 
 void Game::Render(RenderContext& rc) 

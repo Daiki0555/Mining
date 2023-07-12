@@ -49,6 +49,15 @@ public:
 		return m_crystalList;
 	}
 
+	/// <summary>
+	/// ゴーストのリストを取得する
+	/// </summary>
+	/// <returns></returns>
+	inline std::vector<PhysicsGhost*> GetGhostList()
+	{
+		return m_ghostList;
+	}
+
 private:
 	enum enGameState {
 		m_enGameState_Play,												// プレイ中
@@ -65,12 +74,11 @@ private:
 	GameCamera*					m_gameCamera = nullptr;					// ゲームカメラ
 	PlayerStatusGauge*			m_playerStatusGauge = nullptr;			// プレイヤーのステータスゲージ
 	PressAndHoldGauge*			m_circleGauge = nullptr;				// 円形ゲージ
-	PhysicsGhost*				m_physicsGhost = nullptr;				// ゴーストオブジェクト
 
 	std::vector<Crystal*>		m_crystalList;							// クリスタルの総数
 	std::vector<EnemyBasic*>	m_enemyList;							// エネミーの総数
 	std::vector<PhysicsGhost*>	m_ghostList;							// ゴーストの総数
 
-	FontRender m_fontRender;
+	FontRender					m_fontRender;
 };
 
