@@ -43,8 +43,8 @@ bool Crystal::Start()
 
 void Crystal::Render(RenderContext& rc)
 {
-	// 自身が獲得されていないときは描画する
-	if (m_canDrawFlag) {
+	// 自身が獲得されていないとき・範囲外でないときは描画する
+	if (m_crystalState == m_enCrystalStete_Normal) {
 		m_modelRenderCrystal.Draw(rc);
 	}
 

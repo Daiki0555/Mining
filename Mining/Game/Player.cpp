@@ -5,10 +5,10 @@
 #include "UI/PressAndHoldGauge.h"
 #include "Stage/PhysicsGhost.h"
 
-#define	DELTA_TIME 1.0f/60.0f						// 経過時間
-
 namespace
 {
+	const float DELTA_TIME = 1.0f / 60.0f;			// 経過時間
+
 	const float RUN_SPEED = 2.5f;					// ダッシュ時の移動速度
 	const float WALKING_SPEED = 1.0f;				// 歩いている時の移動速度
 
@@ -21,6 +21,7 @@ namespace
 
 	const float ADD_LENGTH = 0.5f;					// 加算する長さ
 	const float NOT_DRAW_LENGTH = 100.0f;			// 描画しない長さ
+	const float CAN_GET_LENGTH = 500.0f;			// 獲得できる距離
 
 	const float CLEAR_LENGTH = 100.0f;				// クリアしたとみなされる距離
 
@@ -61,7 +62,7 @@ bool Player::Start()
 	m_characterController.Init(25.0f, 75.0f, m_position);	// キャラクターコントローラーを初期化
 
 	// スフィアコライダーを設定
-	m_sphereCollider.Create(10.0f);
+	m_sphereCollider.Create(20.0f);
 
 	m_modelRender.Update();
 
@@ -70,8 +71,8 @@ bool Player::Start()
 
 void Player::Update()
 {
+	// デバッグ用
 	if (g_pad[0]->IsTrigger(enButtonStart)) {
-		m_playerStatus.m_hitPoint = 0.0f;
 	}
 
 	if (m_actionState == m_enActionState_Clear) {
@@ -86,7 +87,7 @@ void Player::Update()
 	else {
 		Move();					// 移動
 		Rotation();				// 回転
-		//IsClear();				// クリア判定
+		IsClear();				// クリア判定
 
 		// Bボタンが押されたとき
 		if (g_pad[0]->IsPress(enButtonB)) {
@@ -120,16 +121,6 @@ void Player::Update()
 		}
 		else {
 			m_recoveryTimer = RECOVERY_TIMER;		// タイマーをリセット
-		}
-
-		if (m_actionState == m_enActionState_Invincible) {
-			m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
-
-			// タイマーが0.0f以下のとき
-			if (m_invincibleTimer < 0.0f) {
-				m_canAddDamage = true;
-				m_invincibleTimer = INVINCIBLE_TIMER;			// タイマーをリセット
-			}
 		}
 	}
 
@@ -178,7 +169,7 @@ void Player::PlayAnimation()
 	case m_enActionState_Dig:
 		break;
 	case m_enActionState_Damage:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage, LINEAR_COMPLETION);
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage);
 		break;
 	case m_enActionState_Death:
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Death, LINEAR_COMPLETION);
@@ -207,6 +198,7 @@ void Player::Move()
 {
 	// ゲージが動いている間は動かさない
 	if (m_pressAndHoldGauge->GetNowStatus() == m_pressAndHoldGauge->enGaugeState_Increase) {
+		m_actionState = m_enActionState_Idle;
 		return;
 	}
 
@@ -265,17 +257,22 @@ void Player::Attack()
 
 void Player::Damage(int attackPower)
 {
-	if (m_actionState == m_enActionState_Invincible) {
-		return;
-	}
-
-	m_actionState = m_enActionState_Damage;				// 被弾モーションを再生
-	m_playerStatus.m_hitPoint -= attackPower;			// ダメージ量をHPから引く
-	
 	// ダメージを受けられる状態のとき
 	if (m_canAddDamage) {
-		m_canAddDamage = false;							// 連続してダメージを受けない
-		m_actionState = m_enActionState_Invincible;		// 無敵状態
+		m_actionState = m_enActionState_Damage;
+		m_playerStatus.m_hitPoint -= attackPower;			// ダメージ量をHPから引く
+	
+	
+		m_canAddDamage = false;								// 連続してダメージを受けない
+	}
+	else {
+		m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
+
+		// タイマーが0.0f以下のとき
+		if (m_invincibleTimer < 0.0f) {
+			m_canAddDamage = true;
+			m_invincibleTimer = INVINCIBLE_TIMER;			// タイマーをリセット
+		}
 	}
 }
 
@@ -338,6 +335,10 @@ void Player::Dig()
 				return;
 			}
 
+			if (m_game->GetCrystalList()[i]->GetCrystalState() != m_game->GetCrystalList()[i]->m_enCrystalStete_Normal) {
+				continue;
+			}
+
 			// 座標を取得
 			Vector3 crystalPos = m_game->GetCrystalList()[i]->GetPosition();
 			// 自身の座標からクリスタルへ向かうベクトルを作成
@@ -367,7 +368,7 @@ void Player::Dig()
 		diff = m_crystalPosition - m_position;
 
 		// 一定以上離れたら
-		if (diff.Length() >= NOT_DRAW_LENGTH) {
+		if (diff.Length() >= CAN_GET_LENGTH) {
 			// 採掘しない
 			m_isDig = false;
 			return;
@@ -393,7 +394,7 @@ void Player::Dig()
 		//}
 
 		// 獲得処理
-		m_getCrystal->SetDrawFlag(false);
+		m_getCrystal->SetCrystalState(m_crystal->m_enCrystalStete_HavePlayer);
 		m_haveCrystals.push_back(m_getCrystal);
 
 		// 円形ゲージをリセットする

@@ -29,13 +29,23 @@ public:
 	/// </summary>
 	void LevelDesign();
 	/// <summary>
-	/// プレイ中の処理
+	/// ゲーム中の処理
 	/// </summary>
 	void PlayGame();
+	/// <summary>
+	/// 描画の有無を決定する
+	/// </summary>
+	void CanDrawObject();
 	/// <summary>
 	/// ゲームの終了処理
 	/// </summary>
 	void QuitGame();
+	/// <summary>
+	/// クリア時の処理
+	/// </summary>
+	void GameClear();
+	// ゲームオーバー時の処理
+	void GameOver();
 	/// <summary>
 	/// スコア計算
 	/// </summary>
