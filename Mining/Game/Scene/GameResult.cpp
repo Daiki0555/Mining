@@ -3,6 +3,11 @@
 
 #include "Title.h"
 
+namespace
+{
+
+}
+
 GameResult::GameResult()
 {
 
@@ -25,11 +30,18 @@ bool GameResult::Start()
 
 void GameResult::Update()
 {
+	DrawScore();
+
 	if (g_pad[0]->IsTrigger(enButtonA)) {
 		// ƒ^ƒCƒgƒ‹‚Ö–ß‚é
 		m_title = NewGO<Title>(0, "title");
 		DeleteGO(this);
 	}
+}
+
+void GameResult::DrawScore()
+{
+
 }
 
 void GameResult::Render(RenderContext& rc)

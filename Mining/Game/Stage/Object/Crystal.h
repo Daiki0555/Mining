@@ -2,7 +2,7 @@
 
 namespace
 {
-	const int TEX_MAX = 4;
+	const int TEX_MAX = 100;
 
 	const wchar_t FILEPATH[TEX_MAX][255] = { L"Green",L"Yellow",L"Blue",L"Pink" };
 }
@@ -22,12 +22,33 @@ public:
 	void Render(RenderContext& rc);
 
 	// レアリティ
-	enum EnCrystalRarity {
-		EnCrystalRarity_Normal,
-		EnCrystalRarity_HyperNormal,
-		EnCrystalRarity_Rare,
-		EnCrystalRarity_HyperRare,
+	enum enCrystalRarity {
+		m_enCrystalRarity_Normal,
+		m_enCrystalRarity_HyperNormal,
+		m_enCrystalRarity_Rare,
+		m_enCrystalRarity_HyperRare,
 	};
+
+	enum enCrystalState {
+		m_enCrystalStete_Normal,		// 標準
+		m_enCrystalStete_HavePlayer,	// プレイヤーが獲得した
+		m_enCrystalState_NotDraw		// 描画しない(描画範囲外)
+	};
+
+	/// <summary>
+	/// ステートを設定する
+	/// </summary>
+	void SetCrystalState(enCrystalState state) {
+		m_crystalState = state;
+	}
+
+	/// <summary>
+	/// ステートを参照する
+	/// </summary>
+	/// <returns></returns>
+	const enCrystalState GetCrystalState()const {
+		return m_crystalState;
+	}
 
 	/// <summary>
 	/// 座標を設定する
@@ -64,16 +85,29 @@ public:
 	/// <summary>
 	/// モデルの設定
 	/// </summary>
-	void SetTexture(/*int number*/) {
+	void SetTexture() {
 
 		int num = rand() % TEX_MAX;
+		int pathNum = 0;
 		wchar_t path[255];
-		const wchar_t* hoge = FILEPATH[num];
 
-		//if (number == 0) {
-		//	num = rand() % TEX_MAX;
-		//}
+		// 番号を設定
+		if (num >= 0 && num <= 10) {
+			pathNum = m_enCrystalRarity_HyperRare;
+		}
+		else if (num > 10 && num <= 35) {
+			pathNum = m_enCrystalRarity_Rare;
+		}
+		else if (num > 35 && num <= 65) {
+			pathNum = m_enCrystalRarity_HyperNormal;
+		}
+		else {
+			pathNum = m_enCrystalRarity_Normal;
+		}
 
+		const wchar_t* hoge = FILEPATH[pathNum];
+
+		// テクスチャを再設定
 		swprintf_s(
 			path,
 			255,
@@ -84,22 +118,6 @@ public:
 		m_texture.InitFromDDSFile(path);
 
 		SetRarity(num);
-	}
-
-	/// <summary>
-	/// 描画フラグを設定する
-	/// </summary>
-	/// <param name="flag">trueなら描画する</param>
-	void SetDrawFlag(const bool flag) {
-		m_canDrawFlag = flag;
-	}
-
-	/// <summary>
-	/// 描画フラグを取得する
-	/// </summary>
-	/// <returns></returns>
-	bool GetDrawFlag() {
-		return m_canDrawFlag;
 	}
 
 	/// <summary>
@@ -117,17 +135,17 @@ private:
 	/// <param name="rarity">自身のレア度</param>
 	void SetRarity(const int rarity) {
 
-		int myRarity = EnCrystalRarity_Normal;
+		int myRarity = m_enCrystalRarity_Normal;
 
 		switch (rarity) {
 		case 1:
-			myRarity = EnCrystalRarity_HyperNormal;
+			myRarity = m_enCrystalRarity_HyperNormal;
 			break;
 		case 2:
-			myRarity = EnCrystalRarity_Rare;
+			myRarity = m_enCrystalRarity_Rare;
 			break;
 		case 3:
-			myRarity = EnCrystalRarity_HyperRare;
+			myRarity = m_enCrystalRarity_HyperRare;
 			break;
 		}
 
@@ -136,17 +154,17 @@ private:
 
 	PhysicsStaticObject m_physicsStaticObjct;
 
-	ModelRender			m_modelRenderCrystal;				// モデルレンダー。クリスタル
-	ModelRender			m_modelRenderRock;					// モデルレンダー。岩
+	ModelRender			m_modelRenderCrystal;						// モデルレンダー。クリスタル
+	ModelRender			m_modelRenderRock;							// モデルレンダー。岩
 
-	Vector3				m_position = Vector3::Zero;			// 座標
-	Vector3				m_scale = Vector3::Zero;			// スケール
-	Quaternion			m_rotation = Quaternion::Identity;	// 回転
+	Vector3				m_position = Vector3::Zero;					// 座標
+	Vector3				m_scale = Vector3::Zero;					// スケール
+	Quaternion			m_rotation = Quaternion::Identity;			// 回転
 
-	Texture				m_texture;							// テクスチャ
+	Texture				m_texture;									// テクスチャ
 
-	int					m_crystalRarity;					// レアリティ
+	enCrystalState		m_crystalState = m_enCrystalStete_Normal;	// ステート
 
-	bool				m_canDrawFlag = true;				// 描画できるかどうか
+	int					m_crystalRarity;							// レアリティ
 };
 

@@ -19,7 +19,7 @@ public:
 	/// 新しいスコアを設定する
 	/// </summary>
 	/// <param name="score"></param>
-	void SetNewScore(const float& score) {
+	void SetNewScore(const int& score) {
 		m_newScore = score;
 	}
 
@@ -29,6 +29,6 @@ private:
 	SaveDataManager				m_saveDataManager;
 	SaveDataManager::SaveData	m_saveData;				// セーブデータの構造体
 
-	float						m_newScore = 0.0f;		// 新しいスコア
+	int							m_newScore = 0;			// 新しいスコア
 };
 

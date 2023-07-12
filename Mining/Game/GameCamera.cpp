@@ -24,7 +24,7 @@ bool GameCamera::Start()
 
 	// 近平面・遠平面の設定
 	g_camera3D->SetNear(10.0f);
-	g_camera3D->SetFar(5000.0f);
+	g_camera3D->SetFar(3000.0f);
 
 	// 始点から注視点へ向かうベクトルを設定
 	m_toCameraPosition.Set(VECTOR);

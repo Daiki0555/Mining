@@ -15,8 +15,10 @@
 
 namespace
 {
-	const Vector3 LIGHT_COLOR = { 10.0f,10.0f,10.0f };		// ���C�g�̃J���[
-	const float	Y_UP = 0.0f;								// �|�C���g���C�g������グ��l
+	const Vector3	LIGHT_COLOR = { 10.0f,10.0f,10.0f };		// ���C�g�̃J���[
+	const float		Y_UP = 0.0f;								// �|�C���g���C�g������グ��l
+
+	const float		CANDRAW_LENGTH = 3500.0f;					// �`��ł��鋗��
 }
 
 Game::Game()
@@ -167,7 +169,34 @@ void Game::Update()
 
 void Game::PlayGame()
 {
+	// player���̍��W���ϓ����Ă��Ȃ��Ƃ��͎��s���Ȃ�
+	if (m_player->GetActionState() == m_player->m_enActionState_Idle ||
+		m_player->GetActionState() == m_player->m_enActionState_Dig) {
+		return;
+	}
 
+	CanDrawObject();
+}
+
+void Game::CanDrawObject()
+{
+	for (int i = 0; i < m_crystalList.size(); i++) {
+		// ���Ɏ擾����Ă����ԂȂ�v�Z�͂��Ȃ�
+		if (m_crystalList[i]->GetCrystalState() == m_crystalList[i]->m_enCrystalStete_HavePlayer) {
+			continue;
+		}
+
+		Vector3 diff = m_crystalList[i]->GetPosition() - m_player->GetPosition();
+
+		// ���������ȏ�Ȃ�
+		if (diff.Length() >= CANDRAW_LENGTH) {
+			// �`��͂��Ȃ�
+			m_crystalList[i]->SetCrystalState(m_crystalList[i]->m_enCrystalState_NotDraw);
+			continue;
+		}
+		// �`��͂��Ȃ�
+		m_crystalList[i]->SetCrystalState(m_crystalList[i]->m_enCrystalStete_Normal);
+	}
 }
 
 void Game::QuitGame()
@@ -182,18 +211,27 @@ void Game::QuitGame()
 
 	}
 	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f});
-	Score();
 
 	if (g_pad[0]->IsTrigger(enButtonA)) {
 		// ���U���g�Ɉڍs
 		m_gameResult = NewGO<GameResult>(0, "gameResult");
+		Score();
 		DeleteGO(this);
 	}
 }
 
 void Game::Score()
 {
-	//m_player->GetCrystalSumList();
+	std::array<int, 4> sum = { 0,0,0,0 };
+
+	for (int i = 0; i < m_player->GetCrystalList().size(); i++) {
+		// ���A�x��擾
+		int num = m_player->GetCrystalList()[i]->GetRarity();
+		// �l����Z
+		sum[num]++;
+		// ���A�x�ʂ̎擾����ݒ�
+		m_gameResult->SetCrystalSum(num, sum[num]);
+	}
 }
 
 void Game::Render(RenderContext& rc) 

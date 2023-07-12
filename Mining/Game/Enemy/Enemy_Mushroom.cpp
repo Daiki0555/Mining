@@ -3,7 +3,7 @@
 
 namespace
 {
-	const int		ATTACK_POWER = 20;							// 攻撃
+	const int		ATTACK_POWER = 50;							// 攻撃
 	const float		BASIC_SPEED = 150.0f;						// 基本スピード
 
 	const Vector3	SCALE = { 1.0f,1.0f,1.0f };					// スケール

@@ -10,7 +10,7 @@ namespace
 	const float	STAMINA = 100.0f;			// スタミナ
 	const float BASIC_SPEED = 150.0f;		// 移動速度
 
-	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
+	const float INVINCIBLE_TIMER = 3.0f;	// 無敵時間
 	const float RECOVERY_TIMER = 2.0f;		// スタミナが回復するまでの時間
 
 	const float ADDSPEED = 0.5f;			// ダッシュ時の加算速度
@@ -116,10 +116,17 @@ public:
 		m_enActionState_Run,			// 走る
 		m_enActionState_Dig,			// 掘る
 		m_enActionState_Damage,			// 被弾
-		m_enActionState_Invincible,		// 無敵状態
 		m_enActionState_Death,			// 死亡
 		m_enActionState_Clear			// クリア
 	};
+
+	/// <summary>
+	/// ステートを設定する
+	/// </summary>
+	/// <param name="state"></param>
+	void SetActionState(enActionState state) {
+		m_actionState = state;
+	}
 
 	/// <summary>
 	/// 現在のステートを返す
