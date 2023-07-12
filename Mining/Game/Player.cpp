@@ -332,6 +332,12 @@ void Player::Dig()
 		int crystalNum = m_game->GetCrystalList().size();
 
 		for (int i = 0; i < crystalNum; i++) {
+
+			if (m_isDig) {
+				m_isDig = false;
+				return;
+			}
+
 			// 座標を取得
 			Vector3 crystalPos = m_game->GetCrystalList()[i]->GetPosition();
 			// 自身の座標からクリスタルへ向かうベクトルを作成
@@ -394,7 +400,6 @@ void Player::Dig()
 		m_pressAndHoldGauge->ResetGaugeAngle();
 
 		m_getCrystal = nullptr;
-		m_isDig = false;
 	}
 }
 
