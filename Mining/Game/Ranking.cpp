@@ -2,7 +2,7 @@
 #include "Ranking.h"
 
 #include "SaveDataManager.h"
-//#include "Title.h"
+#include "Scene/Title.h"
 
 namespace
 {
@@ -77,9 +77,10 @@ void Ranking::InitRanking()
 
 void Ranking::Update()
 {
+	//Aƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çB
 	if (g_pad[0]->IsTrigger(enButtonA)) {
 
-		//NewGO<Title>(0, "title");
+		NewGO<Title>(0, "title");
 		DeleteGO(this);
 	}
 }

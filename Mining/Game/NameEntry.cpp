@@ -2,11 +2,12 @@
 #include "NameEntry.h"
 
 #include "SaveDataManager.h"
+#include "Ranking.h"
 
 namespace
 {
 	const Vector3	SPELL_FONT_POS = Vector3(-600.0f, 0.0f, 0.0f);	//英文字の座標。
-	const Vector3	INPUT_NAME_POS = Vector3(0.0f, 200.0f, 0.0f);	//入力文字の座標。
+	const Vector3	INPUT_NAME_POS = Vector3(-60.0f, 180.0f, 0.0f);	//入力文字の座標。
 	const int		BUFFER_SIZE = 256;								//バッファーサイズ。
 	const int		SPELL_NUM_FIRST = 65;							//char型のA。
 	const int		SPELL_NUM_MAX = 26;								//スペルの最大数。
@@ -14,13 +15,14 @@ namespace
 	const int		SPELL_COLUMN_MAX = 2;							//文字列の列数の最大。
 	const int		INPUT_NAME_MAX = 5;								//名前の最大数。
 	const int		INPUT_NAME_MIN = 0;								//名前の最小数。
-	const float		SPELL_DURATION = 100.0f;						//文字の間隔。
+	const int		BEZIER_RANGE = 200;								//ベジェの中点の範囲。
+	const float		SPELL_DURATION = 100.0f;						//スペル文字の間隔。
+	const float		INPUT_NAME_DURATION = 21.0f;					//入力文字の間隔。
 	const float		SPELL_FONT_SCALE = 2.0f;						//英文字の拡大率。
 }
 
 NameEntry::NameEntry()
 {
-
 }
 
 NameEntry::~NameEntry()
@@ -38,6 +40,12 @@ bool NameEntry::Start()
 	m_inputNameFontRender.SetPosition(INPUT_NAME_POS);
 	m_inputNameFontRender.SetColor(Vector4::Black);
 
+	//アニメーション用文字の設定。
+	m_animFontRender.SetText(L"");
+	m_animFontRender.SetScale(SPELL_FONT_SCALE);
+	m_animFontRender.SetColor(Vector4::Black);
+	m_animFontRender.SetPivot(Vector2(0.0f, 0.0f));
+
 	//入力できる文字の設定。
 	wchar_t spell;
 	wchar_t text[BUFFER_SIZE];
@@ -47,7 +55,6 @@ bool NameEntry::Start()
 
 		//文字を設定。
 		spell = (SPELL_NUM_FIRST + i);
-
 		//文字列に変換。
 		swprintf_s(text, BUFFER_SIZE, L"%2c", spell);
 
@@ -66,8 +73,6 @@ bool NameEntry::Start()
 		m_spellFontRender[i].SetColor(Vector4::Black);
 	}
 
-	m_debugFontRender.SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-
 	return true;
 }
 
@@ -77,10 +82,7 @@ void NameEntry::Update()
 
 	CursorAnimation();
 
-	wchar_t text[BUFFER_SIZE];
-	swprintf_s(text, BUFFER_SIZE, L"%.2f", m_cursorTimer);
-	m_debugFontRender.SetText(text);
-
+	NameAnimation();
 }
 
 void NameEntry::Input()
@@ -149,7 +151,13 @@ void NameEntry::CursorUpdate()
 
 void NameEntry::InputName()
 {
+	//文字が最大数なら追加しない。。
 	if (m_inputNameNum >= INPUT_NAME_MAX) {
+		return;
+	}
+
+	//アニメーション中なら。
+	if (m_animationState != enState_Idle) {
 		return;
 	}
 
@@ -160,26 +168,52 @@ void NameEntry::InputName()
 	//wchar_tをcharに変換。
 	wcstombs(name, getText, sizeof(getText));
 
+	//ワイド文字の１つ目がなぜか空白なので、配列の２つ目から文字を取る。
 	m_inputName[m_inputNameNum] = name[1];
 	m_inputName[m_inputNameNum + 1] = '\0';
 
 	//入力数を加算。
 	m_inputNameNum++;
 
-	NameUpdate();
+	//アニメーション用文字を設定。
+	m_animFontRender.SetText(getText);
+	m_animationState = enState_Input;
+	Vector3 inputPos = m_spellFontRender[m_cursor].GetPosition();
+
+	m_bezierPos[0] = inputPos;
+	m_bezierPos[1] = Vector3(inputPos.x + rand() % BEZIER_RANGE, 0.0f, 0.0f);
+	m_bezierPos[2] = INPUT_NAME_POS + Vector3((m_inputNameNum * INPUT_NAME_DURATION), 0.0f, 0.0f);
 }
 
 void NameEntry::EraseName()
 {
+	//文字が最小数なら消さない。
 	if (m_inputNameNum <= INPUT_NAME_MIN) {
 		return;
 	}
+
+	//アニメーション中なら。
+	if (m_animationState != enState_Idle) {
+		return;
+	}
+
+	//アニメーション用文字を設定。
+	wchar_t text[2];
+	text[1] = L'\0';
+	char spell[2];
+	spell[0] = m_inputName[m_inputNameNum - 1];
+	spell[1] = '\0';
+	mbstowcs(text, spell, sizeof(spell));
 
 	//末尾の文字を削除。
 	m_inputName[m_inputNameNum - 1] = '\0';
 
 	//入力数を減算。
 	m_inputNameNum--;
+
+	m_animFontRender.SetText(text);
+	m_animationState = enState_Erase;
+	m_animFontRender.SetPosition(INPUT_NAME_POS + Vector3((m_inputNameNum * INPUT_NAME_DURATION), 0.0f, 0.0f));
 
 	NameUpdate();
 }
@@ -194,6 +228,7 @@ void NameEntry::NameUpdate()
 
 void NameEntry::End()
 {
+	//文字が入力されてないなら。
 	if (m_inputNameNum <= INPUT_NAME_MIN) {
 		return;
 	}
@@ -213,6 +248,11 @@ void NameEntry::End()
 
 	//セーブ。
 	SaveDataMng.Save(data);
+
+
+	//ランキングシーンへ遷移。
+	NewGO<Ranking>(0, "ranking");
+	DeleteGO(this);
 }
 
 void NameEntry::CursorAnimation()
@@ -225,6 +265,46 @@ void NameEntry::CursorAnimation()
 
 	//現在のカーソル位置の色を変更。
 	m_spellFontRender[m_cursor].SetColor(Vector4(1.0f, m_cursorTimer, m_cursorTimer, 1.0f));
+}
+
+void NameEntry::NameAnimation()
+{
+	if (m_animationState == enState_Idle) {
+		return;
+	}
+
+	m_animTimer += g_gameTime->GetFrameDeltaTime() * 2.0f;
+
+	//時間が経過したら。
+	if (m_animTimer > 1.0f) {
+
+		m_animFontRender.SetColor(Vector4::Black);
+
+		NameUpdate();
+
+		m_animationState = enState_Idle;
+		m_animTimer = 0.0f;
+	}
+
+	Vector3 bezier[3];
+	float alpha = 1.0f - m_animTimer;
+
+	switch (m_animationState)
+	{
+	case enState_Input:
+		//ベジェ曲線を利用して座標を設定。
+		bezier[0].Lerp(m_animTimer, m_bezierPos[0], m_bezierPos[1]);
+		bezier[1].Lerp(m_animTimer, m_bezierPos[1], m_bezierPos[2]);
+		bezier[2].Lerp(m_animTimer, bezier[0], bezier[1]);
+
+		m_animFontRender.SetPosition(bezier[2]);
+		m_animFontRender.SetScale(SPELL_FONT_SCALE - m_animTimer);
+		break;
+
+	case enState_Erase:
+		m_animFontRender.SetColor(Vector4(0.0f, 0.0f, 0.0f, alpha));
+		break;
+	}
 }
 
 void NameEntry::Render(RenderContext& rc)
@@ -240,5 +320,8 @@ void NameEntry::Render(RenderContext& rc)
 	//入力名前の描画。
 	m_inputNameFontRender.Draw(rc);
 
-	m_debugFontRender.Draw(rc);
+	//アニメーション文字の描画。
+	if (m_animationState != enState_Idle) {
+		m_animFontRender.Draw(rc);
+	}
 }

@@ -193,7 +193,7 @@ void Game::QuitGame()
 
 void Game::Score()
 {
-	m_player->GetCrystalSumList();
+	//m_player->GetCrystalSumList();
 }
 
 void Game::Render(RenderContext& rc) 
