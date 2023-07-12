@@ -16,7 +16,7 @@ public:
 	/// </summary>
 	struct SaveData
 	{
-		std::array< float, SCORE_MAX + 1 > score;	//スコア。
+		int			score[SCORE_MAX + 1];	//スコア。
 	};
 
 public:
@@ -24,12 +24,23 @@ public:
 	~SaveDataManager();
 
 	/// <summary>
+	/// 初期化処理。
+	/// </summary>
+	void Init(SaveData& data)
+	{
+		for (int i = 0; i < SCORE_MAX + 1; i++) {
+
+			data.score[i] = 0;
+		}
+	}
+
+	/// <summary>
 	/// セーブ処理。
 	/// </summary>
 	/// <param name="data"></param>
 	void Save(SaveData& data)
 	{
-		FILE* fp = fopen("saveData.bin", "wb");
+		FILE* fp = fopen("saveData.dat", "wb");
 		fwrite((void*)&data, sizeof(data), 1, fp);
 		fclose(fp);
 	}
@@ -40,7 +51,7 @@ public:
 	/// <param name="data"></param>
 	void Load(SaveData& data)
 	{
-		FILE* fp = fopen("saveData.bin", "rb");
+		FILE* fp = fopen("saveData.dat", "rb");
 		if (fp != NULL) {
 			fread((void*)&data, sizeof(data), 1, fp);
 			fclose(fp);
@@ -48,13 +59,51 @@ public:
 	}
 
 	/// <summary>
+	/// プレイヤー名をランキングに保存。
+	/// </summary>
+	/// <param name="name">プレイヤー名</param>
+	/// <param name="num">順位</param>
+	void SetPlayerName(char* name, int num)
+	{
+		FILE* fp;
+		char rankName[256];
+
+		//ファイルを読み込む。
+		fp = fopen("rankingName.txt", "r");
+		if (fp != NULL) {
+			fread(rankName, sizeof(rankName), 1, fp);
+			fgets(rankName, 256, fp);
+			rankName[255] = '\0';
+			fclose(fp);
+		}
+
+		int j = 0;
+
+		//順位の位置にある名前を上書き。
+		for (int i = num * 5; i < num * 5 + 5; i++) {
+			rankName[i] = name[j];
+			j++;
+
+			if (name[i] == '\0') {
+				name[i] = 32;
+			}
+		}
+
+		//ファイルに書き込む。
+		fp = fopen("rankingName.txt", "w");
+		fwrite(rankName, sizeof(rankName), 256, fp);
+		fclose(fp);
+
+	}
+
+	/// <summary>
 	/// ランキングのソート処理。
 	/// </summary>
 	/// <param name="data">セーブデータ</param>
 	/// <param name="newScore">新しいスコア</param>
-	void Sort(SaveData& data, float newScore)
+	const int Sort(SaveData& data, int newScore)
 	{
-		float tmp = 0.0f;
+		int tmp = 0;
 		data.score[SCORE_MAX] = newScore;
 
 		//数値を降順にソート。
@@ -70,6 +119,19 @@ public:
 				}
 			}
 		}
+
+
+		for (int k = SCORE_MAX; k >= 0; k--) {
+
+			if (newScore == data.score[k]) {
+
+				//何位かを返す。
+				return k;
+			}
+		}
+
+		//エラー。
+		return -1;
 	}
 };
 

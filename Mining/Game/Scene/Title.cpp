@@ -2,6 +2,7 @@
 #include "Title.h"
 
 #include "Game.h"
+#include "ScoreRanking.h"
 
 namespace 
 {
@@ -43,9 +44,41 @@ void Title::Update()
 		DeleteGO(this);
 	}
 
+	//SceneChange();
 	//Transparent();
 
 	m_spriteRenderMessage.Update();
+}
+
+void Title::SceneChange()
+{
+	if (g_pad[0]->IsTrigger(enButtonUp)) {
+		
+		if (m_enCursorState_Game) {
+			m_enCursorState = m_enCursorState_Game;
+			return;
+		}
+		else if (m_enCursorState_Guide) {
+			m_enCursorState = m_enCursorState_Game;
+			return;
+		}
+		m_enCursorState = m_enCursorState_Guide;
+		return;
+	}
+
+	if (g_pad[0]->IsTrigger(enButtonDown)) {
+
+		if (m_enCursorState_Game) {
+			m_enCursorState = m_enCursorState_Guide;
+			return;
+		}
+		else if (m_enCursorState_Guide) {
+			m_enCursorState = m_enCursorState_Ranking;
+			return;
+		}
+		m_enCursorState = m_enCursorState_Ranking;
+		return;
+	}
 }
 
 void Title::Transparent()

@@ -85,6 +85,20 @@ public:
 		m_rotation = rotation;
 	}
 
+	/// <summary>
+	/// 描画するかどうか決定する
+	/// <param name="flag">trueなら描画する</param>
+	void SetCanDrawFlag(bool flag) {
+		m_canDraw = flag;
+	}
+
+	/// <summary>
+	/// 描画しているかどうかを取得する
+	/// </summary>
+	bool GetCanDrawFlag() {
+		return m_canDraw;
+	}
+
 protected:
 	enum enActionState {
 		m_enActionState_Idle,				// 待機
@@ -125,5 +139,6 @@ private:
 	EnemyStatus			m_enemyStatus;									// エネミーのステータス
 
 	float				m_StopTimer = STOP_TIME;						// 行動を停止するタイマー
+	bool				m_canDraw = true;								// 描画できるかどうか
 };
 

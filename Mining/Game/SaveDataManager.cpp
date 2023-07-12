@@ -5,23 +5,32 @@
 SaveDataManager::SaveDataManager()
 {
 	//テストしたかったらこれ呼ぶ。
-
 	/*
-	SaveDataManager sDataMng;
-
+	
+	SaveDataManager SaveDataMng;
 	SaveDataManager::SaveData data;
 
-	for (int i = 0; i < 11; i++) {
-		data.score[i] = 1.0f * i;
-	}
-
-	data.score[4] = 6.54f;
-
-	sDataMng.Sort(data, 3.66f);
+	SaveDataMng.Init(data);
 
 	for (int i = 0; i < 11; i++) {
-		K2_LOG("\n%f\n", data.score[i]);
+		data.score[i] = 1 * i;
 	}
+
+
+	data.score[2] = 5;
+	data.score[3] = 5;
+
+	data.score[4] = 7;
+
+	int num = SaveDataMng.Sort(data, 6);
+	SaveDataMng.SetPlayerName(data, m_inputName, num);
+
+	for (int i = 0; i < 11; i++) {
+		K2_LOG("\n%d\n", data.score[i]);
+		K2_LOG("\n%ls\n", data.name[i]);
+	}
+	K2_LOG("\n%ls\n", data.name[num]);
+	
 	*/
 }
 

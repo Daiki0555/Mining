@@ -1,0 +1,244 @@
+#include "stdafx.h"
+#include "NameEntry.h"
+
+#include "SaveDataManager.h"
+
+namespace
+{
+	const Vector3	SPELL_FONT_POS = Vector3(-600.0f, 0.0f, 0.0f);	//英文字の座標。
+	const Vector3	INPUT_NAME_POS = Vector3(0.0f, 200.0f, 0.0f);	//入力文字の座標。
+	const int		BUFFER_SIZE = 256;								//バッファーサイズ。
+	const int		SPELL_NUM_FIRST = 65;							//char型のA。
+	const int		SPELL_NUM_MAX = 26;								//スペルの最大数。
+	const int		SPELL_ROW_MAX = 13;								//文字列の行数の最大。
+	const int		SPELL_COLUMN_MAX = 2;							//文字列の列数の最大。
+	const int		INPUT_NAME_MAX = 5;								//名前の最大数。
+	const int		INPUT_NAME_MIN = 0;								//名前の最小数。
+	const float		SPELL_DURATION = 100.0f;						//文字の間隔。
+	const float		SPELL_FONT_SCALE = 2.0f;						//英文字の拡大率。
+}
+
+NameEntry::NameEntry()
+{
+
+}
+
+NameEntry::~NameEntry()
+{
+
+}
+
+bool NameEntry::Start()
+{
+	//背景画像の設定。
+	m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/nameEntry.DDS", 1920.0f, 1080.0f);
+
+	//入力文字の設定。
+	m_inputNameFontRender.SetText(L"");
+	m_inputNameFontRender.SetPosition(INPUT_NAME_POS);
+	m_inputNameFontRender.SetColor(Vector4::Black);
+
+	//入力できる文字の設定。
+	wchar_t spell;
+	wchar_t text[BUFFER_SIZE];
+	Vector3 spellPos;
+
+	for (int i = 0; i < SPELL_NUM_MAX; i++) {
+
+		//文字を設定。
+		spell = (SPELL_NUM_FIRST + i);
+
+		//文字列に変換。
+		swprintf_s(text, BUFFER_SIZE, L"%2c", spell);
+
+		spellPos = Vector3(SPELL_DURATION * i, 0.0f, 0.0f);
+
+		if (i >= SPELL_ROW_MAX) {
+
+			spellPos.x = SPELL_DURATION * (i - SPELL_ROW_MAX);
+			spellPos.y = -100.0f;
+		}
+
+		//文字列の設定。
+		m_spellFontRender[i].SetText(text);
+		m_spellFontRender[i].SetPosition(SPELL_FONT_POS + spellPos);
+		m_spellFontRender[i].SetScale(SPELL_FONT_SCALE);
+		m_spellFontRender[i].SetColor(Vector4::Black);
+	}
+
+	m_debugFontRender.SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+
+	return true;
+}
+
+void NameEntry::Update()
+{
+	Input();
+
+	CursorAnimation();
+
+	wchar_t text[BUFFER_SIZE];
+	swprintf_s(text, BUFFER_SIZE, L"%.2f", m_cursorTimer);
+	m_debugFontRender.SetText(text);
+
+}
+
+void NameEntry::Input()
+{
+	//下ボタンが押されたら。
+	if (g_pad[0]->IsTrigger(enButtonDown)) {
+
+		m_cursorVertical++;
+
+		CursorUpdate();
+	}
+	//上ボタンが押されたら。
+	else if (g_pad[0]->IsTrigger(enButtonUp)) {
+
+		m_cursorVertical--;
+
+		CursorUpdate();
+	}
+	//右ボタンが押されたら。
+	else if (g_pad[0]->IsTrigger(enButtonRight)) {
+
+		m_cursorHorizontal++;
+
+		CursorUpdate();
+	}
+	//左ボタンが押されたら。
+	else if (g_pad[0]->IsTrigger(enButtonLeft)) {
+
+		m_cursorHorizontal--;
+
+		CursorUpdate();
+	}
+	else if (g_pad[0]->IsTrigger(enButtonA)) {
+
+		InputName();
+	}
+	else if (g_pad[0]->IsTrigger(enButtonB)) {
+
+		EraseName();
+	}
+	else if (g_pad[0]->IsTrigger(enButtonStart)) {
+
+		End();
+	}
+}
+
+void NameEntry::CursorUpdate()
+{
+	//0～行列の最大数の範囲に収める。
+	//0スタートなので行列数の最大数から1を引く。
+	m_cursorHorizontal = min( max(m_cursorHorizontal, 0), SPELL_ROW_MAX - 1);
+	m_cursorVertical = min(max(m_cursorVertical, 0), SPELL_COLUMN_MAX - 1 );
+
+	//現在のカーソル位置。
+	m_cursor = (m_cursorHorizontal % SPELL_ROW_MAX) + (m_cursorVertical * SPELL_ROW_MAX);
+
+	//カーソルタイマーの初期化。
+	m_cursorTimer = 0.0f;
+
+	//過去のカーソル位置の文字色を戻す。
+	m_spellFontRender[m_cursorOld].SetColor(Vector4::Black);
+
+	//過去のカーソル位置を保存。
+	m_cursorOld = m_cursor;
+}
+
+void NameEntry::InputName()
+{
+	if (m_inputNameNum >= INPUT_NAME_MAX) {
+		return;
+	}
+
+	//入力する文字を取得。
+	char name[3];
+	wchar_t* getText = (wchar_t*)m_spellFontRender[m_cursor].GetText();
+
+	//wchar_tをcharに変換。
+	wcstombs(name, getText, sizeof(getText));
+
+	m_inputName[m_inputNameNum] = name[1];
+	m_inputName[m_inputNameNum + 1] = '\0';
+
+	//入力数を加算。
+	m_inputNameNum++;
+
+	NameUpdate();
+}
+
+void NameEntry::EraseName()
+{
+	if (m_inputNameNum <= INPUT_NAME_MIN) {
+		return;
+	}
+
+	//末尾の文字を削除。
+	m_inputName[m_inputNameNum - 1] = '\0';
+
+	//入力数を減算。
+	m_inputNameNum--;
+
+	NameUpdate();
+}
+
+void NameEntry::NameUpdate()
+{
+	//入力名前を設定。
+	wchar_t text[BUFFER_SIZE];
+	swprintf_s(text, BUFFER_SIZE, L"%hs", m_inputName);
+	m_inputNameFontRender.SetText(text);
+}
+
+void NameEntry::End()
+{
+	if (m_inputNameNum <= INPUT_NAME_MIN) {
+		return;
+	}
+
+	SaveDataManager SaveDataMng;
+	SaveDataManager::SaveData data;
+
+	//データを初期化。
+	SaveDataMng.Init(data);
+	//データのロード。
+	SaveDataMng.Load(data);
+
+	//セーブデータにスコアを入れてソートする。
+	int num = SaveDataMng.Sort(data, m_score);
+	//名前を保存。
+	SaveDataMng.SetPlayerName(m_inputName, num);
+
+	//セーブ。
+	SaveDataMng.Save(data);
+}
+
+void NameEntry::CursorAnimation()
+{
+	m_cursorTimer += g_gameTime->GetFrameDeltaTime();
+
+	if (m_cursorTimer > 1.0f) {
+		m_cursorTimer = 0.0f;
+	}
+
+	//現在のカーソル位置の色を変更。
+	m_spellFontRender[m_cursor].SetColor(Vector4(1.0f, m_cursorTimer, m_cursorTimer, 1.0f));
+}
+
+void NameEntry::Render(RenderContext& rc)
+{
+	//背景の描画。
+	m_backGroundSpriteRender.Draw(rc);
+
+	//文字列の描画。
+	for (int i = 0; i < SPELL_NUM_MAX; i++) {
+		m_spellFontRender[i].Draw(rc);
+	}
+
+	//入力名前の描画。
+	m_inputNameFontRender.Draw(rc);
+
+	m_debugFontRender.Draw(rc);
+}

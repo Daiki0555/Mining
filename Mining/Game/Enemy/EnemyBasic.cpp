@@ -8,7 +8,7 @@ namespace
 	const float Y_POSITION = 25.0f;				// ƒŒƒC‚Ì‚‚³
 	const float ADD_LENGTH = 100.0f;			// æŽZ‚·‚éƒxƒNƒgƒ‹‚Ì’·‚³
 
-	const float CAN_ATTACK_LENGTH = 100.0f;		// UŒ‚‚Å‚«‚é”ÍˆÍ
+	const float CAN_ATTACK_LENGTH = 120.0f;		// UŒ‚‚Å‚«‚é”ÍˆÍ
 }
 
 EnemyBasic::EnemyBasic()
@@ -140,6 +140,7 @@ void EnemyBasic::Attack()
 
 	// ƒvƒŒƒCƒ„[‚ÉUŒ‚‚·‚é
 	m_player->Damage(m_enemyStatus.m_attackPower);
+	m_player->SetActionState(m_player->m_enActionState_Damage);
 }
 
 void EnemyBasic::Rotation(Vector3 rotation)
