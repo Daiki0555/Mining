@@ -9,6 +9,16 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+public:
+	/// <summary>
+	/// スコアを設定。
+	/// </summary>
+	/// <param name="score"></param>
+	void SetScore(const int score)
+	{
+		m_score = score;
+	}
+
 private:
 	/// <summary>
 	/// 入力処理。
@@ -67,7 +77,7 @@ private:
 	Vector3			m_bezierPos[3];						//ベジェ曲線の座標。
 	AnimationState	m_animationState = enState_Idle;	//アニメーションステート。	
 	char			m_inputName[256];					//入力された名前。
-	int				m_score = 13;						//スコア。
+	int				m_score = 0;						//スコア。
 	int				m_cursor = 0;						//一列に並べた時のカーソル。
 	int				m_cursorVertical = 0;				//縦カーソル。
 	int				m_cursorHorizontal = 0;				//横カーソル。
