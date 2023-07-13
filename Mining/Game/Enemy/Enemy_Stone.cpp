@@ -6,7 +6,6 @@ namespace
 	const int		ATTACK_POWER = 10;							// 攻撃
 	const float		BASIC_SPEED = 200.0f;						// 基本スピード
 
-
 	const Vector3	SCALE = { 1.5f,1.5f,1.5f };					// スケール
 	const float		Y_UP = 80.0f;								// 地面から浮かせる値
 
@@ -64,6 +63,7 @@ void Enemy_Stone::PlayAnimation()
 	switch (m_actionState) {
 	case m_enActionState_Idle:
 	case m_enActionState_StopAction:
+	case m_enActionState_GameQuit:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Move:
@@ -89,6 +89,8 @@ void Enemy_Stone::Action()
 		break;
 	case m_enActionState_StopAction:
 		StopAction();
+		break;
+	case m_enActionState_GameQuit:
 		break;
 	}
 }

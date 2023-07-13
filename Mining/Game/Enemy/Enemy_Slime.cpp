@@ -58,6 +58,7 @@ void Enemy_Slime::PlayAnimation()
 {
 	switch (m_actionState) {
 	case m_enActionState_Idle:
+	case m_enActionState_GameQuit:
 	case m_enActionState_StopAction:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
@@ -82,6 +83,8 @@ void Enemy_Slime::Action()
 		break;
 	case m_enActionState_StopAction:
 		StopAction();
+		break;
+	case m_enActionState_GameQuit:
 		break;
 	}
 }

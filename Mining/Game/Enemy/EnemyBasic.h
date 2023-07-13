@@ -95,13 +95,31 @@ public:
 		return m_canDraw;
 	}
 
-protected:
 	enum enActionState {
 		m_enActionState_Idle,				// 待機
 		m_enActionState_Move,				// 移動
 		m_enActionState_Attack,				// 攻撃
 		m_enActionState_StopAction,			// 行動停止
+		m_enActionState_GameQuit			// ゲーム終了
 	};
+
+	/// <summary>
+	/// 現在のステートを取得する
+	/// </summary>
+	/// <returns></returns>
+	const enActionState GetEnemyStatus() const {
+		return m_actionState;
+	}
+
+	/// <summary>
+	/// ステートを設定する
+	/// </summary>
+	/// <param name="state"></param>
+	void SetEnemyState(const enActionState state) {
+		m_actionState = state;
+	}
+
+protected:
 	enActionState		m_actionState = m_enActionState_Idle;			// 行動ルーチン
 
 	enum enAnimationClip {
