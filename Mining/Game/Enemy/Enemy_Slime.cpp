@@ -4,7 +4,7 @@
 namespace
 {
 	const int		ATTACK_POWER = 30;							// 攻撃
-	const float		BASIC_SPEED = 200.0f;						// 基本スピード
+	const float		BASIC_SPEED = 150.0f;						// 基本スピード
 
 	const Vector3	SCALE = { 5.0f,5.0f,5.0f };					// スケール
 
@@ -52,9 +52,6 @@ void Enemy_Slime::LoadAnimation()
 
 	m_enAnimationClips[m_enAnimationClips_Move].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Move.tka");
 	m_enAnimationClips[m_enAnimationClips_Move].SetLoopFlag(true);
-
-	m_enAnimationClips[m_enAnimationClips_Damage].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Damage.tka");
-	m_enAnimationClips[m_enAnimationClips_Damage].SetLoopFlag(false);
 }
 
 void Enemy_Slime::PlayAnimation()
@@ -67,9 +64,6 @@ void Enemy_Slime::PlayAnimation()
 	case m_enActionState_Move:
 	case m_enActionState_Attack:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Move, LINEAR_COMPLETION);
-		break;
-	case m_enActionState_Damage:
-		m_modelRender.PlayAnimation(m_enAnimationClips_Damage, LINEAR_COMPLETION);
 		break;
 	}
 }
@@ -85,9 +79,6 @@ void Enemy_Slime::Action()
 		break;
 	case m_enActionState_Attack:
 		Attack();
-		break;
-	case m_enActionState_Damage:
-		Damege();
 		break;
 	case m_enActionState_StopAction:
 		StopAction();

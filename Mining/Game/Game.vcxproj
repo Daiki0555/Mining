@@ -225,7 +225,7 @@
   <ItemGroup>
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Enemy\EnemyBasic.cpp" />
-    <ClCompile Include="Enemy\Enemy_Bee.cpp" />
+    <ClCompile Include="Enemy\Enemy_Stone.cpp" />
     <ClCompile Include="Enemy\Enemy_Mushroom.cpp" />
     <ClCompile Include="Enemy\Enemy_Slime.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -253,7 +253,7 @@
   <ItemGroup>
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Enemy\EnemyBasic.h" />
-    <ClInclude Include="Enemy\Enemy_Bee.h" />
+    <ClInclude Include="Enemy\Enemy_Stone.h" />
     <ClInclude Include="Enemy\Enemy_Mushroom.h" />
     <ClInclude Include="Enemy\Enemy_Slime.h" />
     <ClInclude Include="GameCamera.h" />

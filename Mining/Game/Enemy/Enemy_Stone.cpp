@@ -1,14 +1,14 @@
 #include "stdafx.h"
-#include "Enemy_Bee.h"
+#include "Enemy_Stone.h"
 
 namespace
 {
 	const int		ATTACK_POWER = 10;							// 攻撃
-	const float		BASIC_SPEED = 250.0f;						// 基本スピード
+	const float		BASIC_SPEED = 200.0f;						// 基本スピード
 
 
-	const Vector3	SCALE = { 1.3f,1.3f,1.3f };					// スケール
-	const float		Y_UP = 100.0f;								// 地面から浮かせる値
+	const Vector3	SCALE = { 1.5f,1.5f,1.5f };					// スケール
+	const float		Y_UP = 80.0f;								// 地面から浮かせる値
 
 	const float		CHARACTERCONTROLLER_RADIUS = 15.0f;			// 半径
 	const float		CHARACTERCONTROLLER_HEIGHT = 15.0f;			// 高さ
@@ -16,22 +16,22 @@ namespace
 	const float		LINEAR_COMPLETION = 1.0f;					// 線形補完
 }
 
-Enemy_Bee::Enemy_Bee()
+Enemy_Stone::Enemy_Stone()
 {
 }
 
-Enemy_Bee::~Enemy_Bee()
+Enemy_Stone::~Enemy_Stone()
 {
 }
 
-bool Enemy_Bee::Start()
+bool Enemy_Stone::Start()
 {
 	LoadAnimation();
 
 	m_scale = SCALE;
 	m_position.y += Y_UP;				// 浮かせる
 
-	m_modelRender.Init("Assets/modelData/enemy/bee/bee.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ, true);
+	m_modelRender.Init("Assets/modelData/enemy/StoneMonster/StoneMonster.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ, true);
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotaition(m_rotation);
 	m_modelRender.SetPosition(m_position);
@@ -47,22 +47,19 @@ bool Enemy_Bee::Start()
 	return true;
 }
 
-void Enemy_Bee::LoadAnimation()
+void Enemy_Stone::LoadAnimation()
 {
-	m_enAnimationClips[m_enAnimationClips_Idle].Load("Assets/animData/enemy/bee/idle.tka");
+	m_enAnimationClips[m_enAnimationClips_Idle].Load("Assets/animData/enemy/StoneMonsterAnim/StoneMonstorIdle.tka");
 	m_enAnimationClips[m_enAnimationClips_Idle].SetLoopFlag(true);
 
-	m_enAnimationClips[m_enAnimationClips_Move].Load("Assets/animData/enemy/bee/move.tka");
+	m_enAnimationClips[m_enAnimationClips_Move].Load("Assets/animData/enemy/StoneMonsterAnim/StoneMonstorRun.tka");
 	m_enAnimationClips[m_enAnimationClips_Move].SetLoopFlag(true);
 
-	m_enAnimationClips[m_enAnimationClips_Attack].Load("Assets/animData/enemy/bee/attack.tka");
+	m_enAnimationClips[m_enAnimationClips_Attack].Load("Assets/animData/enemy/StoneMonsterAnim/StoneMonstorAttack.tka");
 	m_enAnimationClips[m_enAnimationClips_Attack].SetLoopFlag(false);
-
-	m_enAnimationClips[m_enAnimationClips_Damage].Load("Assets/animData/enemy/bee/damage.tka");
-	m_enAnimationClips[m_enAnimationClips_Damage].SetLoopFlag(false);
 }
 
-void Enemy_Bee::PlayAnimation()
+void Enemy_Stone::PlayAnimation()
 {
 	switch (m_actionState) {
 	case m_enActionState_Idle:
@@ -75,13 +72,10 @@ void Enemy_Bee::PlayAnimation()
 	case m_enActionState_Attack:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Attack, LINEAR_COMPLETION);
 		break;
-	case m_enActionState_Damage:
-		m_modelRender.PlayAnimation(m_enAnimationClips_Damage, LINEAR_COMPLETION);
-		break;
 	}
 }
 
-void Enemy_Bee::Action()
+void Enemy_Stone::Action()
 {
 	switch (m_actionState) {
 	case m_enActionState_Idle:
@@ -93,16 +87,13 @@ void Enemy_Bee::Action()
 	case m_enActionState_Attack:
 		Attack();
 		break;
-	case m_enActionState_Damage:
-		Damege();
-		break;
 	case m_enActionState_StopAction:
 		StopAction();
 		break;
 	}
 }
 
-void Enemy_Bee::Update()
+void Enemy_Stone::Update()
 {
 	Action();
 	PlayAnimation();
@@ -113,7 +104,7 @@ void Enemy_Bee::Update()
 	m_modelRender.Update();
 }
 
-void Enemy_Bee::Render(RenderContext& rc)
+void Enemy_Stone::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
 }

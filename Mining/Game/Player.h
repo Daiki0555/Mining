@@ -43,10 +43,6 @@ public:
 	/// </summary>
 	void Move();
 	/// <summary>
-	/// UŒ‚ˆ—
-	/// </summary>
-	void Attack();
-	/// <summary>
 	/// ”í’eˆ—
 	/// </summary>
 	/// <param name="attackPower">‘Šè‚ÌUŒ‚—Í</param>

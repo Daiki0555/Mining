@@ -4,7 +4,7 @@
 namespace
 {
 	const int		ATTACK_POWER = 50;							// 攻撃
-	const float		BASIC_SPEED = 150.0f;						// 基本スピード
+	const float		BASIC_SPEED = 100.0f;						// 基本スピード
 
 	const Vector3	SCALE = { 1.0f,1.0f,1.0f };					// スケール
 
@@ -54,9 +54,6 @@ void Enemy_Mushroom::LoadAnimation()
 
 	m_enAnimationClips[m_enAnimationClips_Attack].Load("Assets/animData/enemy/MushroomManAnim/MushroomMonster_Attack.tka");
 	m_enAnimationClips[m_enAnimationClips_Attack].SetLoopFlag(false);
-
-	m_enAnimationClips[m_enAnimationClips_Damage].Load("Assets/animData/enemy/MushroomManAnim/MushroomMonster_Damage.tka");
-	m_enAnimationClips[m_enAnimationClips_Damage].SetLoopFlag(false);
 }
 
 void Enemy_Mushroom::PlayAnimation()
@@ -72,9 +69,6 @@ void Enemy_Mushroom::PlayAnimation()
 	case m_enActionState_Attack:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Attack, LINEAR_COMPLETION);
 		break;
-	case m_enActionState_Damage:
-		m_modelRender.PlayAnimation(m_enAnimationClips_Damage, LINEAR_COMPLETION);
-		break;
 	}
 }
 
@@ -89,9 +83,6 @@ void Enemy_Mushroom::Action()
 		break;
 	case m_enActionState_Attack:
 		Attack();
-		break;
-	case m_enActionState_Damage:
-		Damege();
 		break;
 	case m_enActionState_StopAction:
 		StopAction();

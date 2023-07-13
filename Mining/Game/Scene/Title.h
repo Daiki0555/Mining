@@ -1,7 +1,7 @@
 #pragma once
 
 class Game;
-class ScoreRanking;
+class Ranking;
 
 class Title: public IGameObject
 {
@@ -13,13 +13,13 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 	/// <summary>
-	/// 透過処理
+	/// カーソルの移動
 	/// </summary>
-	void Transparent();
+	void ChangeCursor();
 	/// <summary>
 	/// シーンの遷移
 	/// </summary>
-	void SceneChange();
+	void ChangeScene();
 
 private:
 	enum enCursorState {
@@ -34,7 +34,7 @@ private:
 	SpriteRender	m_spriteRenderMessage;						// スプライトレンダー(文字)
 
 	Game*			m_game = nullptr;							// ゲーム
-	ScoreRanking*	m_scoreRanking = nullptr;					// ランキング
+	Ranking*		m_ranking = nullptr;						// ランキング
 
 	float			m_alpha = 1.0f;								// 透過値
 };

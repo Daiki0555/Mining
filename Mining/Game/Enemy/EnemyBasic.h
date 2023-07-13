@@ -4,7 +4,7 @@ class Player;
 
 namespace
 {
-	const float STOP_TIME = 5.0f;		// 行動を停止する時間
+	const float STOP_TIME = 10.0f;		// 行動を停止する時間
 }
 
 class EnemyBasic:public IGameObject
@@ -38,10 +38,6 @@ public:
 	/// 攻撃処理
 	/// </summary>
 	void Attack();
-	/// <summary>
-	/// 被弾処理
-	/// </summary>
-	void Damege();
 	/// <summary>
 	/// 行動を停止する
 	/// </summary>
@@ -104,16 +100,14 @@ protected:
 		m_enActionState_Idle,				// 待機
 		m_enActionState_Move,				// 移動
 		m_enActionState_Attack,				// 攻撃
-		m_enActionState_Damage,				// 被弾
 		m_enActionState_StopAction,			// 行動停止
 	};
-	enActionState		m_actionState = m_enActionState_Move;			// 行動ルーチン
+	enActionState		m_actionState = m_enActionState_Idle;			// 行動ルーチン
 
 	enum enAnimationClip {
 		m_enAnimationClips_Idle,			// 待機
 		m_enAnimationClips_Move,			// 移動
 		m_enAnimationClips_Attack,			// 攻撃
-		m_enAnimationClips_Damage,			// 被弾
 		m_enAnimationClips_Num
 	};
 	AnimationClip		m_enAnimationClips[m_enAnimationClips_Num];		// アニメーションクリップ

@@ -2,7 +2,7 @@
 #include "Title.h"
 
 #include "Game.h"
-#include "ScoreRanking.h"
+#include "Ranking.h"
 
 namespace 
 {
@@ -37,20 +37,13 @@ bool Title::Start()
 
 void Title::Update()
 {
-	// àÍíËÇÃÉ{É^ÉìÇâüÇµÇΩÇ∆Ç´
-	if (g_pad[0]->IsTrigger(enButtonA)) {
-		// ÉQÅ[ÉÄÇê∂ê¨
-		m_game = NewGO<Game>(0, "game");
-		DeleteGO(this);
-	}
-
-	//SceneChange();
-	//Transparent();
+	ChangeScene();
+	ChangeCursor();
 
 	m_spriteRenderMessage.Update();
 }
 
-void Title::SceneChange()
+void Title::ChangeScene()
 {
 	if (g_pad[0]->IsTrigger(enButtonUp)) {
 		
@@ -81,8 +74,28 @@ void Title::SceneChange()
 	}
 }
 
-void Title::Transparent()
+void Title::ChangeCursor()
 {
+	switch (m_enCursorState) {
+	case m_enCursorState_Game:
+
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_game = NewGO<Game>(0, "game");
+			DeleteGO(this);
+		}
+
+		break;
+	case m_enCursorState_Guide:
+		break;
+	case m_enCursorState_Ranking:
+
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_ranking = NewGO<Ranking>(0, "ranking");
+			DeleteGO(this);
+		}
+
+		break;
+	}
 }
 
 void Title::Render(RenderContext& rc)

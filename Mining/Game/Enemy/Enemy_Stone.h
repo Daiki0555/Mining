@@ -2,11 +2,11 @@
 
 #include "EnemyBasic.h"
 
-class Enemy_Bee:public EnemyBasic
+class Enemy_Stone:public EnemyBasic
 {
 public:
-	Enemy_Bee();
-	~Enemy_Bee()override;
+	Enemy_Stone();
+	~Enemy_Stone()override;
 
 	bool Start();
 	void Update();
