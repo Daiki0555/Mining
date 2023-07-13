@@ -8,7 +8,6 @@ namespace
 {
 	const Vector3	SPELL_FONT_POS = Vector3(-600.0f, 0.0f, 0.0f);	//英文字の座標。
 	const Vector3	INPUT_NAME_POS = Vector3(-60.0f, 180.0f, 0.0f);	//入力文字の座標。
-	const int		BUFFER_SIZE = 256;								//バッファーサイズ。
 	const int		SPELL_NUM_FIRST = 65;							//char型のA。
 	const int		SPELL_NUM_MAX = 26;								//スペルの最大数。
 	const int		SPELL_ROW_MAX = 13;								//文字列の行数の最大。

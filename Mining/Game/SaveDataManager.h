@@ -2,7 +2,8 @@
 
 namespace
 {
-	const int SCORE_MAX = 10;	//スコアの最大数
+	const int SCORE_MAX = 10;		//スコアの最大数。
+	const int BUFFER_SIZE = 256;	//バッファーサイズ。
 }
 
 /// <summary>
@@ -65,17 +66,21 @@ public:
 	/// <param name="num">順位</param>
 	void SetPlayerName(char* name, int num)
 	{
-		FILE* fp;
-		char rankName[256];
+		FILE* fp = NULL;
+		char rankName[BUFFER_SIZE];
 
 		//ファイルを読み込む。
 		fp = fopen("rankingName.txt", "r");
-		if (fp != NULL) {
-			fread(rankName, sizeof(rankName), 1, fp);
-			fgets(rankName, 256, fp);
-			rankName[255] = '\0';
-			fclose(fp);
-		}
+
+		K2_ASSERT(
+			fp != NULL,
+			"ファイルの読み込みに失敗しました。"
+		);
+
+		fread(rankName, sizeof(rankName), 1, fp);
+		fgets(rankName, BUFFER_SIZE, fp);
+		rankName[BUFFER_SIZE - 1] = '\0';
+		fclose(fp);
 
 		int j = 0;
 
@@ -91,7 +96,13 @@ public:
 
 		//ファイルに書き込む。
 		fp = fopen("rankingName.txt", "w");
-		fwrite(rankName, sizeof(rankName), 256, fp);
+		
+		//K2_ASSERT(
+		//	fp != NULL,
+		//	"ファイルの読み込みに失敗しました。"
+		//);
+
+		fwrite(rankName, sizeof(rankName), 1, fp);
 		fclose(fp);
 
 	}
@@ -119,7 +130,6 @@ public:
 				}
 			}
 		}
-
 
 		for (int k = SCORE_MAX; k >= 0; k--) {
 

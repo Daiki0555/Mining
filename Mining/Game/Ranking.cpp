@@ -9,7 +9,6 @@ namespace
 	const Vector3	BUTTON_FONT_POS = Vector3(-500.0f, -400.0f, 0.0f);		//ボタン文字の座標。
 	const Vector3	RANKNIG_FONT_POS = Vector3(-300.0f, 200.0f, 0.0f);		//ランキング文字の座標。
 	const Vector3	RANKING_BETWEEN_ROW = Vector3(0.0f, -50.0f, 0.0f);		//ランキング文字の列間。
-	const int		BUFFER_SIZE = 256;										//バッファーサイズ。
 	const int		RANKING_NUM = 10;										//ランキングの順位。
 	const int		NAME_MAX = 5;											//名前の最大入力数。
 	const char*		RANK[RANKING_NUM] = { " 1st", " 2nd", " 3rd", " 4th", " 5th", " 6th", " 7th", " 8th", " 9th", "10th" };
