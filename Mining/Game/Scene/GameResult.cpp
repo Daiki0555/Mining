@@ -17,10 +17,10 @@ namespace
 
 GameResult::GameResult()
 {
-	m_haveCristals[0] = 10;
-	m_haveCristals[1] = 6;
-	m_haveCristals[2] = 4;
-	m_haveCristals[3] = 1;
+	//m_haveCristals[0] = 10;
+	//m_haveCristals[1] = 6;
+	//m_haveCristals[2] = 4;
+	//m_haveCristals[3] = 1;
 }
 
 GameResult::~GameResult()
@@ -49,17 +49,6 @@ bool GameResult::Start()
 	m_newRecordFontRender.SetPosition(NEWRECORD_FONT_POS);
 	m_newRecordFontRender.SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
-
-	//セーブデータを読み込んでハイスコアかどうか確認。
-	SaveDataManager saveDataMng;
-	SaveDataManager::SaveData data;
-	saveDataMng.Load(data);
-
-	//スコアがランキングのスコアより上なら。
-	if (m_newScore > data.score[9]) {
-		m_isNewRecord = true;
-	}
-
 	return true;
 }
 
@@ -69,6 +58,16 @@ void GameResult::CalcScore()
 	for (int i = 0; i < CRYSTAL_CATEGORY_MAX; i++) {
 
 		m_newScore += CRYSTAL_POINTS[i] * m_haveCristals[i];
+	}
+
+	//セーブデータを読み込んでハイスコアかどうか確認。
+	SaveDataManager saveDataMng;
+	SaveDataManager::SaveData data;
+	saveDataMng.Load(data);
+
+	//スコアがランキングのスコアより上なら。
+	if (m_newScore > data.score[9]) {
+		m_isNewRecord = true;
 	}
 }
 

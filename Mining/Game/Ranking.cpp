@@ -48,7 +48,6 @@ void Ranking::InitRanking()
 
 	//初期化とロード。
 	saveDataMng.Init(data);
-	//saveDataMng.Save(data);
 	saveDataMng.Load(data);
 
 	//ファイルを読み込む。
