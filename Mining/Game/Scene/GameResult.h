@@ -47,12 +47,10 @@ private:
 	SpriteRender							m_backGroundSpriteRender;			//背景画像。
 	FontRender								m_crystalFontRender;				//鉱石の個数文字。
 	FontRender								m_newRecordFontRender;				//新記録時の文字。
-
 	Fade*									m_fade = nullptr;					//フェードクラス。
-
-	std::array<int, CRYSTAL_CATEGORY_MAX>	m_haveCristals = { 0,0,0,0 };		// playerが取得したクリスタル
 	bool									m_isNewRecord = false;				//新記録かどうか。
 	bool									m_isWaitFadeOut = false;			//フェードアウトの待機中かどうか。
+	std::array<int, CRYSTAL_CATEGORY_MAX>	m_haveCristals = { 0,0,0,0 };		// playerが取得したクリスタル
 	int										m_newScore = 0;						// スコア
 	float									m_newRecordTimer = 0.0f;			//新記録時のタイマー。
 };

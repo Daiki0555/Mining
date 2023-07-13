@@ -69,8 +69,12 @@ public:
 		FILE* fp = NULL;
 		char rankName[BUFFER_SIZE];
 
+		for (int i = 0; i < BUFFER_SIZE; i++) {
+			rankName[i] = 32;
+		}
+
 		//ファイルを読み込む。
-		fp = fopen("rankingName.txt", "r");
+		fp = fopen("rankingName.dat", "rb");
 
 		K2_ASSERT(
 			fp != NULL,
@@ -87,23 +91,24 @@ public:
 		//順位の位置にある名前を上書き。
 		for (int i = num * 5; i < num * 5 + 5; i++) {
 			rankName[i] = name[j];
-			j++;
 
-			if (name[i] == '\0') {
-				name[i] = 32;
+			if (name[j] == 0) {
+				rankName[i] = 32;
 			}
+
+			j++;
 		}
 
 		//ファイルに書き込む。
-		//fp = fopen("rankingName.txt", "w");
+		fp = fopen("rankingName.dat", "wb");
 		
 		//K2_ASSERT(
 		//	fp != NULL,
 		//	"ファイルの読み込みに失敗しました。"
 		//);
 
-		//fwrite(rankName, sizeof(rankName), 1, fp);
-		//fclose(fp);
+		fwrite(rankName, sizeof(rankName), 1, fp);
+		fclose(fp);
 
 	}
 
@@ -143,5 +148,7 @@ public:
 		//エラー。
 		return -1;
 	}
+
+private:
 };
 

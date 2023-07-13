@@ -32,6 +32,30 @@ SaveDataManager::SaveDataManager()
 	K2_LOG("\n%ls\n", data.name[num]);
 	
 	*/
+
+
+	//スコアを初期化したいとき呼ぶ。
+	/*
+	
+	for (int i = 0; i < 10 + 1; i++) {
+
+		data.score[i] = 0;
+	}
+
+	*/
+
+	//名前を初期化したいとき呼ぶ。
+	/*
+	
+	for (int i = 0; i < 11; i++) {
+		rankName[i * 5 + 0] = 'T';
+		rankName[i * 5 + 1] = 'A';
+		rankName[i * 5 + 2] = 'R';
+		rankName[i * 5 + 3] = 'O';
+		rankName[i * 5 + 4] = 'U';
+	}
+	
+	*/
 }
 
 SaveDataManager::~SaveDataManager()

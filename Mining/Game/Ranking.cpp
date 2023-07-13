@@ -56,7 +56,7 @@ void Ranking::InitRanking()
 	saveDataMng.Load(data);
 
 	//ファイルを読み込む。
-	FILE* fp = fopen("rankingName.txt", "r");
+	FILE* fp = fopen("rankingName.dat", "rb");
 	if (fp != NULL) {
 		fread(name, sizeof(name), 1, fp);
 		fgets(name, BUFFER_SIZE, fp);

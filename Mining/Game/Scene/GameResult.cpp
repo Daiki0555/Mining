@@ -18,10 +18,7 @@ namespace
 
 GameResult::GameResult()
 {
-	m_haveCristals[0] = 1;
-	m_haveCristals[1] = 1;
-	m_haveCristals[2] = 1;
-	m_haveCristals[3] = 0;
+
 }
 
 GameResult::~GameResult()
