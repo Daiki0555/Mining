@@ -45,6 +45,7 @@
     <ClCompile Include="SaveDataManager.cpp" />
     <ClCompile Include="NameEntry.cpp" />
     <ClCompile Include="Ranking.cpp" />
+    <ClCompile Include="UI\Fade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -79,5 +80,6 @@
     <ClInclude Include="SaveDataManager.h" />
     <ClInclude Include="NameEntry.h" />
     <ClInclude Include="Ranking.h" />
+    <ClInclude Include="UI\Fade.h" />
   </ItemGroup>
 </Project>

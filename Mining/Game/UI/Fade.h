@@ -27,6 +27,15 @@ public:
 		m_fadeState = m_enFadeState_FadeOut;
 	}
 
+	/// <summary>
+	/// フェード中かどうか。
+	/// </summary>
+	/// <returns></returns>
+	const bool IsFade() const
+	{
+		return m_fadeState != m_enFadeState_Idle;
+	}
+
 private:
 	enum enFadeState {
 		m_enFadeState_FadeIn,								// フェードイン
@@ -37,6 +46,6 @@ private:
 
 	SpriteRender	m_spriteRender;							// スプライトレンダー
 
-	float			m_alpha = 2.0f;							// 透明度
+	float			m_alpha = 1.0f;							// 透明度
 };
 

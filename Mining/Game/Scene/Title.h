@@ -2,6 +2,7 @@
 
 class Game;
 class Ranking;
+class Fade;
 
 class Title: public IGameObject
 {

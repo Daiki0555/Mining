@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "Ranking.h"
+#include "UI/Fade.h"
 
 namespace 
 {
@@ -31,6 +32,10 @@ bool Title::Start()
 	m_spriteRenderMessage.SetPosition(TEX_POSITION);
 	m_spriteRenderMessage.SetScale(TEX_SCALE);
 	m_spriteRenderMessage.Update();
+
+	//フェードイン。
+	m_fade = FindGO<Fade>("fade");
+	m_fade->FadeIn();
 
 	return true;
 }

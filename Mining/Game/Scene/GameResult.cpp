@@ -4,6 +4,7 @@
 #include "SaveDataManager.h"
 #include "NameEntry.h"
 #include "Title.h"
+#include "UI/Fade.h"
 
 namespace
 {
@@ -17,10 +18,10 @@ namespace
 
 GameResult::GameResult()
 {
-	//m_haveCristals[0] = 10;
-	//m_haveCristals[1] = 6;
-	//m_haveCristals[2] = 4;
-	//m_haveCristals[3] = 1;
+	m_haveCristals[0] = 1;
+	m_haveCristals[1] = 1;
+	m_haveCristals[2] = 1;
+	m_haveCristals[3] = 0;
 }
 
 GameResult::~GameResult()
@@ -49,6 +50,10 @@ bool GameResult::Start()
 	m_newRecordFontRender.SetPosition(NEWRECORD_FONT_POS);
 	m_newRecordFontRender.SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
+	//フェードイン。
+	m_fade = FindGO<Fade>("fade");
+	m_fade->FadeIn();
+
 	return true;
 }
 
@@ -73,12 +78,22 @@ void GameResult::CalcScore()
 
 void GameResult::Update()
 {
-	DrawScore();
+	if (m_isWaitFadeOut) {
 
-	if (g_pad[0]->IsTrigger(enButtonA)) {
-
-		TransitionScene();
+		//フェードが終了しているなら。
+		if (!m_fade->IsFade()) {
+			TransitionScene();
+		}
 	}
+	else {
+		//Aボタンが押されたら。
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_fade->FadeOut();
+			m_isWaitFadeOut = true;
+		}
+	}
+
+	DrawScore();
 }
 
 void GameResult::DrawScore()
