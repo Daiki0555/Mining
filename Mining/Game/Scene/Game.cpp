@@ -1,17 +1,18 @@
 #include "stdafx.h"
 #include "Game.h"
 
-#include "Scene/GameResult.h"
+#include "GameCamera.h"
 #include "Player.h"
 #include "Stage/BackGround.h"
-#include "GameCamera.h"
+#include "Stage/PhysicsGhost.h"
+#include "Stage/Object/Crystal.h"
 #include "Enemy/Enemy_Stone.h"
 #include "Enemy/Enemy_Mushroom.h"
 #include "Enemy/Enemy_Slime.h"
-#include "Stage/Object/Crystal.h"
 #include "UI/PlayerStatusGauge.h"
 #include "UI/PressAndHoldGauge.h"
-#include "Stage/PhysicsGhost.h"
+#include "UI/Fade.h"
+#include "Scene/GameResult.h"
 
 namespace
 {
@@ -61,7 +62,7 @@ bool Game::Start()
 
 	LevelDesign();
 
-	m_playerStatusGauge = NewGO<PlayerStatusGauge>(0, "playerStatusGauge");
+	//m_playerStatusGauge = NewGO<PlayerStatusGauge>(0, "playerStatusGauge");
 
 	return true;
 }
@@ -190,7 +191,7 @@ void Game::CanDrawObject()
 		m_crystalList[i]->SetCrystalState(m_crystalList[i]->m_enCrystalStete_Normal);
 	}
 
-	for (int i = 0; i < m_enemyList.size(); i++) {
+	for (int i = 0; i < m_enemyList.size(); i++){
 		Vector3 diff = m_enemyList[i]->GetPosition() - m_player->GetPosition();
 
 		// í∑Ç≥Ç™àÍíËà»è„ÇæÇ¡ÇΩÇ»ÇÁ
@@ -216,6 +217,10 @@ void Game::QuitGame()
 
 	}
 	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f});
+
+	for (int i = 0; i < m_enemyList.size(); i++) {
+		m_enemyList[i]->SetEnemyState(m_enemyList[i]->m_enActionState_GameQuit);
+	}
 
 	if (g_pad[0]->IsTrigger(enButtonA)) {
 		m_gameResult = NewGO<GameResult>(0, "gameResult");

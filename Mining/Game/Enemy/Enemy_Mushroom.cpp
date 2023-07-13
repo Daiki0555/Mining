@@ -61,6 +61,7 @@ void Enemy_Mushroom::PlayAnimation()
 	switch (m_actionState) {
 	case m_enActionState_Idle:
 	case m_enActionState_StopAction:
+	case m_enActionState_GameQuit:
 		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
 	case m_enActionState_Move:
@@ -86,6 +87,8 @@ void Enemy_Mushroom::Action()
 		break;
 	case m_enActionState_StopAction:
 		StopAction();
+		break;
+	case m_enActionState_GameQuit:
 		break;
 	}
 }

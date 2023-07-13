@@ -35,6 +35,7 @@ private:
 
 	Game*			m_game = nullptr;							// ゲーム
 	Ranking*		m_ranking = nullptr;						// ランキング
+	Fade*			m_fade = nullptr;							// フェード
 
 	float			m_alpha = 1.0f;								// 透過値
 };

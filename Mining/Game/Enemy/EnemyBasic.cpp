@@ -6,9 +6,10 @@
 namespace
 {
 	const float Y_POSITION = 25.0f;				// レイの高さ
-	const float ADD_LENGTH = 50.0f;				// 乗算するベクトルの長さ
+	const float ADD_LENGTH = 0.5f;				// 乗算するベクトルの長さ
 
 	const float CAN_ATTACK_LENGTH = 120.0f;		// 攻撃できる範囲
+	const float CAN_MOVETO_PLAYER = 500.0f;		// プレイヤーの方向へ動く範囲
 }
 
 EnemyBasic::EnemyBasic()
@@ -131,16 +132,18 @@ bool EnemyBasic::WallAndHit(Vector3 targetPosition)
 
 void EnemyBasic::Attack()
 {
-	// プレイヤーがダメージを受けないときは
-	if (!m_player->GetCanDamege()) {
-		// 待機状態に移行する
-		m_actionState = m_enActionState_StopAction;
-		return;
-	}
+	m_player->SetActionState(m_player->m_enActionState_Death);
 
-	// プレイヤーに攻撃する
-	m_player->Damage(m_enemyStatus.m_attackPower);
-	m_player->SetActionState(m_player->m_enActionState_Damage);
+	//// プレイヤーがダメージを受けないときは
+	//if (!m_player->GetCanDamege()) {
+	//	// 待機状態に移行する
+	//	m_actionState = m_enActionState_StopAction;
+	//	return;
+	//}
+
+	//// プレイヤーに攻撃する
+	//m_player->Damage(m_enemyStatus.m_attackPower);
+	//m_player->SetActionState(m_player->m_enActionState_Damage);
 }
 
 void EnemyBasic::Rotation(Vector3 rotation)

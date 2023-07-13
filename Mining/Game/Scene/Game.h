@@ -1,14 +1,15 @@
 #pragma once
 
-class GameResult;
+class GameCamera;
 class Player;
 class BackGround;
-class GameCamera;
-class PlayerStatusGauge;
-class PressAndHoldGauge;
 class Crystal;
 class PhysicsGhost;
+class PlayerStatusGauge;
+class PressAndHoldGauge;
+class Fade;
 class EnemyBasic;
+class GameResult;
 
 class Game:public IGameObject
 {
@@ -84,6 +85,7 @@ private:
 	GameCamera*					m_gameCamera = nullptr;					// ゲームカメラ
 	PlayerStatusGauge*			m_playerStatusGauge = nullptr;			// プレイヤーのステータスゲージ
 	PressAndHoldGauge*			m_circleGauge = nullptr;				// 円形ゲージ
+	Fade*						m_fade = nullptr;						// フェード
 
 	std::vector<Crystal*>		m_crystalList;							// クリスタルの総数
 	std::vector<EnemyBasic*>	m_enemyList;							// エネミーの総数
