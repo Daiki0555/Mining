@@ -73,6 +73,7 @@ void Player::Update()
 {
 	// デバッグ用
 	if (g_pad[0]->IsTrigger(enButtonStart)) {
+		m_modelRender.PlayAnimation(m_enActionState_Damage);
 	}
 
 	if (m_actionState == m_enActionState_Clear) {
@@ -85,6 +86,27 @@ void Player::Update()
 		Death();				// 死亡する
 	}
 	else {
+		if (m_actionState == m_enActionState_Damage && m_modelRender.IsPlayingAnimation() == true) {
+			PlayAnimation();		// アニメーション
+
+			m_modelRender.SetPosition(m_position);
+			m_modelRender.SetRotaition(m_rotation);
+			m_modelRender.SetScale(m_scale);
+
+			m_modelRender.Update();
+			return;
+		}
+
+		if (!m_canAddDamage) {
+			m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
+
+			// タイマーが0.0f以下のとき
+			if (m_invincibleTimer < 0.0f) {
+				m_canAddDamage = true;
+				m_invincibleTimer = INVINCIBLE_TIMER;			// タイマーをリセット
+			}
+		}
+
 		Move();					// 移動
 		Rotation();				// 回転
 		IsClear();				// クリア判定
@@ -170,6 +192,7 @@ void Player::PlayAnimation()
 		break;
 	case m_enActionState_Damage:
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage);
+		m_modelRender.SetAnimationSpeed(0.5f);
 		break;
 	case m_enActionState_Death:
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Death, LINEAR_COMPLETION);
@@ -255,20 +278,11 @@ void Player::Damage(int attackPower)
 {
 	// ダメージを受けられる状態のとき
 	if (m_canAddDamage) {
+
 		m_actionState = m_enActionState_Damage;
 		m_playerStatus.m_hitPoint -= attackPower;			// ダメージ量をHPから引く
 	
-	
 		m_canAddDamage = false;								// 連続してダメージを受けない
-	}
-	else {
-		m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
-
-		// タイマーが0.0f以下のとき
-		if (m_invincibleTimer < 0.0f) {
-			m_canAddDamage = true;
-			m_invincibleTimer = INVINCIBLE_TIMER;			// タイマーをリセット
-		}
 	}
 }
 

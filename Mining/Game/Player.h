@@ -10,7 +10,7 @@ namespace
 	const float	STAMINA = 100.0f;			// スタミナ
 	const float BASIC_SPEED = 150.0f;		// 移動速度
 
-	const float INVINCIBLE_TIMER = 3.0f;	// 無敵時間
+	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
 	const float RECOVERY_TIMER = 2.0f;		// スタミナが回復するまでの時間
 
 	const float ADDSPEED = 0.5f;			// ダッシュ時の加算速度

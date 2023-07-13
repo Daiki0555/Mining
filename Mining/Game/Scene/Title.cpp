@@ -7,10 +7,6 @@
 
 namespace 
 {
-	const Vector3	TEX_POSITION = { -150.0f,-200.0f,0.0f };		// 座標
-	const Vector3	TEX_SCALE = { 0.5f,0.5f,0.5f };					// スケール
-
-	const float		ALPHA_VALUE = 0.01f;							// α値
 }
 
 Title::Title()
@@ -28,10 +24,12 @@ bool Title::Start()
 	m_spriteRenderTitle.SetScale({ 1.0f,1.0f,1.0f });
 	m_spriteRenderTitle.Update();
 
-	m_spriteRenderMessage.Init("Assets/Sprite/UI/Button/StartMessage.DDS", 716.0f, 59.0f);
-	m_spriteRenderMessage.SetPosition(TEX_POSITION);
-	m_spriteRenderMessage.SetScale(TEX_SCALE);
-	m_spriteRenderMessage.Update();
+	m_StartMessage.SetText(L"Aボタンを押してください");
+	m_StartMessage.SetPosition({ 0.0f,-150.0f,0.0f });
+
+	m_GameStartMessage.SetText(L"ゲームスタート");
+	m_RankingMessage.SetText(L"ランキング");
+	m_SystemMessage.SetText(L"操作説明");
 
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
@@ -43,9 +41,31 @@ bool Title::Start()
 void Title::Update()
 {
 	ChangeScene();
-	ChangeCursor();
 
-	m_spriteRenderMessage.Update();
+	switch (m_MessageState){
+	m_enMessageState_Start:
+		TransparentProcess();
+
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_MessageState = m_enMessageState_Select;
+		}
+
+		break;
+	m_enMessageState_Select:
+		ChangeCursor();
+		break;
+	}
+}
+
+void Title::TransparentProcess()
+{
+	m_alpha -= g_gameTime->GetFrameDeltaTime();
+
+	if (m_alpha <= 0.0f) {
+		m_alpha = 1.0f;
+	}
+
+	m_StartMessage.SetColor({ 0.0f, 0.0f, 0.0f, m_alpha });
 }
 
 void Title::ChangeScene()
@@ -53,35 +73,35 @@ void Title::ChangeScene()
 	if (g_pad[0]->IsTrigger(enButtonUp)) {
 		
 		if (m_enCursorState_Game) {
-			m_enCursorState = m_enCursorState_Game;
+			m_CursorState = m_enCursorState_Game;
 			return;
 		}
 		else if (m_enCursorState_Guide) {
-			m_enCursorState = m_enCursorState_Game;
+			m_CursorState = m_enCursorState_Game;
 			return;
 		}
-		m_enCursorState = m_enCursorState_Guide;
+		m_CursorState = m_enCursorState_Guide;
 		return;
 	}
 
 	if (g_pad[0]->IsTrigger(enButtonDown)) {
 
 		if (m_enCursorState_Game) {
-			m_enCursorState = m_enCursorState_Guide;
+			m_CursorState = m_enCursorState_Guide;
 			return;
 		}
 		else if (m_enCursorState_Guide) {
-			m_enCursorState = m_enCursorState_Ranking;
+			m_CursorState = m_enCursorState_Ranking;
 			return;
 		}
-		m_enCursorState = m_enCursorState_Ranking;
+		m_CursorState = m_enCursorState_Ranking;
 		return;
 	}
 }
 
 void Title::ChangeCursor()
 {
-	switch (m_enCursorState) {
+	switch (m_CursorState) {
 	case m_enCursorState_Game:
 
 		if (g_pad[0]->IsTrigger(enButtonA)) {
@@ -106,5 +126,13 @@ void Title::ChangeCursor()
 void Title::Render(RenderContext& rc)
 {
 	m_spriteRenderTitle.Draw(rc);
-	m_spriteRenderMessage.Draw(rc);
+
+	if (m_MessageState == m_enMessageState_Start) {
+		m_StartMessage.Draw(rc);
+	}
+	else if (m_MessageState == m_enMessageState_Select) {
+		m_GameStartMessage.Draw(rc);
+		m_RankingMessage.Draw(rc);
+		m_SystemMessage.Draw(rc);
+	}
 }

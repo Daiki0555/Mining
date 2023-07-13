@@ -62,7 +62,7 @@ bool Game::Start()
 
 	LevelDesign();
 
-	//m_playerStatusGauge = NewGO<PlayerStatusGauge>(0, "playerStatusGauge");
+	m_playerStatusGauge = NewGO<PlayerStatusGauge>(0, "playerStatusGauge");
 
 	return true;
 }
@@ -118,9 +118,9 @@ void Game::LevelDesign()
 		// enemy‚È‚ç
 		if (objData.EqualObjectName(L"enemy") == true)
 		{
-			Enemy_Stone* m_bee = NewGO<Enemy_Stone>(0, "stone");
-			m_bee->SetPosition(objData.position);
-			m_bee->SetRotation(objData.rotaition);
+			//Enemy_Stone* m_bee = NewGO<Enemy_Stone>(0, "stone");
+			//m_bee->SetPosition(objData.position);
+			//m_bee->SetRotation(objData.rotaition);
 
 			//Enemy_Slime* m_slime = NewGO<Enemy_Slime>(0, "slime");
 			//m_slime->SetPosition(objData.position);

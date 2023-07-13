@@ -23,10 +23,10 @@ public:
 
 	// レアリティ
 	enum enCrystalRarity {
-		m_enCrystalRarity_Normal,
-		m_enCrystalRarity_HyperNormal,
-		m_enCrystalRarity_Rare,
+		m_enCrystalRarity_NormalRare,
+		m_enCrystalRarity_SuperRare,
 		m_enCrystalRarity_HyperRare,
+		m_enCrystalRarity_MysticRare,
 	};
 
 	enum enCrystalState {
@@ -96,13 +96,13 @@ public:
 			pathNum = m_enCrystalRarity_HyperRare;
 		}
 		else if (num > 10 && num <= 35) {
-			pathNum = m_enCrystalRarity_Rare;
+			pathNum = m_enCrystalRarity_MysticRare;
 		}
 		else if (num > 35 && num <= 65) {
-			pathNum = m_enCrystalRarity_HyperNormal;
+			pathNum = m_enCrystalRarity_SuperRare;
 		}
 		else {
-			pathNum = m_enCrystalRarity_Normal;
+			pathNum = m_enCrystalRarity_NormalRare;
 		}
 
 		const wchar_t* hoge = FILEPATH[pathNum];
@@ -117,7 +117,7 @@ public:
 		
 		m_texture.InitFromDDSFile(path);
 
-		SetRarity(num);
+		SetRarity(pathNum);
 	}
 
 	/// <summary>
@@ -135,14 +135,14 @@ private:
 	/// <param name="rarity">自身のレア度</param>
 	void SetRarity(const int rarity) {
 
-		int myRarity = m_enCrystalRarity_Normal;
+		int myRarity = m_enCrystalRarity_NormalRare;
 
 		switch (rarity) {
 		case 1:
-			myRarity = m_enCrystalRarity_HyperNormal;
+			myRarity = m_enCrystalRarity_SuperRare;
 			break;
 		case 2:
-			myRarity = m_enCrystalRarity_Rare;
+			myRarity = m_enCrystalRarity_MysticRare;
 			break;
 		case 3:
 			myRarity = m_enCrystalRarity_HyperRare;

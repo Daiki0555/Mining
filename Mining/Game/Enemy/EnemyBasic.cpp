@@ -132,18 +132,15 @@ bool EnemyBasic::WallAndHit(Vector3 targetPosition)
 
 void EnemyBasic::Attack()
 {
-	m_player->SetActionState(m_player->m_enActionState_Death);
+	// プレイヤーがダメージを受けないときは
+	if (!m_player->GetCanDamege()) {
+		// 待機状態に移行する
+		m_actionState = m_enActionState_StopAction;
+		return;
+	}
 
-	//// プレイヤーがダメージを受けないときは
-	//if (!m_player->GetCanDamege()) {
-	//	// 待機状態に移行する
-	//	m_actionState = m_enActionState_StopAction;
-	//	return;
-	//}
-
-	//// プレイヤーに攻撃する
-	//m_player->Damage(m_enemyStatus.m_attackPower);
-	//m_player->SetActionState(m_player->m_enActionState_Damage);
+	// プレイヤーに攻撃する
+	m_player->Damage(m_enemyStatus.m_attackPower);
 }
 
 void EnemyBasic::Rotation(Vector3 rotation)
