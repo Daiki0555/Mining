@@ -3,6 +3,7 @@
 
 #include "SaveDataManager.h"
 #include "Ranking.h"
+#include "UI/Fade.h"
 
 namespace
 {
@@ -72,12 +73,28 @@ bool NameEntry::Start()
 		m_spellFontRender[i].SetColor(Vector4::Black);
 	}
 
+	//フェードイン。
+	m_fade = FindGO<Fade>("fade");
+	m_fade->FadeIn();
+
 	return true;
 }
 
 void NameEntry::Update()
 {
-	Input();
+	//フェードアウト中なら。
+	if (m_isWaitFadeOut) {
+		//フェードが終了しているなら。
+		if (!m_fade->IsFade()) {
+			//ランキングシーンへ遷移。
+			NewGO<Ranking>(0, "ranking");
+			DeleteGO(this);
+		}
+	}
+	else {
+
+		Input();
+	}
 
 	CursorAnimation();
 
@@ -248,10 +265,9 @@ void NameEntry::End()
 	//セーブ。
 	SaveDataMng.Save(data);
 
-
-	//ランキングシーンへ遷移。
-	NewGO<Ranking>(0, "ranking");
-	DeleteGO(this);
+	//フェードアウト開始。
+	m_fade->FadeOut();
+	m_isWaitFadeOut = true;
 }
 
 void NameEntry::CursorAnimation()

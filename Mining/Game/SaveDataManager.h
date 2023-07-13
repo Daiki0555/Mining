@@ -95,15 +95,15 @@ public:
 		}
 
 		//ファイルに書き込む。
-		fp = fopen("rankingName.txt", "w");
+		//fp = fopen("rankingName.txt", "w");
 		
 		//K2_ASSERT(
 		//	fp != NULL,
 		//	"ファイルの読み込みに失敗しました。"
 		//);
 
-		fwrite(rankName, sizeof(rankName), 1, fp);
-		fclose(fp);
+		//fwrite(rankName, sizeof(rankName), 1, fp);
+		//fclose(fp);
 
 	}
 

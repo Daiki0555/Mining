@@ -7,6 +7,7 @@
 #include "NameEntry.h"
 #include "Ranking.h"
 #include "Scene/GameResult.h"
+#include "UI/Fade.h"
 
 // K2EngineLow�̃O���[�o���A�N�Z�X�|�C���g�B
 K2EngineLow* g_k2EngineLow = nullptr;
@@ -33,9 +34,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//NewGO<Debug>(0,"debug");
 	//NewGO<Game>(0, "game");
-	NewGO<Title>(0, "title");
+	//NewGO<Title>(0, "title");
 
-	//NewGO<GameResult>(0, "gameResult");
+	NewGO<Fade>(9, "fade");
+
+	NewGO<GameResult>(0, "gameResult");
 	//NewGO<NameEntry>(0, "nameEntry");
 	//NewGO<Ranking>(0, "ranking");
 

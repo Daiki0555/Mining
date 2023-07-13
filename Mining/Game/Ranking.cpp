@@ -3,6 +3,7 @@
 
 #include "SaveDataManager.h"
 #include "Scene/Title.h"
+#include "UI/Fade.h"
 
 namespace
 {
@@ -36,6 +37,10 @@ bool Ranking::Start()
 	m_buttonFontRender.SetColor(Vector4::Black);
 
 	InitRanking();
+
+	//フェードイン。
+	m_fade = FindGO<Fade>("fade");
+	m_fade->FadeIn();
 
 	return true;
 }
@@ -75,11 +80,21 @@ void Ranking::InitRanking()
 
 void Ranking::Update()
 {
-	//Aボタンが押されたら。
-	if (g_pad[0]->IsTrigger(enButtonA)) {
+	//フェードアウト中なら。
+	if (m_isWaitFadeOut) {
 
-		NewGO<Title>(0, "title");
-		DeleteGO(this);
+		//フェードが終了しているなら。
+		if (!m_fade->IsFade()) {
+			NewGO<Title>(0, "title");
+			DeleteGO(this);
+		}
+	}
+	else {
+		//Aボタンが押されたら。
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_fade->FadeOut();
+			m_isWaitFadeOut = true;
+		}
 	}
 }
 

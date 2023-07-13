@@ -31,6 +31,10 @@ bool Title::Start()
 	m_RankingMessage.SetText(L"ランキング");
 	m_SystemMessage.SetText(L"操作説明");
 
+	//フェードイン。
+	m_fade = FindGO<Fade>("fade");
+	m_fade->FadeIn();
+
 	return true;
 }
 

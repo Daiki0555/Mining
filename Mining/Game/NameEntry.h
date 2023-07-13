@@ -1,5 +1,7 @@
 #pragma once
 
+class Fade;
+
 class NameEntry : public IGameObject
 {
 public:
@@ -74,9 +76,11 @@ private:
 	FontRender		m_spellFontRender[26];				//英文字。
 	FontRender		m_inputNameFontRender;				//入力文字。
 	FontRender		m_animFontRender;					//アニメーション用文字。
+	Fade*			m_fade = nullptr;					//フェードクラス。
 	Vector3			m_bezierPos[3];						//ベジェ曲線の座標。
 	AnimationState	m_animationState = enState_Idle;	//アニメーションステート。	
 	char			m_inputName[256];					//入力された名前。
+	bool			m_isWaitFadeOut = false;			//フェードアウトの待機中かどうか。
 	int				m_score = 0;						//スコア。
 	int				m_cursor = 0;						//一列に並べた時のカーソル。
 	int				m_cursorVertical = 0;				//縦カーソル。
