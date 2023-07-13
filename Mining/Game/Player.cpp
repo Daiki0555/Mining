@@ -251,10 +251,6 @@ void Player::Move()
 	m_modelRender.SetPosition(m_position);
 }
 
-void Player::Attack()
-{
-}
-
 void Player::Damage(int attackPower)
 {
 	// ƒ_ƒ[ƒW‚ğó‚¯‚ç‚ê‚éó‘Ô‚Ì‚Æ‚«

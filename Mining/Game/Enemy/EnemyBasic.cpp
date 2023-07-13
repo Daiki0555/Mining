@@ -6,7 +6,7 @@
 namespace
 {
 	const float Y_POSITION = 25.0f;				// レイの高さ
-	const float ADD_LENGTH = 100.0f;			// 乗算するベクトルの長さ
+	const float ADD_LENGTH = 50.0f;				// 乗算するベクトルの長さ
 
 	const float CAN_ATTACK_LENGTH = 120.0f;		// 攻撃できる範囲
 }
@@ -148,15 +148,6 @@ void EnemyBasic::Rotation(Vector3 rotation)
 	// 回転
 	m_rotation.SetRotationYFromDirectionXZ(rotation);
 	m_modelRender.SetRotaition(m_rotation);
-}
-
-void EnemyBasic::Damege()
-{
-	if (m_modelRender.IsPlayingAnimation()) {
-		return;
-	}
-
-	m_actionState = m_enActionState_StopAction;
 }
 
 void EnemyBasic::StopAction()

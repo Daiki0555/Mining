@@ -19,7 +19,7 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Enemy\Enemy_Bee.cpp">
+    <ClCompile Include="Enemy\Enemy_Stone.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Enemy\Enemy_Mushroom.cpp">
@@ -54,7 +54,7 @@
     </ClInclude>
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Enemy\Enemy_Bee.h">
+    <ClInclude Include="Enemy\Enemy_Stone.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Enemy\Enemy_Mushroom.h">
