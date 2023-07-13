@@ -246,6 +246,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="UI\Fade.cpp" />
     <ClCompile Include="UI\PlayerStatusGauge.cpp" />
     <ClCompile Include="UI\PressAndHoldGauge.cpp" />
   </ItemGroup>
@@ -268,6 +269,7 @@
     <ClInclude Include="Stage\PhysicsGhost.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="UI\Fade.h" />
     <ClInclude Include="UI\PlayerStatusGauge.h" />
     <ClInclude Include="UI\PressAndHoldGauge.h" />
   </ItemGroup>

@@ -4,7 +4,7 @@
 namespace
 {
 	const int		ATTACK_POWER = 10;							// 攻撃
-	const float		BASIC_SPEED = 200.0f;						// 基本スピード
+	const float		BASIC_SPEED = 150.0f;						// 基本スピード
 
 	const Vector3	SCALE = { 1.5f,1.5f,1.5f };					// スケール
 	const float		Y_UP = 80.0f;								// 地面から浮かせる値

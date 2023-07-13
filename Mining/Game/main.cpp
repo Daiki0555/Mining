@@ -32,10 +32,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	RenderingEngine::GetInstance()->Init();
 
 	//NewGO<Debug>(0,"debug");
-	NewGO<Game>(0, "game");
-	//NewGO<Title>(0, "title");
+	//NewGO<Game>(0, "game");
+	NewGO<Title>(0, "title");
 
-	NewGO<GameResult>(0, "gameResult");
+	//NewGO<GameResult>(0, "gameResult");
 	//NewGO<NameEntry>(0, "nameEntry");
 	//NewGO<Ranking>(0, "ranking");
 
