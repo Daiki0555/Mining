@@ -19,12 +19,7 @@ public:
 
 	bool Start();
 	void Update();
-	void Render(RenderContext& rc);
 
-	/// <summary>
-	/// オブジェクトの削除
-	/// </summary>
-	void Objct_DeleteGO();
 	/// <summary>
 	/// レベルデザイン
 	/// </summary>
@@ -41,12 +36,6 @@ public:
 	/// ゲームの終了処理
 	/// </summary>
 	void QuitGame();
-	/// <summary>
-	/// クリア時の処理
-	/// </summary>
-	void GameClear();
-	// ゲームオーバー時の処理
-	void GameOver();
 	/// <summary>
 	/// スコア計算
 	/// </summary>
@@ -67,6 +56,15 @@ public:
 	inline std::vector<PhysicsGhost*> GetGhostList()
 	{
 		return m_ghostList;
+	}
+
+	/// <summary>
+	/// アニメーションが終了したかどうか設定する
+	/// </summary>
+	/// <param name="flag">trueならアニメーションが終了した</param>
+	/// <returns></returns>
+	void SetIsEndAnimationFlag( const bool flag) {
+		m_isEndAnimation = flag;
 	}
 
 private:
@@ -91,6 +89,7 @@ private:
 	std::vector<EnemyBasic*>	m_enemyList;							// エネミーの総数
 	std::vector<PhysicsGhost*>	m_ghostList;							// ゴーストの総数
 
-	FontRender					m_fontRender;
+	bool						m_isWaitFadeOut = false;				// フェードアウトの待機中かどうか
+	bool						m_isEndAnimation = false;				// アニメーションが再生後かどうか
 };
 

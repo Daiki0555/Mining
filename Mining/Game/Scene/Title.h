@@ -4,7 +4,7 @@ class Game;
 class Ranking;
 class Fade;
 
-class Title: public IGameObject
+class Title : public IGameObject
 {
 public:
 	Title();
@@ -18,13 +18,13 @@ public:
 	/// </summary>
 	void TransparentProcess();
 	/// <summary>
-	/// カーソルの移動
-	/// </summary>
-	void ChangeCursor();
-	/// <summary>
 	/// シーンの遷移
 	/// </summary>
 	void ChangeScene();
+	/// <summary>
+	/// シーンの切り替え
+	/// </summary>
+	void FadeScene();
 
 private:
 	enum enMessageState {
@@ -42,16 +42,20 @@ private:
 
 	ModelRender		m_modelRender;										// モデルレンダー
 	SpriteRender	m_spriteRenderTitle;								// スプライトレンダー(背景)
+	SpriteRender	m_spriteRenderRogo;									// スプライトレンダー(ロゴ)
+	SpriteRender	m_spriteRenderIcon;									// スプライトレンダー(アイコン)
 
 	FontRender		m_StartMessage;										// 開始の文字
 	FontRender		m_GameStartMessage;									// ゲーム開始の文字
 	FontRender		m_RankingMessage;									// ランキング表示の文字
 	FontRender		m_SystemMessage;									// システムの文字
 
+	Level2DRender*	m_level2DRender = nullptr;							// 
 	Game*			m_game = nullptr;									// ゲーム
 	Ranking*		m_ranking = nullptr;								// ランキング
 	Fade*			m_fade = nullptr;									// フェード
 
 	float			m_alpha = 1.0f;										// 透明度
+	bool			m_isChange = false;									// 透過の切り替え
+	bool			m_isWaitFadeOut = false;							// フェードアウトの待機中かどうか
 };
-

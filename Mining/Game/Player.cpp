@@ -76,14 +76,22 @@ void Player::Update()
 		m_modelRender.PlayAnimation(m_enActionState_Damage);
 	}
 
-	if (m_actionState == m_enActionState_Clear) {
+	if (m_actionState == m_enActionState_Clear ) {
+		if (m_modelRender.IsPlayingAnimation() == false) {
+			m_game->SetIsEndAnimationFlag(true);
+		}
+	}
+	else if (m_actionState == m_enActionState_Death) {
+		if (m_modelRender.IsPlayingAnimation() == false) {
+			m_game->SetIsEndAnimationFlag(true);
+		}
 	}
 	// ‘Ì—Í‚ª0‚Ì‚Æ‚«
 	else if (m_playerStatus.m_hitPoint <= HP_MIN) {
 
 		// •â³
 		m_playerStatus.m_hitPoint = HP_MIN;
-		Death();				// Ž€–S‚·‚é
+		m_actionState = m_enActionState_Death;
 	}
 	else {
 		if (m_actionState == m_enActionState_Damage && m_modelRender.IsPlayingAnimation() == true) {
@@ -421,19 +429,9 @@ void Player::IsClear()
 		Vector3 diff = m_game->GetGhostList()[i]->GetPosition() - m_position;
 		
 		if (diff.Length() <= CLEAR_LENGTH) {
-			Clear();
+			m_actionState = m_enActionState_Clear;
 		}
 	}
-}
-
-void Player::Death()
-{
-	m_actionState = m_enActionState_Death;
-}
-
-void Player::Clear()
-{
-	m_actionState = m_enActionState_Clear;
 }
 
 void Player::Render(RenderContext& rc)

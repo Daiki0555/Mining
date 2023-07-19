@@ -51,18 +51,9 @@ public:
 	/// 採掘処理
 	/// </summary>
 	void Dig();
-	/// <summary>
-	/// 死亡処理
-	/// </summary>
-	void Death();
-	/// <summary>
 	/// クリアしているかどうかを判定
 	/// </summary>
 	void IsClear();
-	/// <summary>
-	/// クリア処理
-	/// </summary>
-	void Clear();
 	/// <summary>
 	/// クリスタルとの衝突判定
 	/// </summary>

@@ -28,15 +28,6 @@ Game::Game()
 
 Game::~Game()
 {
-	Objct_DeleteGO();
-
-	m_crystalList.clear();
-	m_enemyList.clear();
-	m_ghostList.clear();
-}
-
-void Game::Objct_DeleteGO()
-{
 	DeleteGO(m_player);
 	DeleteGO(m_backGround);
 	DeleteGO(m_gameCamera);
@@ -53,6 +44,10 @@ void Game::Objct_DeleteGO()
 	for (int i = 0; i < m_ghostList.size(); i++) {
 		DeleteGO(m_ghostList[i]);
 	}
+
+	m_crystalList.clear();
+	m_enemyList.clear();
+	m_ghostList.clear();
 }
 
 bool Game::Start()
@@ -63,6 +58,9 @@ bool Game::Start()
 	LevelDesign();
 
 	m_playerStatusGauge = NewGO<PlayerStatusGauge>(0, "playerStatusGauge");
+
+	m_fade = FindGO<Fade>("fade");
+	m_fade->FadeIn();
 
 	return true;
 }
@@ -126,9 +124,9 @@ void Game::LevelDesign()
 			//m_slime->SetPosition(objData.position);
 			//m_slime->SetRotation(objData.rotaition);
 
-	/*		Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
+			Enemy_Mushroom* m_mushroom = NewGO<Enemy_Mushroom>(0, "mushroom");
 			m_mushroom->SetPosition(objData.position);
-			m_mushroom->SetRotation(objData.rotaition);*/
+			m_mushroom->SetRotation(objData.rotaition);
 			return true;
 		}
 
@@ -207,25 +205,20 @@ void Game::CanDrawObject()
 
 void Game::QuitGame()
 {
-	switch (m_enGameState) {
-	case m_enGameState_GameClear:	
-		m_fontRender.SetText(L"GAME CLEAR");
-		break;
-	case m_enGameState_GameOver:
-		m_fontRender.SetText(L"GAME OVER");
-		break;
-
+	if (m_isWaitFadeOut) {
+		//フェードが終了しているなら。
+		if (!m_fade->IsFade()) {
+			m_gameResult = NewGO<GameResult>(0, "gameResult");
+			Score();
+			DeleteGO(this);
+		}
 	}
-	m_fontRender.SetPosition({ 0.0f, 0.0f, 0.0f});
-
-	for (int i = 0; i < m_enemyList.size(); i++) {
-		m_enemyList[i]->SetEnemyState(m_enemyList[i]->m_enActionState_GameQuit);
-	}
-
-	if (g_pad[0]->IsTrigger(enButtonA)) {
-		m_gameResult = NewGO<GameResult>(0, "gameResult");
-		Score();
-		DeleteGO(this);
+	else {
+		// アニメーションの再生が終了したなら
+		if (m_isEndAnimation) {
+			m_fade->FadeOut();
+			m_isWaitFadeOut = true;
+		}
 	}
 }
 
@@ -241,9 +234,4 @@ void Game::Score()
 		// レアリティごとの個数を渡す
 		m_gameResult->SetCrystalSum(num, sum[num]);
 	}
-}
-
-void Game::Render(RenderContext& rc) 
-{
-	m_fontRender.Draw(rc);
 }
