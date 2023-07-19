@@ -85,8 +85,6 @@ bool GameResult::Start()
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
 
-	m_isNewRecord = true;
-
 	return true;
 }
 

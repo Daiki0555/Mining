@@ -72,7 +72,10 @@ private:
 	};
 
 private:
+	Level2DRender*	m_level2DRender = nullptr;			// 2Dレンダー
 	SpriteRender	m_backGroundSpriteRender;			//背景画像。
+	SpriteRender	m_nameEnrtySpriteRender;			// ネームエントリーの画像
+	SpriteRender	m_userNameSpriteRender;				// ユーザーネームの表示場所の画像
 	FontRender		m_spellFontRender[26];				//英文字。
 	FontRender		m_inputNameFontRender;				//入力文字。
 	FontRender		m_animFontRender;					//アニメーション用文字。

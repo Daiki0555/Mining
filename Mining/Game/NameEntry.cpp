@@ -19,6 +19,8 @@ namespace
 	const float		SPELL_DURATION = 100.0f;						//スペル文字の間隔。
 	const float		INPUT_NAME_DURATION = 21.0f;					//入力文字の間隔。
 	const float		SPELL_FONT_SCALE = 2.0f;						//英文字の拡大率。
+	const float		FONT_SHADOW_OFFSET = 2.0f;						// ピクセルのオフセット量
+	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };	// カラー
 }
 
 NameEntry::NameEntry()
@@ -33,18 +35,48 @@ NameEntry::~NameEntry()
 bool NameEntry::Start()
 {
 	//背景画像の設定。
-	m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/nameEntry.DDS", 1920.0f, 1080.0f);
+	//m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/nameEntry.DDS", 1920.0f, 1080.0f);
+
+	m_level2DRender = new Level2DRender;
+
+	m_level2DRender->Init("Assets/level/level2D/nameEntry.casl", [&](Level2DObjeData& objData) {
+		if (objData.EqualObjectName("title") == true) {
+			m_backGroundSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_backGroundSpriteRender.SetPosition(objData.position);
+			m_backGroundSpriteRender.SetRotation(objData.rotation);
+			m_backGroundSpriteRender.Update();
+			return true;
+		}
+		if (objData.EqualObjectName("nameEntry") == true) {
+			m_nameEnrtySpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_nameEnrtySpriteRender.SetPosition(objData.position);
+			m_nameEnrtySpriteRender.SetRotation(objData.rotation);
+			m_nameEnrtySpriteRender.Update();
+			return true;
+		}
+		if (objData.EqualObjectName("userName") == true) {
+			m_userNameSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_userNameSpriteRender.SetPosition(objData.position);
+			m_userNameSpriteRender.SetRotation(objData.rotation);
+			m_userNameSpriteRender.Update();
+			return true;
+		}
+
+		return false;
+		});
 
 	//入力文字の設定。
 	m_inputNameFontRender.SetText(L"");
 	m_inputNameFontRender.SetPosition(INPUT_NAME_POS);
 	m_inputNameFontRender.SetColor(Vector4::Black);
+	m_inputNameFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	//アニメーション用文字の設定。
 	m_animFontRender.SetText(L"");
 	m_animFontRender.SetScale(SPELL_FONT_SCALE);
 	m_animFontRender.SetColor(Vector4::Black);
 	m_animFontRender.SetPivot(Vector2(0.0f, 0.0f));
+	m_animFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	//入力できる文字の設定。
 	wchar_t spell;
@@ -71,6 +103,7 @@ bool NameEntry::Start()
 		m_spellFontRender[i].SetPosition(SPELL_FONT_POS + spellPos);
 		m_spellFontRender[i].SetScale(SPELL_FONT_SCALE);
 		m_spellFontRender[i].SetColor(Vector4::Black);
+		m_spellFontRender[i].SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 	}
 
 	//フェードイン。
@@ -230,6 +263,7 @@ void NameEntry::EraseName()
 	m_animFontRender.SetText(text);
 	m_animationState = enState_Erase;
 	m_animFontRender.SetPosition(INPUT_NAME_POS + Vector3((m_inputNameNum * INPUT_NAME_DURATION), 0.0f, 0.0f));
+	m_animFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	NameUpdate();
 }
@@ -326,6 +360,8 @@ void NameEntry::Render(RenderContext& rc)
 {
 	//背景の描画。
 	m_backGroundSpriteRender.Draw(rc);
+	m_nameEnrtySpriteRender.Draw(rc);
+	m_userNameSpriteRender.Draw(rc);
 
 	//文字列の描画。
 	for (int i = 0; i < SPELL_NUM_MAX; i++) {

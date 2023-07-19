@@ -14,8 +14,8 @@ namespace
 	const int		NAME_MAX = 5;											//名前の最大入力数。
 	const char*		RANK[RANKING_NUM] = { " 1st", " 2nd", " 3rd", " 4th", " 5th", " 6th", " 7th", " 8th", " 9th", "10th" };
 
-	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
-	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
+	const float		FONT_SHADOW_OFFSET = 2.0f;								// ピクセルのオフセット量
+	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };			// カラー
 }
 
 Ranking::Ranking()
