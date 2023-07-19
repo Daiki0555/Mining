@@ -38,9 +38,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	NewGO<Fade>(9, "fade");
 
-	NewGO<GameResult>(0, "gameResult");
+	//NewGO<GameResult>(0, "gameResult");
 	//NewGO<NameEntry>(0, "nameEntry");
-	//NewGO<Ranking>(0, "ranking");
+	NewGO<Ranking>(0, "ranking");
 
 
 	// ��������Q�[�����[�v�B

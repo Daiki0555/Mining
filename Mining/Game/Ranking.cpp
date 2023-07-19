@@ -7,12 +7,15 @@
 
 namespace
 {
-	const Vector3	BUTTON_FONT_POS = Vector3(-500.0f, -400.0f, 0.0f);		//ボタン文字の座標。
-	const Vector3	RANKNIG_FONT_POS = Vector3(-300.0f, 200.0f, 0.0f);		//ランキング文字の座標。
+	const Vector3	BUTTON_FONT_POS = Vector3(-250.0f, -450.0f, 0.0f);		//ボタン文字の座標。
+	const Vector3	RANKNIG_FONT_POS = Vector3(-400.0f, 150.0f, 0.0f);		//ランキング文字の座標。
 	const Vector3	RANKING_BETWEEN_ROW = Vector3(0.0f, -50.0f, 0.0f);		//ランキング文字の列間。
 	const int		RANKING_NUM = 10;										//ランキングの順位。
 	const int		NAME_MAX = 5;											//名前の最大入力数。
 	const char*		RANK[RANKING_NUM] = { " 1st", " 2nd", " 3rd", " 4th", " 5th", " 6th", " 7th", " 8th", " 9th", "10th" };
+
+	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
+	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
 }
 
 Ranking::Ranking()
@@ -28,13 +31,41 @@ Ranking::~Ranking()
 bool Ranking::Start()
 {
 	//背景画像の設定。
-	m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/ranking.DDS", 1920.0f, 1080.0f);
+	//m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/ranking.DDS", 1920.0f, 1080.0f);
 
 	//ボタン文字の設定。
 	m_buttonFontRender.SetText(L"Press A button to Title");
 	m_buttonFontRender.SetPosition(BUTTON_FONT_POS);
-	m_buttonFontRender.SetScale(2.0f);
+	m_buttonFontRender.SetScale(1.0f);
 	m_buttonFontRender.SetColor(Vector4::Black);
+	m_buttonFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
+
+	m_level2DRender = new Level2DRender;
+
+	m_level2DRender->Init("Assets/level/level2D/ranking.casl", [&](Level2DObjeData& objData) {
+		if (objData.EqualObjectName("title") == true) {
+			m_backGroundSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_backGroundSpriteRender.SetPosition(objData.position);
+			m_backGroundSpriteRender.SetRotation(objData.rotation);
+			m_backGroundSpriteRender.Update();
+			return true;
+		}
+		if (objData.EqualObjectName("ranking") == true) {
+			m_rankingSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_rankingSpriteRender.SetPosition(objData.position);
+			m_rankingSpriteRender.SetRotation(objData.rotation);
+			m_rankingSpriteRender.Update();
+			return true;
+		}
+		if (objData.EqualObjectName("scoreRanking") == true) {
+			m_rankingScoresSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_rankingScoresSpriteRender.SetPosition(objData.position);
+			m_rankingScoresSpriteRender.SetRotation(objData.rotation);
+			m_rankingScoresSpriteRender.Update();
+		}
+
+		return false;
+		});
 
 	InitRanking();
 
@@ -75,6 +106,7 @@ void Ranking::InitRanking()
 		m_rankingFontRender[i].SetText(text);
 		m_rankingFontRender[i].SetPosition(Vector3(RANKNIG_FONT_POS + (RANKING_BETWEEN_ROW * i)));
 		m_rankingFontRender[i].SetColor(Vector4::Black);
+		m_rankingFontRender[i].SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 	}
 }
 
@@ -102,6 +134,8 @@ void Ranking::Render(RenderContext& rc)
 {
 	//背景画像の描画。
 	m_backGroundSpriteRender.Draw(rc);
+	m_rankingSpriteRender.Draw(rc);
+	m_rankingScoresSpriteRender.Draw(rc);
 
 	//ランキング文字の描画。
 	for (int i = 0; i < RANKING_NUM; i++) {

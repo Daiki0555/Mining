@@ -21,7 +21,10 @@ private:
 	void InitRanking();
 
 private:
+	Level2DRender*	m_level2DRender = nullptr;		// 2Dレンダー
 	SpriteRender	m_backGroundSpriteRender;		//背景画像。
+	SpriteRender	m_rankingSpriteRender;			// ランキング画像
+	SpriteRender	m_rankingScoresSpriteRender;	// ランキングの内訳画像
 	FontRender		m_rankingFontRender[10];		//ランキング文字。
 	FontRender		m_buttonFontRender;				//ボタン文字。
 	Fade*			m_fade = nullptr;				//フェードクラス。
