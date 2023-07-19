@@ -42,7 +42,7 @@ bool Title::Start()
 		}
 
 		return false;
-		});
+	});
 
 	m_spriteRenderIcon.Init("Assets/Sprite/UI/Scene/title/cursor.DDS", 89.0f, 94.0f);
 	m_spriteRenderIcon.SetScale({ 0.7f, 0.7f, 1.0f });
@@ -92,20 +92,20 @@ void Title::Update()
 
 		switch (m_CursorState) {
 		case m_enCursorState_Game:
-			m_GameStartMessage.SetColor({ 1.0f, 0.0f, 0.0f, m_alpha });
-			m_GameStartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { 1.0f,m_alpha,m_alpha,1.0f });
+			m_GameStartMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
+			m_GameStartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
 			m_spriteRenderIcon.SetPosition({ -500.0f, 20.0f, 0.0f });
 			break;
 		case m_enCursorState_Guide:
-			m_SystemMessage.SetColor({ 1.0f, 0.0f, 0.0f, m_alpha });
-			m_SystemMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { 1.0f,m_alpha,m_alpha,1.0f });
+			m_SystemMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
+			m_SystemMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
 			m_spriteRenderIcon.SetPosition({ -500.0f,-100.0f,0.0f });
 			break;
 		case m_enCursorState_Ranking:
-			m_RankingMessage.SetColor({ 1.0f, 0.0f, 0.0f, m_alpha });
-			m_RankingMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { 1.0f,m_alpha,m_alpha,1.0f });
+			m_RankingMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
+			m_RankingMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
 			m_spriteRenderIcon.SetPosition({ -500.0f,-220.0f,0.0f });
 			break;

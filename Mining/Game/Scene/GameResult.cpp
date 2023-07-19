@@ -14,6 +14,10 @@ namespace
 	const float		CRYSTAL_FONT_SCALE = 1.3f;											//クリスタル個数文字の拡大率。
 	const float		NEWRECORD_TIMER_MAX = 1.0f;											//新記録用タイマーの最大値。
 	const float		NEWRECORD_TIMER_MIN = 0.0f;											//新記録用タイマーの最小値。
+	const float		FONT_SCALE = 0.5f;													// フォントのスケール 
+	const Vector4	FONT_COLOR = { 0.0f,0.0f,0.0f,1.0f };								// フォントのカラー
+	const float		FONT_SHADOW_OFFSET = 2.0f;											// ピクセルのオフセット量
+	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };						// カラー
 }
 
 GameResult::GameResult()
@@ -30,8 +34,36 @@ bool GameResult::Start()
 {
 	CalcScore();
 
-	//背景画像の設定。
-	m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/result.DDS", 1920.0f, 1080.0f);
+	////背景画像の設定。
+	//m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/result.DDS", 1920.0f, 1080.0f);
+
+	m_level2DRender = new Level2DRender;
+
+	m_level2DRender->Init("Assets/level/level2D/result.casl", [&](Level2DObjeData& objData) {
+		if (objData.EqualObjectName("title") == true) {
+			m_backGroundSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_backGroundSpriteRender.SetPosition(objData.position);
+			m_backGroundSpriteRender.SetRotation(objData.rotation);
+			m_backGroundSpriteRender.Update();
+			return true;
+		}
+		if (objData.EqualObjectName("result") == true) {
+			m_resultSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_resultSpriteRender.SetPosition(objData.position);
+			m_resultSpriteRender.SetRotation(objData.rotation);
+			m_resultSpriteRender.Update();
+			return true;
+		}
+		if (objData.EqualObjectName("scoreBoard") == true) {
+			m_scoreBoardSpriteRender.Init(objData.ddsFilePath, objData.width, objData.height);
+			m_scoreBoardSpriteRender.SetPosition(objData.position);
+			m_scoreBoardSpriteRender.SetRotation(objData.rotation);
+			m_scoreBoardSpriteRender.Update();
+			return true;
+		}
+
+		return false;
+		});
 
 	//鉱石個数文字の設定。
 	wchar_t text[BUFFER_SIZE];
@@ -41,15 +73,19 @@ bool GameResult::Start()
 	m_crystalFontRender.SetPosition(CRYSTAL_FONT_POS);
 	m_crystalFontRender.SetScale(CRYSTAL_FONT_SCALE);
 	m_crystalFontRender.SetColor(Vector4::Black);
+	m_crystalFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	//新記録文字の設定。
 	m_newRecordFontRender.SetText(L"NEW  RECORD!!!");
 	m_newRecordFontRender.SetPosition(NEWRECORD_FONT_POS);
 	m_newRecordFontRender.SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	m_newRecordFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
+
+	m_isNewRecord = true;
 
 	return true;
 }
@@ -109,7 +145,8 @@ void GameResult::DrawScore()
 		alpha = min( max( alpha, NEWRECORD_TIMER_MIN), NEWRECORD_TIMER_MAX);
 
 		//透明度を設定。
-		m_newRecordFontRender.SetColor(Vector4(1.0f, 0.0f, 0.0f, alpha));
+		m_newRecordFontRender.SetColor(Vector4(alpha, 0.0f, 0.0f, alpha));
+		m_newRecordFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, { alpha ,alpha ,alpha, 1.0f});
 	}
 }
 
@@ -132,6 +169,8 @@ void GameResult::TransitionScene()
 void GameResult::Render(RenderContext& rc)
 {
 	m_backGroundSpriteRender.Draw(rc);
+	m_resultSpriteRender.Draw(rc);
+	m_scoreBoardSpriteRender.Draw(rc);
 
 	m_crystalFontRender.Draw(rc);
 

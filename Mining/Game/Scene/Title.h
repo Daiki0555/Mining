@@ -50,7 +50,7 @@ private:
 	FontRender		m_RankingMessage;									// ランキング表示の文字
 	FontRender		m_SystemMessage;									// システムの文字
 
-	Level2DRender*	m_level2DRender = nullptr;							// 
+	Level2DRender*	m_level2DRender = nullptr;							// 2Dレンダー
 	Game*			m_game = nullptr;									// ゲーム
 	Ranking*		m_ranking = nullptr;								// ランキング
 	Fade*			m_fade = nullptr;									// フェード

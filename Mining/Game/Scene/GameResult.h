@@ -44,7 +44,10 @@ private:
 	void TransitionScene();
 
 private:
+	Level2DRender*							m_level2DRender = nullptr;			// 2Dレンダー
 	SpriteRender							m_backGroundSpriteRender;			//背景画像。
+	SpriteRender							m_resultSpriteRender;				// リザルト文字の画像
+	SpriteRender							m_scoreBoardSpriteRender;			// スコアボードの画像
 	FontRender								m_crystalFontRender;				//鉱石の個数文字。
 	FontRender								m_newRecordFontRender;				//新記録時の文字。
 	Fade*									m_fade = nullptr;					//フェードクラス。
