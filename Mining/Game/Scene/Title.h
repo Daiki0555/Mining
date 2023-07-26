@@ -3,6 +3,7 @@
 class Game;
 class Ranking;
 class Fade;
+class Guide;
 
 class Title : public IGameObject
 {
@@ -40,7 +41,6 @@ private:
 	};
 	enCursorState	m_CursorState = m_enCursorState_Game;				// 選択位置のステート
 
-	ModelRender		m_modelRender;										// モデルレンダー
 	SpriteRender	m_spriteRenderTitle;								// スプライトレンダー(背景)
 	SpriteRender	m_spriteRenderRogo;									// スプライトレンダー(ロゴ)
 	SpriteRender	m_spriteRenderIcon;									// スプライトレンダー(アイコン)
@@ -54,6 +54,7 @@ private:
 	Game*			m_game = nullptr;									// ゲーム
 	Ranking*		m_ranking = nullptr;								// ランキング
 	Fade*			m_fade = nullptr;									// フェード
+	Guide*			m_guide = nullptr;									// 操作説明
 
 	float			m_alpha = 1.0f;										// 透明度
 	bool			m_isChange = false;									// 透過の切り替え

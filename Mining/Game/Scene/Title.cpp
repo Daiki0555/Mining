@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Ranking.h"
 #include "UI/Fade.h"
+#include "Guide.h"
 
 namespace 
 {
@@ -189,6 +190,8 @@ void Title::FadeScene()
 		DeleteGO(this);
 		break;
 	case m_enCursorState_Guide:
+		m_guide = NewGO<Guide>(0, "guide");
+		DeleteGO(this);
 		break;
 	case m_enCursorState_Ranking:
 		m_ranking = NewGO<Ranking>(0, "ranking");
