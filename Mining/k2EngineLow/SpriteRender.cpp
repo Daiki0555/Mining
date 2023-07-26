@@ -34,6 +34,11 @@ namespace nsK2EngineLow {
 			initData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
 			initData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
 			break;
+		case 2:
+			initData.m_psEntryPoinFunc = "PSMainUVScroll";
+			initData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
+			initData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
+			break;
 		}
 	}
 

@@ -9,9 +9,10 @@
 namespace 
 {
 	const float		FONT_POSITION_X = -550.0f;							// 各項目のX座標
-
 	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
 	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
+
+	const float		UV_SCROLLSPEED = 0.0000001f;						// UVスクロールのスピード
 }
 
 Title::Title()
@@ -67,6 +68,7 @@ void Title::Update()
 {
 	ChangeScene();
 	TransparentProcess();
+	UVScroll();
 
 	switch (m_MessageState){
 	case m_enMessageState_Start:
@@ -209,7 +211,8 @@ void Title::FadeScene()
 
 void Title::UVScroll()
 {
-
+	m_uvTimer += UV_SCROLLSPEED;
+	RenderingEngine::GetInstance()->GetSpriteCB().clipSize.x += m_uvTimer;
 }
 
 void Title::Render(RenderContext& rc)

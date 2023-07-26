@@ -61,7 +61,8 @@ private:
 	Fade*			m_fade = nullptr;									// フェード
 	Guide*			m_guide = nullptr;									// 操作説明
 
-	float			m_alpha = 1.0f;										// 透明度
 	bool			m_isChange = false;									// 透過の切り替え
 	bool			m_isWaitFadeOut = false;							// フェードアウトの待機中かどうか
+	float			m_alpha = 1.0f;										// 透明度
+	float			m_uvTimer = 0.0f;									// UVスクロール用タイマー
 };

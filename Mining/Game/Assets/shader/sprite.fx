@@ -41,7 +41,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 }
 
 // 円形ゲージの計算
-float4 PSCircleGauge(PSInput In) :Sv_Target0
+float4 PSCircleGauge(PSInput In) : SV_Target0
 {
 	// 中心から上方向のベクトル
 	float2 Vector1 = {0.0f,-1.0f};
@@ -68,4 +68,17 @@ float4 PSCircleGauge(PSInput In) :Sv_Target0
 	}
 
 	return colorTexture.Sample(Sampler, In.uv);
+}
+
+float4 PSMainUVScroll(PSInput In) : SV_Target0
+{
+	float2 offset=float2(clipSize.x,clipSize.y);
+
+	if(In.uv.x > 1.0f-offset.x){
+		offset.x -= 1.0f;
+	}
+
+	float4 color=colorTexture.Sample(Sampler,In.uv+offset)*mulColor;
+
+	return color;
 }
