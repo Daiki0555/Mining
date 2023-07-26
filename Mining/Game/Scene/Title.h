@@ -26,6 +26,10 @@ public:
 	/// シーンの切り替え
 	/// </summary>
 	void FadeScene();
+	/// <summary>
+	/// UVスクロールの処理
+	/// </summary>
+	void UVScroll();
 
 private:
 	enum enMessageState {
@@ -44,6 +48,7 @@ private:
 	SpriteRender	m_spriteRenderTitle;								// スプライトレンダー(背景)
 	SpriteRender	m_spriteRenderRogo;									// スプライトレンダー(ロゴ)
 	SpriteRender	m_spriteRenderIcon;									// スプライトレンダー(アイコン)
+	SpriteRender	m_spriteRenderUV;									// UVスクロール画像
 
 	FontRender		m_StartMessage;										// 開始の文字
 	FontRender		m_GameStartMessage;									// ゲーム開始の文字

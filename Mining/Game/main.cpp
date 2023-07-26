@@ -8,6 +8,7 @@
 #include "Ranking.h"
 #include "Scene/GameResult.h"
 #include "UI/Fade.h"
+#include "Scene/Guide.h"
 
 // K2EngineLow�̃O���[�o���A�N�Z�X�|�C���g�B
 K2EngineLow* g_k2EngineLow = nullptr;
@@ -18,7 +19,7 @@ K2EngineLow* g_k2EngineLow = nullptr;
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	// �Q�[���̏������B
-	InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, TEXT("Game"));
+	InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, TEXT("Mining!"));
 	
 	//����΂�́`
 
@@ -34,12 +35,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//NewGO<Debug>(0,"debug");
 	//NewGO<Game>(0, "game");
-	//NewGO<Title>(0, "title");
+	NewGO<Title>(0, "title");
 
 	NewGO<Fade>(9, "fade");
 
+	//NewGO<Guide>(0, "guide");
 	//NewGO<GameResult>(0, "gameResult");
-	NewGO<NameEntry>(0, "nameEntry");
+	//NewGO<NameEntry>(0, "nameEntry");
 	//NewGO<Ranking>(0, "ranking");
 
 

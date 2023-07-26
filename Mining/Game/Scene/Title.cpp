@@ -27,7 +27,7 @@ bool Title::Start()
 	m_level2DRender = new Level2DRender;
 
 	m_level2DRender->Init("Assets/level/level2D/title.casl", [&](Level2DObjeData& objData) {
-		if (objData.EqualObjectName("title") == true) {
+		if (objData.EqualObjectName("unityChan_mask") == true) {
 			m_spriteRenderTitle.Init(objData.ddsFilePath, objData.width, objData.height);
 			m_spriteRenderTitle.SetPosition(objData.position);
 			m_spriteRenderTitle.SetRotation(objData.rotation);
@@ -39,6 +39,13 @@ bool Title::Start()
 			m_spriteRenderRogo.SetPosition(objData.position);
 			m_spriteRenderRogo.SetRotation(objData.rotation);
 			m_spriteRenderRogo.Update();
+			return true;
+		}
+		if (objData.EqualObjectName("UV") == true) {
+			m_spriteRenderUV.Init(objData.ddsFilePath, objData.width, objData.height, AlphaBlendMode_None, 2);
+			m_spriteRenderUV.SetPosition(objData.position);
+			m_spriteRenderUV.SetRotation(objData.rotation);
+			m_spriteRenderUV.Update();
 			return true;
 		}
 
@@ -200,8 +207,14 @@ void Title::FadeScene()
 	}
 }
 
+void Title::UVScroll()
+{
+
+}
+
 void Title::Render(RenderContext& rc)
 {
+	m_spriteRenderUV.Draw(rc);
 	m_spriteRenderTitle.Draw(rc);
 	m_spriteRenderRogo.Draw(rc);
 

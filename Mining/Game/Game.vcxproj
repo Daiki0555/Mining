@@ -236,6 +236,7 @@
     <ClCompile Include="SaveDataManager.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
     <ClCompile Include="Scene\GameResult.cpp" />
+    <ClCompile Include="Scene\Guide.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Stage\BackGround.cpp" />
     <ClCompile Include="Stage\Object\Crystal.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="SaveDataManager.h" />
     <ClInclude Include="Scene\Game.h" />
     <ClInclude Include="Scene\GameResult.h" />
+    <ClInclude Include="Scene\Guide.h" />
     <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Stage\BackGround.h" />
     <ClInclude Include="Stage\Object\Crystal.h" />
