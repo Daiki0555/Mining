@@ -12,7 +12,7 @@ namespace
 	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
 	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
 
-	const float		UV_SCROLLSPEED = 0.0000001f;						// UVスクロールのスピード
+	const float		UV_SCROLLSPEED = 0.00000005f;						// UVスクロールのスピード
 }
 
 Title::Title()
@@ -43,7 +43,7 @@ bool Title::Start()
 			return true;
 		}
 		if (objData.EqualObjectName("UV") == true) {
-			m_spriteRenderUV.Init(objData.ddsFilePath, objData.width, objData.height, AlphaBlendMode_None, 2);
+			m_spriteRenderUV.Init("Assets/Sprite/UI/Scene/title/UV.DDS", 3448.0f, 831.0f, AlphaBlendMode_None, 2);
 			m_spriteRenderUV.SetPosition(objData.position);
 			m_spriteRenderUV.SetRotation(objData.rotation);
 			m_spriteRenderUV.Update();
