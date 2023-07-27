@@ -12,7 +12,7 @@ namespace
 	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
 	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
 
-	const float		UV_SCROLLSPEED = 0.00000005f;						// UVスクロールのスピード
+	const float		UV_SCROLLSPEED = 0.0005f;						// UVスクロールのスピード
 }
 
 Title::Title()
@@ -43,7 +43,7 @@ bool Title::Start()
 			return true;
 		}
 		if (objData.EqualObjectName("UV") == true) {
-			m_spriteRenderUV.Init("Assets/Sprite/UI/Scene/title/UV.DDS", 3448.0f, 831.0f, AlphaBlendMode_None, 2);
+			m_spriteRenderUV.Init("Assets/Sprite/UI/Scene/title/UV.DDS", objData.width, objData.height, AlphaBlendMode_None, 2);
 			m_spriteRenderUV.SetPosition(objData.position);
 			m_spriteRenderUV.SetRotation(objData.rotation);
 			m_spriteRenderUV.Update();
@@ -53,9 +53,13 @@ bool Title::Start()
 		return false;
 	});
 
+	// カーソル画像の設定
 	m_spriteRenderIcon.Init("Assets/Sprite/UI/Scene/title/cursor.DDS", 89.0f, 94.0f);
 	m_spriteRenderIcon.SetScale({ 0.7f, 0.7f, 1.0f });
 	m_spriteRenderIcon.Update();
+
+	// UVスクロール用の値を初期化
+	m_uvTimer = UV_SCROLLSPEED;
 
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
@@ -68,7 +72,9 @@ void Title::Update()
 {
 	ChangeScene();
 	TransparentProcess();
-	UVScroll();
+
+	// UVスクロールの処理
+	RenderingEngine::GetInstance()->GetSpriteCB().clipSize.x += m_uvTimer;
 
 	switch (m_MessageState){
 	case m_enMessageState_Start:
@@ -207,12 +213,6 @@ void Title::FadeScene()
 		DeleteGO(this);
 		break;
 	}
-}
-
-void Title::UVScroll()
-{
-	m_uvTimer += UV_SCROLLSPEED;
-	RenderingEngine::GetInstance()->GetSpriteCB().clipSize.x += m_uvTimer;
 }
 
 void Title::Render(RenderContext& rc)

@@ -6,7 +6,7 @@
 
 namespace
 {
-	const float		FADE_TIMER = 3.0f;											// フェードするまでの時間
+	const float		FADE_TIMER = 2.0f;											// フェードするまでの時間
 	const float		FONT_SHADOW_OFFSET = 2.0f;									// ピクセルのオフセット量
 	const Vector3	FONT_POSITION = Vector3(-110.0f, 100.0f, 0.0f);				// ピクセルの座標
 	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);		// ピクセルのオフセットのカラー

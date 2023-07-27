@@ -74,7 +74,7 @@ float4 PSMainUVScroll(PSInput In) : SV_Target0
 {
 	float2 offset=float2(clipSize.x,clipSize.y);
 
-	if(In.uv.x > 1.0f-offset.x){
+	if(In.uv.x >= 1.0f-offset.x){
 		offset.x -= 1.0f;
 	}
 

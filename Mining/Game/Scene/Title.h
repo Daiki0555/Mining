@@ -28,10 +28,6 @@ private:
 	/// シーンの切り替え
 	/// </summary>
 	void FadeScene();
-	/// <summary>
-	/// UVスクロールの処理
-	/// </summary>
-	void UVScroll();
 
 private:
 	enum enMessageState {
