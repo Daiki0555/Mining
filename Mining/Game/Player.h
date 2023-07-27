@@ -12,7 +12,6 @@ namespace
 
 	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
 	const float RECOVERY_TIMER = 2.0f;		// スタミナが回復するまでの時間
-
 	const float ADDSPEED = 0.5f;			// ダッシュ時の加算速度
 }
 
@@ -26,6 +25,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+private:
 	/// <summary>
 	/// アニメーションのロード
 	/// </summary>
@@ -45,8 +45,10 @@ public:
 	/// <summary>
 	/// 被弾処理
 	/// </summary>
+public:
 	/// <param name="attackPower">相手の攻撃力</param>
 	void Damage(int attackPower);
+private:
 	/// <summary>
 	/// 採掘処理
 	/// </summary>
@@ -61,6 +63,7 @@ public:
 	/// <returns></returns>
 	bool CrystalAndHit(Vector3 targetPosition);
 
+public:
 	/// <summary>
 	/// 座標を参照する
 	/// </summary>

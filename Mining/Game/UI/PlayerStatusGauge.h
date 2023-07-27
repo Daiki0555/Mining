@@ -11,6 +11,8 @@ public:
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
+
+private:
 	/// <summary>
 	/// ’l‚ð•\Ž¦‚·‚é
 	/// </summary>

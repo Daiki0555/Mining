@@ -8,10 +8,6 @@ public:
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
-	/// <summary>
-	/// 画像を更新
-	/// </summary>
-	void SpriteUpdate();
 
 	/// <summary>
 	/// フェードインの処理
@@ -37,6 +33,11 @@ public:
 	}
 
 private:
+	/// <summary>
+	/// 画像を更新
+	/// </summary>
+	void SpriteUpdate();
+
 	enum enFadeState {
 		m_enFadeState_FadeIn,								// フェードイン
 		m_enFadeState_FadeOut,								// フェードアウト

@@ -10,6 +10,8 @@ public:
 
 	bool Start();
 	void Update();
+	void Render(RenderContext& rc);
+private:
 	/// <summary>
 	/// 行動処理
 	/// </summary>
@@ -22,6 +24,5 @@ public:
 	/// アニメーションの再生処理
 	/// </summary>
 	void PlayAnimation();
-	void Render(RenderContext& rc);
 };
 

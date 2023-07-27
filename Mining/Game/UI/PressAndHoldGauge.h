@@ -16,6 +16,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+private:
 	/// <summary>
 	/// ゲージの角度を変更
 	/// </summary>
@@ -28,6 +29,8 @@ public:
 	/// フォントレンダーの表示
 	/// </summary>
 	void SetFontRender();
+
+public:
 	/// <summary>
 	/// 角度のリセット
 	/// </summary>

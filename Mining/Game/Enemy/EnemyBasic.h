@@ -13,6 +13,7 @@ public:
 	EnemyBasic();
 	virtual ~EnemyBasic() = 0;
 
+protected:
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
@@ -49,6 +50,7 @@ public:
 	/// <returns></returns>
 	bool WallAndHit(Vector3 targetPosition);
 
+public:
 	/// <summary>
 	/// À•W‚ğİ’è
 	/// </summary>

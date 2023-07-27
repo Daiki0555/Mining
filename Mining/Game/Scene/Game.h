@@ -21,27 +21,6 @@ public:
 	void Update();
 
 	/// <summary>
-	/// レベルデザイン
-	/// </summary>
-	void LevelDesign();
-	/// <summary>
-	/// ゲーム中の処理
-	/// </summary>
-	void PlayGame();
-	/// <summary>
-	/// 描画の有無を決定する
-	/// </summary>
-	void CanDrawObject();
-	/// <summary>
-	/// ゲームの終了処理
-	/// </summary>
-	void QuitGame();
-	/// <summary>
-	/// スコア計算
-	/// </summary>
-	void Score();
-
-	/// <summary>
 	/// クリスタルのリストを取得する
 	/// </summary>
 	inline std::vector<Crystal*> GetCrystalList()
@@ -63,9 +42,31 @@ public:
 	/// </summary>
 	/// <param name="flag">trueならアニメーションが終了した</param>
 	/// <returns></returns>
-	void SetIsEndAnimationFlag( const bool flag) {
+	void SetIsEndAnimationFlag(const bool flag) {
 		m_isEndAnimation = flag;
 	}
+
+private:
+	/// <summary>
+	/// レベルデザイン
+	/// </summary>
+	void LevelDesign();
+	/// <summary>
+	/// ゲーム中の処理
+	/// </summary>
+	void PlayGame();
+	/// <summary>
+	/// 描画の有無を決定する
+	/// </summary>
+	void CanDrawObject();
+	/// <summary>
+	/// ゲームの終了処理
+	/// </summary>
+	void QuitGame();
+	/// <summary>
+	/// スコア計算
+	/// </summary>
+	void Score();
 
 private:
 	enum enGameState {
