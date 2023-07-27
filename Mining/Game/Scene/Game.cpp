@@ -16,9 +16,6 @@
 
 namespace
 {
-	const Vector3	LIGHT_COLOR = { 10.0f,10.0f,10.0f };		// ライトのカラー
-	const float		Y_UP = 0.0f;								// ライトを持ち上げる値
-
 	const float		CANDRAW_LENGTH = 3500.0f;					// 描画できる範囲
 }
 

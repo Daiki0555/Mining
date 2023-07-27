@@ -3,15 +3,14 @@
 
 namespace
 {
-	const Vector3	TEX_SCALE = { 1.0f,1.0f,1.0f };						// テクスチャのスケール
+	const Vector3	TEX_SCALE = Vector3(1.0f, 1.0f, 1.0f);				// テクスチャのスケール
 
 	const float		DECREASE_CIRCLE_ANGLE = 36.0f;						// 角度の減少速度
 	const float		INCREASE_CIRCLE_ANGLE = 180.0f;						// 角度の増加速度
 
 	const float		FONT_SCALE = 0.5f;									// フォントのスケール 
-	const Vector4	FONT_COLOR = { 0.0f,0.0f,0.0f,1.0f };				// フォントのカラー
 	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
-	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
+	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
 
 	const float		FONT_LEFT_X = 39.0f;								// 左に移動させる値
 	const float		FONT_DOWN_Y = 8.0f;									// 下に移動させる値
@@ -119,7 +118,7 @@ void PressAndHoldGauge::SetFontRender()
 	// フォントを表示する
 	m_fontRender.SetText(L"B長押し");
 	m_fontRender.SetPosition({ m_circleGauge.m_2Dposition.x - FONT_LEFT_X, m_circleGauge.m_2Dposition.y - FONT_DOWN_Y ,0.0f });
-	m_fontRender.SetColor(FONT_COLOR);
+	m_fontRender.SetColor(Vector4::Black);
 	m_fontRender.SetScale(FONT_SCALE);
 	m_fontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 }

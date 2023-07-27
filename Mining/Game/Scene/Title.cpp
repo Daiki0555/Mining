@@ -10,7 +10,7 @@ namespace
 {
 	const float		FONT_POSITION_X = -550.0f;							// 各項目のX座標
 	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
-	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
+	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
 
 	const float		UV_SCROLLSPEED = 0.0000001f;						// UVスクロールのスピード
 }
@@ -87,17 +87,17 @@ void Title::Update()
 
 		m_GameStartMessage.SetText(L"ゲームスタート");
 		m_GameStartMessage.SetPosition({ FONT_POSITION_X,50.0f,0.0f });
-		m_GameStartMessage.SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+		m_GameStartMessage.SetColor(Vector4::Black);
 		m_GameStartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 		m_SystemMessage.SetText(L"操作説明");
 		m_SystemMessage.SetPosition({ FONT_POSITION_X,-100.0f,0.0f });
-		m_SystemMessage.SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+		m_SystemMessage.SetColor(Vector4::Black);
 		m_SystemMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 		m_RankingMessage.SetText(L"ランキング");
 		m_RankingMessage.SetPosition({ FONT_POSITION_X,-250.0f,0.0f });
-		m_RankingMessage.SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+		m_RankingMessage.SetColor(Vector4::Black);
 		m_RankingMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 		switch (m_CursorState) {

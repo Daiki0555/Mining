@@ -34,7 +34,7 @@ bool Ranking::Start()
 	//m_backGroundSpriteRender.Init("Assets/Sprite/UI/Scene/ranking.DDS", 1920.0f, 1080.0f);
 
 	//ボタン文字の設定。
-	m_buttonFontRender.SetText(L"Press A button to Title");
+	m_buttonFontRender.SetText(L"Aボタンでタイトルに戻る");
 	m_buttonFontRender.SetPosition(BUTTON_FONT_POS);
 	m_buttonFontRender.SetScale(1.0f);
 	m_buttonFontRender.SetColor(Vector4::Black);

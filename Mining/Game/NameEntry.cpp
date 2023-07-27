@@ -9,6 +9,7 @@ namespace
 {
 	const Vector3	SPELL_FONT_POS = Vector3(-600.0f, 0.0f, 0.0f);	//英文字の座標。
 	const Vector3	INPUT_NAME_POS = Vector3(-60.0f, 180.0f, 0.0f);	//入力文字の座標。
+	const Vector3	FONT_POSITION = Vector3(-250.0f, -450.0f, 0.0f);//操作説明文字の座標。
 	const int		SPELL_NUM_FIRST = 65;							//char型のA。
 	const int		SPELL_NUM_MAX = 26;								//スペルの最大数。
 	const int		SPELL_ROW_MAX = 13;								//文字列の行数の最大。
@@ -77,6 +78,12 @@ bool NameEntry::Start()
 	m_animFontRender.SetColor(Vector4::Black);
 	m_animFontRender.SetPivot(Vector2(0.0f, 0.0f));
 	m_animFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
+
+	//操作説明用の文字の設定。
+	m_fontRender.SetText(L"STARTボタンで入力終了");
+	m_fontRender.SetPosition(FONT_POSITION);
+	m_fontRender.SetColor(Vector4::Black);
+	m_fontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	//入力できる文字の設定。
 	wchar_t spell;
@@ -362,6 +369,7 @@ void NameEntry::Render(RenderContext& rc)
 	m_backGroundSpriteRender.Draw(rc);
 	m_nameEnrtySpriteRender.Draw(rc);
 	m_userNameSpriteRender.Draw(rc);
+	m_fontRender.Draw(rc);
 
 	//文字列の描画。
 	for (int i = 0; i < SPELL_NUM_MAX; i++) {

@@ -15,9 +15,8 @@ namespace
 	const float		NEWRECORD_TIMER_MAX = 1.0f;											//新記録用タイマーの最大値。
 	const float		NEWRECORD_TIMER_MIN = 0.0f;											//新記録用タイマーの最小値。
 	const float		FONT_SCALE = 0.5f;													// フォントのスケール 
-	const Vector4	FONT_COLOR = { 0.0f,0.0f,0.0f,1.0f };								// フォントのカラー
 	const float		FONT_SHADOW_OFFSET = 2.0f;											// ピクセルのオフセット量
-	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };						// カラー
+	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);				// カラー
 }
 
 GameResult::GameResult()

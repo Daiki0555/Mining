@@ -6,8 +6,9 @@
 
 namespace
 {
-	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
-	const Vector4	FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
+	const float		FONT_SHADOW_OFFSET = 2.0f;									// ピクセルのオフセット量
+	const Vector3	FONT_POSITION = Vector3(-250.0f, -400.0f, 0.0f);			// フォントの座標
+	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);		// カラー
 }
 
 Guide::Guide()
@@ -48,9 +49,9 @@ bool Guide::Start()
 		return false;
 	});
 
-	m_fontRender.SetText(L"Press A button to Title");
-	m_fontRender.SetPosition({ -250.0f,-400.0f,0.0f });
-	m_fontRender.SetColor({ 0.0f,0.0f,0.0f,1.0f });
+	m_fontRender.SetText(L"Aボタンでタイトルに戻る");
+	m_fontRender.SetPosition(FONT_POSITION);
+	m_fontRender.SetColor(Vector4::Black);
 	m_fontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	//フェードイン。

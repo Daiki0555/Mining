@@ -5,13 +5,10 @@
 
 namespace
 {
-	const float			FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
-	const Vector4		FONT_SHADOW_COLOR = { 1.0f,1.0f,1.0f,1.0f };		// カラー
-
-	const Vector4		FONT_COLOR = { 0.0f,0.0f,0.0f,1.0f };				// フォントカラー
 	const float			FONT_SCALE = 0.6f;									// フォントのスケール
-
-	const Vector2		SPRITE_PIVOT = { 0.0f,0.5f };						// ビポットの位置
+	const float			FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
+	const Vector2		SPRITE_PIVOT = Vector2(0.0f, 0.5f);					// ビポットの位置
+	const Vector4		FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
 }
 
 PlayerStatusGauge::PlayerStatusGauge()
@@ -104,7 +101,7 @@ void PlayerStatusGauge::DrawGaugeValue()
 	m_fontRenderHitPoint.SetText(HitPointText);
 	m_fontRenderHitPoint.SetPosition({ -569.0f,490.0f,0.0f });
 	m_fontRenderHitPoint.SetScale(FONT_SCALE);
-	m_fontRenderHitPoint.SetColor(FONT_COLOR);
+	m_fontRenderHitPoint.SetColor(Vector4::Black);
 	m_fontRenderHitPoint.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	// 現在の残り体力・HPを表示する
@@ -119,7 +116,7 @@ void PlayerStatusGauge::DrawGaugeValue()
 	m_fontRenderStamina.SetText(StaminaText);
 	m_fontRenderStamina.SetPosition({ -670.0f,420.0f,0.0f });
 	m_fontRenderStamina.SetScale(FONT_SCALE);
-	m_fontRenderStamina.SetColor(FONT_COLOR);
+	m_fontRenderStamina.SetColor(Vector4::Black);
 	m_fontRenderStamina.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 }
 

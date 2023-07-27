@@ -76,6 +76,7 @@ private:
 	SpriteRender	m_backGroundSpriteRender;			//背景画像。
 	SpriteRender	m_nameEnrtySpriteRender;			// ネームエントリーの画像
 	SpriteRender	m_userNameSpriteRender;				// ユーザーネームの表示場所の画像
+	FontRender		m_fontRender;						// 操作説明
 	FontRender		m_spellFontRender[26];				//英文字。
 	FontRender		m_inputNameFontRender;				//入力文字。
 	FontRender		m_animFontRender;					//アニメーション用文字。

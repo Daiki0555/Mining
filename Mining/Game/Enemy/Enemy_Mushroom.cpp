@@ -6,7 +6,7 @@ namespace
 	const int		ATTACK_POWER = 50;							// 攻撃
 	const float		BASIC_SPEED = 100.0f;						// 基本スピード
 
-	const Vector3	SCALE = { 1.0f,1.0f,1.0f };					// スケール
+	const Vector3	SCALE = Vector3(1.0f, 1.0f, 1.0f);			// スケール
 
 	const float		CHARACTERCONTROLLER_RADIUS = 50.0f;			// 半径
 	const float		CHARACTERCONTROLLER_HEIGHT = 50.0f;			// 高さ
