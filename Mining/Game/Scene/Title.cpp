@@ -12,7 +12,7 @@ namespace
 	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
 	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
 
-	const float		UV_SCROLLSPEED = 0.0005f;						// UVスクロールのスピード
+	const float		UV_SCROLLSPEED = 0.00002f;							// UVスクロールのスピード
 }
 
 Title::Title()
@@ -56,6 +56,7 @@ bool Title::Start()
 	// カーソル画像の設定
 	m_spriteRenderIcon.Init("Assets/Sprite/UI/Scene/title/cursor.DDS", 89.0f, 94.0f);
 	m_spriteRenderIcon.SetScale({ 0.7f, 0.7f, 1.0f });
+	m_spriteRenderIcon.SetPosition({ -500.0f, 15.0f, 0.0f });
 	m_spriteRenderIcon.Update();
 
 	// UVスクロール用の値を初期化
@@ -79,52 +80,64 @@ void Title::Update()
 	switch (m_MessageState){
 	case m_enMessageState_Start:
 
-		m_StartMessage.SetText(L"Aボタンを押してください");
+		// 文字の設定
+		m_StartMessage.SetText(L"Bボタンを押してください");
 		m_StartMessage.SetPosition({ -680.0f,-150.0f,0.0f });
 		m_StartMessage.SetColor({ 0.0f, 0.0f, 0.0f, m_alpha });
 		m_StartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
-		if (g_pad[0]->IsTrigger(enButtonA)) {
+		// Aボタンを押されたなら
+		if (g_pad[0]->IsTrigger(enButtonB)) {
+			// 次のステートに移行する
 			m_MessageState = m_enMessageState_Select;
 		}
-
 		break;
 	case m_enMessageState_Select:
 
+		// ゲーム開始の文字の設定
 		m_GameStartMessage.SetText(L"ゲームスタート");
 		m_GameStartMessage.SetPosition({ FONT_POSITION_X,50.0f,0.0f });
 		m_GameStartMessage.SetColor(Vector4::Black);
 		m_GameStartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
+		// 操作説明の文字の設定
 		m_SystemMessage.SetText(L"操作説明");
 		m_SystemMessage.SetPosition({ FONT_POSITION_X,-100.0f,0.0f });
 		m_SystemMessage.SetColor(Vector4::Black);
 		m_SystemMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
+		// ランキングの文字の設定
 		m_RankingMessage.SetText(L"ランキング");
 		m_RankingMessage.SetPosition({ FONT_POSITION_X,-250.0f,0.0f });
 		m_RankingMessage.SetColor(Vector4::Black);
 		m_RankingMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
+		// カーソルの位置に応じて透過処理を行う
 		switch (m_CursorState) {
 		case m_enCursorState_Game:
 			m_GameStartMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
 			m_GameStartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
-			m_spriteRenderIcon.SetPosition({ -500.0f, 20.0f, 0.0f });
+			m_spriteRenderIcon.SetPosition({ -500.0f, 15.0f, 0.0f });
 			break;
 		case m_enCursorState_Guide:
 			m_SystemMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
 			m_SystemMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
-			m_spriteRenderIcon.SetPosition({ -500.0f,-100.0f,0.0f });
+			m_spriteRenderIcon.SetPosition({ -500.0f,-110.0f,0.0f });
 			break;
 		case m_enCursorState_Ranking:
 			m_RankingMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
 			m_RankingMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
-			m_spriteRenderIcon.SetPosition({ -500.0f,-220.0f,0.0f });
+			m_spriteRenderIcon.SetPosition({ -500.0f,-230.0f,0.0f });
 			break;
+		}
+
+		// Aボタンを押されたなら
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+			// 前のステートに移行する
+			m_MessageState = m_enMessageState_Start;
 		}
 
 		if (m_isWaitFadeOut) {
@@ -134,8 +147,8 @@ void Title::Update()
 			}
 		}
 		else {
-			//Aボタンが押されたら。
-			if (g_pad[0]->IsTrigger(enButtonA)) {
+			// Bボタンが押されたら。
+			if (g_pad[0]->IsTrigger(enButtonB)) {
 				m_fade->FadeOut();
 				m_isWaitFadeOut = true;
 			}
@@ -199,6 +212,7 @@ void Title::ChangeScene()
 
 void Title::FadeScene()
 {
+	// ステートに応じて生成するシーンを切り替える
 	switch (m_CursorState) {
 	case m_enCursorState_Game:
 		m_game = NewGO<Game>(0, "game");
