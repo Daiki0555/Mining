@@ -101,7 +101,7 @@ namespace nsK2EngineLow {
 		finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
 		finalSpriteInitData.m_vsEntryPointFunc = "VSMain";
 		finalSpriteInitData.m_psEntryPoinFunc = "PSMain";
-		// �~�`�Q�[�W�p�̍\���̂̏���n��
+		// SpriteRender用の追加コード
 		finalSpriteInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
 		finalSpriteInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
 		//�㏑��

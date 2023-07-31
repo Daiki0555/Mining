@@ -30,12 +30,20 @@ namespace nsK2EngineLow {
 	{
 		switch (clipMode) {
 		case 1:
+			// 円形ゲージ
 			initData.m_psEntryPoinFunc = "PSCircleGauge";
 			initData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
 			initData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
 			break;
 		case 2:
+			// UVスクロール
 			initData.m_psEntryPoinFunc = "PSMainUVScroll";
+			initData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
+			initData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
+			break;
+		case 3:
+			// フェード
+			initData.m_psEntryPoinFunc = "PSFade";
 			initData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
 			initData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
 			break;
@@ -46,4 +54,4 @@ namespace nsK2EngineLow {
 	{
 		RenderingEngine::GetInstance()->AddRenderObject(this);
 	}
-}
+};

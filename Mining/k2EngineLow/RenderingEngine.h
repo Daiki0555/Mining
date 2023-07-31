@@ -33,15 +33,14 @@ namespace nsK2EngineLow {
 		// スプライト用の構造体
 		struct SpriteCB
 		{
-			Vector3 clipSize;
+			Vector3 clipSize;								// クリップサイズ
+			float fadeValue;								// フェード値
 			int clipMode = 0;
 		};
 
 	//private:
 		RenderingEngine();
 		~RenderingEngine();
-
-		
 
 	public:
 
@@ -114,7 +113,7 @@ namespace nsK2EngineLow {
 		/// ディレクショナルライトの設定。
 		/// </summary>
 		/// <param name="dir">ライトの方向。</param>
-		/// <param name="color">ライトのカラー。[</param>
+		/// <param name="color">ライトのカラー。</param>
 		void SetDirectionLight(const Vector3& dir, const Vector3 color)
 		{
 			m_directionLig.SetDirection(dir);

@@ -1,19 +1,23 @@
 #include "stdafx.h"
 #include "Fade.h"
 
+namespace 
+{
+	const float FADE_SPEED = 0.7f;
+}
+
 Fade::Fade()
 {
-
 }
 
 Fade::~Fade()
 {
-
 }
 
 bool Fade::Start()
 {
-	m_spriteRender.Init("Assets/sprite/UI/Scene/Fade.DDS", 1920.0f, 1080.0f);
+	//m_spriteRender.Init("Assets/sprite/UI/Scene/Fade.DDS", 1920.0f, 1080.0f);
+	m_spriteRender.Init("Assets/sprite/UI/Scene/image.DDS", 1920.0f, 1080.0f, AlphaBlendMode_Multiply, 3);
 
 	return true;
 }
@@ -23,7 +27,7 @@ void Fade::Update()
 	switch (m_fadeState) {
 	case m_enFadeState_FadeIn:
 		// “§–¾“x‚ðŒ¸‚ç‚·
-		m_alpha -= 1.0f * g_gameTime->GetFrameDeltaTime();
+		m_alpha -= FADE_SPEED * g_gameTime->GetFrameDeltaTime();
 
 		if (m_alpha < 0.0f) {
 			m_alpha = 0.0f;						// •â³
@@ -32,7 +36,7 @@ void Fade::Update()
 		break;
 	case m_enFadeState_FadeOut:
 		// “§–¾“x‚ð‘‚â‚·
-		m_alpha += 1.0f * g_gameTime->GetFrameDeltaTime();
+		m_alpha += FADE_SPEED * g_gameTime->GetFrameDeltaTime();
 
 		if (m_alpha > 1.0f) {
 			m_alpha = 1.0f;						// •â³
@@ -43,7 +47,8 @@ void Fade::Update()
 		break;
 	}
 
-	SpriteUpdate();
+	RenderingEngine::GetInstance()->GetSpriteCB().fadeValue = m_alpha;
+	//SpriteUpdate();
 }
 
 void Fade::SpriteUpdate()

@@ -10,12 +10,13 @@ namespace nsK2EngineLow {
 		/// <param name="w">画像の横幅</param>
 		/// <param name="h">画像の縦幅</param>
 		/// <param name="alphaBlendMode">デフォルトは半透明</param>
+		/// <param name="clipMode">デフォルトは0</param>
 		void Init(
 			const char* filePath,
 			const float w,
 			const float h,
 			AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans,
-			const int clipMode = 0			// クリップボード	
+			const int clipMode = 0			// クリップモード
 		);
 
 		/// <summary>
