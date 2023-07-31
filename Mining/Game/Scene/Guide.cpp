@@ -67,6 +67,8 @@ void Guide::Update()
 		//フェードが終了しているなら。
 		if (!m_fade->IsFade()) {
 			m_title = NewGO<Title>(0, "title");
+			// カーソル位置を設定
+			m_title->SetCursorScene(m_title->m_enCursorState_Guide);
 			DeleteGO(this);
 		}
 	}

@@ -86,7 +86,7 @@ void Title::Update()
 		m_StartMessage.SetColor({ 0.0f, 0.0f, 0.0f, m_alpha });
 		m_StartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
-		// Aボタンを押されたなら
+		// Bボタンを押されたなら
 		if (g_pad[0]->IsTrigger(enButtonB)) {
 			// 次のステートに移行する
 			m_MessageState = m_enMessageState_Select;

@@ -36,13 +36,27 @@ private:
 	};
 	enMessageState	m_MessageState = m_enMessageState_Start;			// 表示しているメッセージ
 
+public:
 	enum enCursorState {
 		m_enCursorState_Game,											// ゲーム
 		m_enCursorState_Guide,											// 説明
 		m_enCursorState_Ranking,										// ランキング
 	};
+
+private:
 	enCursorState	m_CursorState = m_enCursorState_Game;				// 選択位置のステート
 
+public:
+	/// <summary>
+	/// カーソル位置のステートを設定する
+	/// </summary>
+	/// <param name="state"></param>
+	void SetCursorScene(const enCursorState state) {
+		m_MessageState = m_enMessageState_Select;						// セレクト画面を表示
+		m_CursorState = state;											// 選択位置のステートを設定
+	}
+
+private:
 	SpriteRender	m_spriteRenderTitle;								// スプライトレンダー(背景)
 	SpriteRender	m_spriteRenderRogo;									// スプライトレンダー(ロゴ)
 	SpriteRender	m_spriteRenderIcon;									// スプライトレンダー(アイコン)

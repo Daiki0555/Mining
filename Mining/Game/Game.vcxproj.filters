@@ -44,10 +44,10 @@
     <ClCompile Include="Scene\GameResult.cpp" />
     <ClCompile Include="SaveDataManager.cpp" />
     <ClCompile Include="NameEntry.cpp" />
-    <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="UI\Fade.cpp" />
     <ClCompile Include="Scene\Guide.cpp" />
     <ClCompile Include="Scene\Logo.cpp" />
+    <ClCompile Include="Ranking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -81,9 +81,9 @@
     <ClInclude Include="Scene\GameResult.h" />
     <ClInclude Include="SaveDataManager.h" />
     <ClInclude Include="NameEntry.h" />
-    <ClInclude Include="Ranking.h" />
     <ClInclude Include="UI\Fade.h" />
     <ClInclude Include="Scene\Guide.h" />
     <ClInclude Include="Scene\Logo.h" />
+    <ClInclude Include="Ranking.h" />
   </ItemGroup>
 </Project>
