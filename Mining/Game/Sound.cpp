@@ -25,13 +25,12 @@ bool Sound::Start()
 	g_soundEngine->ResistWaveFileBank(m_enSoundState_ResultBGM, "Assets/sound/result.wav");
 
 	// SE
-	//g_soundEngine->ResistWaveFileBank(m_enSoundState_FixedSE, "");
-	//g_soundEngine->ResistWaveFileBank(m_enSoundState_CancelSE, "");
-	//g_soundEngine->ResistWaveFileBank(m_enSoundState_NewScoreSE, "");
-	//g_soundEngine->ResistWaveFileBank(m_enSoundState_NameEntryEndSE, "");
-	//g_soundEngine->ResistWaveFileBank(m_enSoundState_DigSE, "");
-	//g_soundEngine->ResistWaveFileBank(m_enSoundState_GetSE, "");
-	//g_soundEngine->ResistWaveFileBank(m_enSoundState_DamageSE, "");
+	g_soundEngine->ResistWaveFileBank(m_enSoundState_FixedSE, "Assets/sound/fixed.wav");
+	g_soundEngine->ResistWaveFileBank(m_enSoundState_CancelSE, "Assets/sound/cancel.wav");
+	g_soundEngine->ResistWaveFileBank(m_enSoundState_NameEntryEndSE, "Assets/sound/entryEnd.wav");
+	g_soundEngine->ResistWaveFileBank(m_enSoundState_DigSE, "Assets/sound/dig.wav");
+	g_soundEngine->ResistWaveFileBank(m_enSoundState_GetSE, "Assets/sound/getCrystal.wav");
+	g_soundEngine->ResistWaveFileBank(m_enSoundState_DamageSE, "Assets/sound/damage.wav");
 
 	return true;
 }
@@ -68,4 +67,12 @@ void Sound:: DeleteBGM()
 		m_bgm->Stop();
 		m_timer = 0.0f;
 	}
+}
+
+void Sound::SetSoundSE(enSoundState state) 
+{
+	SoundSource* m_se = NewGO<SoundSource>(0);
+	m_se->Init(state);
+	m_se->SetVolume(VOLUME);
+	m_se->Play(false);
 }

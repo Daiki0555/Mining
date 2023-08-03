@@ -129,6 +129,7 @@ void NameEntry::Update()
 	if (m_isWaitFadeOut) {
 		//フェードが終了しているなら。
 		if (!m_fade->IsFade()) {
+			m_sound->DeleteBGM();
 			//ランキングシーンへ遷移。
 			NewGO<Ranking>(0, "ranking");
 			DeleteGO(this);
@@ -176,14 +177,17 @@ void NameEntry::Input()
 	}
 	else if (g_pad[0]->IsTrigger(enButtonB)) {
 
+		m_sound->SetSoundSE(m_sound->m_enSoundState_FixedSE);
 		InputName();
 	}
 	else if (g_pad[0]->IsTrigger(enButtonA)) {
 
+		m_sound->SetSoundSE(m_sound->m_enSoundState_CancelSE);
 		EraseName();
 	}
 	else if (g_pad[0]->IsTrigger(enButtonStart)) {
 
+		m_sound->SetSoundSE(m_sound->m_enSoundState_NameEntryEndSE);
 		End();
 	}
 }
@@ -312,7 +316,6 @@ void NameEntry::End()
 	//フェードアウト開始。
 	m_fade->FadeOut();
 	m_isWaitFadeOut = true;
-	m_sound->DeleteBGM();
 }
 
 void NameEntry::CursorAnimation()

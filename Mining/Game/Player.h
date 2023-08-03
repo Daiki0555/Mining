@@ -3,6 +3,7 @@
 class Game;
 class Crystal;
 class PressAndHoldGauge;
+class Sound;
 
 namespace 
 {
@@ -185,6 +186,7 @@ private:
 	Crystal*				m_crystal = nullptr;							// クリスタル
 	Crystal*				m_getCrystal = nullptr;							// 獲得したクリスタル
 	PressAndHoldGauge*		m_pressAndHoldGauge = nullptr;					// 円形ゲージ
+	Sound*					m_sound = nullptr;								// サウンド
 	std::vector<Crystal*>	m_haveCrystals;									// 所持しているクリスタル
 	PlayerStatus			m_playerStatus;									// プレイヤーのステータス
 	float					m_recoveryTimer = RECOVERY_TIMER;				// スタミナが回復し始めるまでの時間

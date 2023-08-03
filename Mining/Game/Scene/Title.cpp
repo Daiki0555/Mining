@@ -93,6 +93,7 @@ void Title::Update()
 
 		// Bボタンを押されたなら
 		if (g_pad[0]->IsTrigger(enButtonB)) {
+			m_sound->SetSoundSE(m_sound->m_enSoundState_FixedSE);
 			// 次のステートに移行する
 			m_MessageState = m_enMessageState_Select;
 		}
@@ -141,6 +142,7 @@ void Title::Update()
 
 		// Aボタンを押されたなら
 		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_sound->SetSoundSE(m_sound->m_enSoundState_CancelSE);
 			// 前のステートに移行する
 			m_MessageState = m_enMessageState_Start;
 		}
@@ -154,6 +156,7 @@ void Title::Update()
 		else {
 			// Bボタンが押されたら。
 			if (g_pad[0]->IsTrigger(enButtonB)) {
+				m_sound->SetSoundSE(m_sound->m_enSoundState_FixedSE);
 				m_fade->FadeOut();
 				m_isWaitFadeOut = true;
 				// BGMを削除する

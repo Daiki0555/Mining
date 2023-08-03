@@ -3,6 +3,7 @@
 #include "Scene/Game.h"
 #include "Stage/Object/Crystal.h"
 #include "UI/PressAndHoldGauge.h"
+#include "Sound.h"
 
 namespace
 {
@@ -64,6 +65,8 @@ bool Player::Start()
 	m_sphereCollider.Create(20.0f);
 
 	m_modelRender.Update();
+
+	m_sound = FindGO<Sound>("sound");
 
 	return true;
 }
@@ -413,6 +416,8 @@ void Player::Dig()
 		// Šl“¾ˆ—
 		m_getCrystal->SetCrystalState(m_crystal->m_enCrystalStete_HavePlayer);
 		m_haveCrystals.push_back(m_getCrystal);
+
+		m_sound->SetSoundSE(m_sound->m_enSoundState_GetSE);
 
 		// ‰~Œ`ƒQ[ƒW‚ðƒŠƒZƒbƒg‚·‚é
 		m_pressAndHoldGauge->ResetGaugeAngle();

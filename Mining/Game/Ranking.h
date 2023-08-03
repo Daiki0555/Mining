@@ -1,6 +1,7 @@
 #pragma once
 
 class Fade;
+class Sound;
 
 /// <summary>
 /// ランキングクラス。
@@ -28,6 +29,7 @@ private:
 	FontRender		m_rankingFontRender[10];		//ランキング文字。
 	FontRender		m_buttonFontRender;				//ボタン文字。
 	Fade*			m_fade = nullptr;				//フェードクラス。
+	Sound*			m_sound = nullptr;				// サウンドクラス
 	bool			m_isWaitFadeOut = false;		//フェードアウトの待機中かどうか。
 };
 

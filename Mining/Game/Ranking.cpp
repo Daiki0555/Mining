@@ -4,6 +4,7 @@
 #include "SaveDataManager.h"
 #include "Scene/Title.h"
 #include "UI/Fade.h"
+#include "Sound.h"
 
 namespace
 {
@@ -73,6 +74,8 @@ bool Ranking::Start()
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
 
+	m_sound = FindGO<Sound>("sound");
+
 	return true;
 }
 
@@ -126,6 +129,7 @@ void Ranking::Update()
 	else {
 		//Aƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çB
 		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_sound->SetSoundSE(m_sound->m_enSoundState_CancelSE);
 			m_fade->FadeOut();
 			m_isWaitFadeOut = true;
 		}

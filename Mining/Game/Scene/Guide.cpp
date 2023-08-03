@@ -58,6 +58,9 @@ bool Guide::Start()
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
+
+	m_sound = FindGO<Sound>("sound");
+
 	return true;
 }
 
@@ -75,6 +78,7 @@ void Guide::Update()
 	else {
 		//Aボタンが押されたら。
 		if (g_pad[0]->IsTrigger(enButtonA)) {
+			m_sound->SetSoundSE(m_sound->m_enSoundState_CancelSE);
 			m_fade->FadeOut();
 			m_isWaitFadeOut = true;
 		}

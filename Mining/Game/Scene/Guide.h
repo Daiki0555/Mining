@@ -2,6 +2,7 @@
 
 class Title;
 class Fade;
+class Sound;
 
 class Guide :public IGameObject
 {
@@ -20,6 +21,7 @@ private:
 	FontRender		m_fontRender;										// フォントレンダー
 	Level2DRender*	m_level2DRender = nullptr;							// 2Dレンダー
 	Fade*			m_fade = nullptr;									// フェード
+	Sound*			m_sound = nullptr;									// サウンド
 	bool			m_isWaitFadeOut = false;							// フェードアウトの待機中かどうか
 };
 

@@ -122,6 +122,7 @@ void GameResult::Update()
 	else {
 		//Bƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çB
 		if (g_pad[0]->IsTrigger(enButtonB)) {
+			m_sound->SetSoundSE(m_sound->m_enSoundState_FixedSE);
 			m_fade->FadeOut();
 			m_isWaitFadeOut = true;
 		}
