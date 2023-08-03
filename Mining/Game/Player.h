@@ -1,5 +1,4 @@
 #pragma once
-
 class Game;
 class Crystal;
 class PressAndHoldGauge;
@@ -26,9 +25,6 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-public:
-	/// <param name="attackPower">相手の攻撃力</param>
-	void Damage(int attackPower);
 private:
 	/// <summary>
 	/// アニメーションのロード
@@ -46,6 +42,13 @@ private:
 	/// 移動処理
 	/// </summary>
 	void Move();
+	/// <summary>
+	/// 被弾処理
+	/// </summary>
+public:
+	/// <param name="attackPower">相手の攻撃力</param>
+	void Damage(int attackPower);
+private:
 	/// <summary>
 	/// 採掘処理
 	/// </summary>
@@ -97,30 +100,6 @@ public:
 		return m_haveCrystals;
 	}
 
-	/// <summary>
-	/// プレイヤーのHPを参照する
-	/// </summary>
-	/// <returns></returns>
-	const int GetHitPoint() const {
-		return m_playerStatus.m_hitPoint;
-	}
-
-	/// <summary>
-	/// プレイヤーのスタミナを参照する
-	/// </summary>
-	/// <returns></returns>
-	const int GetStamina() const {
-		return m_playerStatus.m_stamina;
-	}
-
-	/// <summary>
-	/// ダメージを受けられるかどうかのフラグを参照する
-	/// </summary>
-	/// <returns></returns>
-	const bool GetCanDamege() const {
-		return m_canAddDamage;
-	}
-
 	enum enActionState {
 		m_enActionState_Idle,			// 待機
 		m_enActionState_Walk,			// 歩く
@@ -146,6 +125,30 @@ public:
 		return m_actionState;
 	}
 
+	/// <summary>
+	/// プレイヤーのHPを参照する
+	/// </summary>
+	/// <returns></returns>
+	const int GetHitPoint() const {
+		return m_playerStatus.m_hitPoint;
+	}
+
+	/// <summary>
+	/// プレイヤーのスタミナを参照する
+	/// </summary>
+	/// <returns></returns>
+	const int GetStamina() const {
+		return m_playerStatus.m_stamina;
+	}
+
+	/// <summary>
+	/// ダメージを受けられるかどうかのフラグを参照する
+	/// </summary>
+	/// <returns></returns>
+	const bool GetCanDamege() const {
+		return m_canAddDamage;
+	}
+
 private:
 	enActionState			m_actionState = m_enActionState_Idle;
 
@@ -162,35 +165,39 @@ private:
 	AnimationClip			m_enAnimationClips[m_en_AnimationClips_Num];
 
 // --------------------------------------------------------
+	ModelRender				m_modelRender;									// モデルレンダー
 
-	/// <summary>
-	/// プレイヤーステータス
-	/// </summary>
+	CharacterController		m_characterController;							// キャラクターコントローラー
+	SphereCollider			m_sphereCollider;								// スフィアコライダー
+
+
+	Vector3					m_position = Vector3::Zero;						// 自身の座標
+	Vector3					m_scale = Vector3::One;							// 自身のスケール
+	Vector3					m_basicSpeed = Vector3::Zero;					// 移動速度
+	Vector3					m_crystalPosition = Vector3::Zero;				// 獲得するクリスタルの座標
+
+	Quaternion				m_rotation= Quaternion::Identity;				// 自身の回転
+
+	Game*					m_game = nullptr;								// ゲーム
+	Crystal*				m_crystal = nullptr;							// クリスタル
+	Crystal*				m_getCrystal = nullptr;							// 獲得したクリスタル
+	PressAndHoldGauge*		m_pressAndHoldGauge = nullptr;					// 円形ゲージ
+
+	std::vector<Crystal*>	m_haveCrystals;									// 所持しているクリスタル
+
 	struct PlayerStatus {
 		int					m_hitPoint = HIT_POINT;							// HP
 		int					m_attackPower = ATTACK_POWER;					// 攻撃力
 		float				m_stamina = STAMINA;							// スタミナ
 		float				m_basicSpeed = BASIC_SPEED;						// 基本速度
 	};
-
-	ModelRender				m_modelRender;									// モデルレンダー
-	CharacterController		m_characterController;							// キャラクターコントローラー
-	SphereCollider			m_sphereCollider;								// スフィアコライダー
-	Vector3					m_position = Vector3::Zero;						// 自身の座標
-	Vector3					m_scale = Vector3::One;							// 自身のスケール
-	Vector3					m_basicSpeed = Vector3::Zero;					// 移動速度
-	Vector3					m_crystalPosition = Vector3::Zero;				// 獲得するクリスタルの座標
-	Quaternion				m_rotation= Quaternion::Identity;				// 自身の回転
-	Game*					m_game = nullptr;								// ゲーム
-	Crystal*				m_crystal = nullptr;							// クリスタル
-	Crystal*				m_getCrystal = nullptr;							// 獲得したクリスタル
-	PressAndHoldGauge*		m_pressAndHoldGauge = nullptr;					// 円形ゲージ
-	std::vector<Crystal*>	m_haveCrystals;									// 所持しているクリスタル
 	PlayerStatus			m_playerStatus;									// プレイヤーのステータス
+
 	float					m_recoveryTimer = RECOVERY_TIMER;				// スタミナが回復し始めるまでの時間
 	float					m_invincibleTimer = INVINCIBLE_TIMER;			// 無敵時間
 	float					m_addSpped = 0.0f;								// 乗算する移動速度
 	float					m_addValue = ADDSPEED;							// 移動速度と比較するための変数
+
 	bool					m_canAddDamage = true;							// ダメージを受けられるかどうか
 	bool					m_isDig = false;								// 採掘しているかどうか
 };

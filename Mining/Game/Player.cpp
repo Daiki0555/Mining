@@ -3,6 +3,7 @@
 #include "Scene/Game.h"
 #include "Stage/Object/Crystal.h"
 #include "UI/PressAndHoldGauge.h"
+#include "Stage/PhysicsGhost.h"
 
 namespace
 {
@@ -423,9 +424,9 @@ void Player::Dig()
 
 void Player::IsClear()
 {
-	for (int i = 0; i < m_game->GetGoalList().size(); i++) {
+	for (int i = 0; i < m_game->GetGhostList().size(); i++) {
 		// クリア座標へ向かうベクトルを作成
-		Vector3 diff = m_game->GetGoalList()[i] - m_position;
+		Vector3 diff = m_game->GetGhostList()[i]->GetPosition() - m_position;
 		
 		if (diff.Length() <= CLEAR_LENGTH) {
 			m_actionState = m_enActionState_Clear;
