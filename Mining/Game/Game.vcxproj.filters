@@ -48,6 +48,7 @@
     <ClCompile Include="Scene\Guide.cpp" />
     <ClCompile Include="Scene\Logo.cpp" />
     <ClCompile Include="Ranking.cpp" />
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -85,5 +86,6 @@
     <ClInclude Include="Scene\Guide.h" />
     <ClInclude Include="Scene\Logo.h" />
     <ClInclude Include="Ranking.h" />
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
 </Project>
