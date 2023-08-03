@@ -133,25 +133,25 @@ protected:
 	AnimationClip		m_enAnimationClips[m_enAnimationClips_Num];		// アニメーションクリップ
 
 // -----------------------------------------------------------
+	Player*				m_player = nullptr;								// プレイヤー
 
-	/// <summary>
-	/// エネミーステータス
-	/// </summary>
+	CharacterController	m_characterController;							// キャラクターコントローラー
+	SphereCollider		m_sphereCollider;								// スフィアコライダー
+
+	ModelRender			m_modelRender;									// モデルレンダー
+
+	Vector3				m_position = Vector3::Zero;						// 自身の座標
+	Vector3				m_scale = Vector3::One;							// 自身のスケール
+	Quaternion			m_rotation = Quaternion::Identity;				// 自身の回転
+
 	struct EnemyStatus {
 		int				m_attackPower = 0;								// 攻撃力
 		float			m_basicSpeed = 0.0f;							// 移動速度
 	};
 
-	Player*				m_player = nullptr;								// プレイヤー
-	CharacterController	m_characterController;							// キャラクターコントローラー
-	SphereCollider		m_sphereCollider;								// スフィアコライダー
-	ModelRender			m_modelRender;									// モデルレンダー
-	Vector3				m_position = Vector3::Zero;						// 自身の座標
-	Vector3				m_scale = Vector3::One;							// 自身のスケール
-	Quaternion			m_rotation = Quaternion::Identity;				// 自身の回転
-
 private:
 	EnemyStatus			m_enemyStatus;									// エネミーのステータス
+
 	float				m_StopTimer = STOP_TIME;						// 行動を停止するタイマー
 	bool				m_canDraw = true;								// 描画できるかどうか
 };
