@@ -92,12 +92,6 @@ public:
 	}
 
 private:
-	SpriteRender	m_spriteRenderCircle;				// スプライトレンダー
-	SpriteRender	m_spriteRenderCircleBase;			// スプライトレンダー(ベース)
-	SpriteRender	m_spriteRenderCircleBack;			// スプライトレンダー(背景)
-	
-	FontRender		m_fontRender;						// フォントレンダー
-
 	struct GaugeStatus {
 		Vector3		m_3Dposition = Vector3::Zero;		// 3D座標
 		Vector2		m_2Dposition = Vector2::Zero;		// 2D座標
@@ -105,10 +99,13 @@ private:
 		float		m_maxSize = CIRCLE_SIZE_MAX;		// ゲージの最大
 		float		m_minSize = CIRCLE_SIZE_MIN;		// ゲージの最小
 	};
+
+	SpriteRender	m_spriteRenderCircle;				// スプライトレンダー
+	SpriteRender	m_spriteRenderCircleBase;			// スプライトレンダー(ベース)
+	SpriteRender	m_spriteRenderCircleBack;			// スプライトレンダー(背景)
+	FontRender		m_fontRender;						// フォントレンダー
 	GaugeStatus		m_circleGauge;						// 円形ゲージのステータス
-
 	enGaugeState	m_enGaugeState = enGaugeState_Max;	// ゲージの今のステート
-
 	bool			m_changeGaugeAngleFlag = false;		// trueなら増加、falseなら減少させる
 	bool			m_canDrawGaugeFlag = false;			// 描画できるかどうか
 };
