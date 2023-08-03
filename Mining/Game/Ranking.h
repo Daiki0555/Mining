@@ -1,7 +1,6 @@
 #pragma once
 
 class Fade;
-class Title;
 
 /// <summary>
 /// ランキングクラス。
@@ -28,7 +27,6 @@ private:
 	SpriteRender	m_rankingScoresSpriteRender;	// ランキングの内訳画像
 	FontRender		m_rankingFontRender[10];		//ランキング文字。
 	FontRender		m_buttonFontRender;				//ボタン文字。
-	Title*			m_title = nullptr;				//タイトルクラス。
 	Fade*			m_fade = nullptr;				//フェードクラス。
 	bool			m_isWaitFadeOut = false;		//フェードアウトの待機中かどうか。
 };
