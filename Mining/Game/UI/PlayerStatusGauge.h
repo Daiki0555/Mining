@@ -38,9 +38,12 @@ private:
 	SpriteRender	m_spriteRenderStaminaGauge;			// スプライトレンダー(スタミナ)
 	SpriteRender	m_spriteRenderStaminaGaugeBase;		// スプライトレンダー(スタミナ)
 	SpriteRender	m_spriteRenderUnityChan;			// スプライトレンダー
+
 	FontRender		m_fontRenderHitPoint;				// フォントレンダー(HP)
 	FontRender		m_fontRenderStamina;				// フォントレンダー(スタミナ)
+
 	Player*			m_player = nullptr;					// プレイヤー
+
 	GaugeStatus		m_hitPointGauge;					// HP
 	GaugeStatus		m_staminaGauge;						// スタミナ
 };

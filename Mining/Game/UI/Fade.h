@@ -38,7 +38,6 @@ private:
 	/// </summary>
 	void SpriteUpdate();
 
-private:
 	enum enFadeState {
 		m_enFadeState_FadeIn,								// フェードイン
 		m_enFadeState_FadeOut,								// フェードアウト
@@ -47,6 +46,7 @@ private:
 	enFadeState		m_fadeState = m_enFadeState_Idle;		// ステート
 
 	SpriteRender	m_spriteRender;							// スプライトレンダー
+
 	float			m_alpha = 1.0f;							// 透明度
 };
 
