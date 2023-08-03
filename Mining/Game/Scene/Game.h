@@ -4,12 +4,12 @@ class GameCamera;
 class Player;
 class BackGround;
 class Crystal;
+class PhysicsGhost;
 class PlayerStatusGauge;
 class PressAndHoldGauge;
 class Fade;
 class EnemyBasic;
 class GameResult;
-class Sound;
 
 class Game:public IGameObject
 {
@@ -32,9 +32,9 @@ public:
 	/// ゴーストのリストを取得する
 	/// </summary>
 	/// <returns></returns>
-	inline std::vector<Vector3> GetGoalList()
+	inline std::vector<PhysicsGhost*> GetGhostList()
 	{
-		return m_goalList;
+		return m_ghostList;
 	}
 
 	/// <summary>
@@ -77,6 +77,7 @@ private:
 	enGameState					m_enGameState = m_enGameState_Play;		// ゲームステート
 
 	LevelRender					m_levelRender;							// レベルレンダー
+
 	GameResult*					m_gameResult = nullptr;					// リザルト画面
 	Player*						m_player = nullptr;						// プレイヤー
 	BackGround*					m_backGround = nullptr;					// 背景
@@ -84,10 +85,11 @@ private:
 	PlayerStatusGauge*			m_playerStatusGauge = nullptr;			// プレイヤーのステータスゲージ
 	PressAndHoldGauge*			m_circleGauge = nullptr;				// 円形ゲージ
 	Fade*						m_fade = nullptr;						// フェード
-	Sound*						m_sound = nullptr;						// サウンド
+
 	std::vector<Crystal*>		m_crystalList;							// クリスタルの総数
 	std::vector<EnemyBasic*>	m_enemyList;							// エネミーの総数
-	std::vector<Vector3>		m_goalList;								// ゴールの総数
+	std::vector<PhysicsGhost*>	m_ghostList;							// ゴーストの総数
+
 	bool						m_isWaitFadeOut = false;				// フェードアウトの待機中かどうか
 	bool						m_isEndAnimation = false;				// アニメーションが再生後かどうか
 };

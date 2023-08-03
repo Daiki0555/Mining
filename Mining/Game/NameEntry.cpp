@@ -4,7 +4,6 @@
 #include "SaveDataManager.h"
 #include "Ranking.h"
 #include "UI/Fade.h"
-#include "Sound.h"
 
 namespace
 {
@@ -118,8 +117,6 @@ bool NameEntry::Start()
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
 
-	m_sound = FindGO<Sound>("sound");
-
 	return true;
 }
 
@@ -174,11 +171,11 @@ void NameEntry::Input()
 
 		CursorUpdate();
 	}
-	else if (g_pad[0]->IsTrigger(enButtonB)) {
+	else if (g_pad[0]->IsTrigger(enButtonA)) {
 
 		InputName();
 	}
-	else if (g_pad[0]->IsTrigger(enButtonA)) {
+	else if (g_pad[0]->IsTrigger(enButtonB)) {
 
 		EraseName();
 	}
@@ -312,7 +309,6 @@ void NameEntry::End()
 	//フェードアウト開始。
 	m_fade->FadeOut();
 	m_isWaitFadeOut = true;
-	m_sound->DeleteBGM();
 }
 
 void NameEntry::CursorAnimation()

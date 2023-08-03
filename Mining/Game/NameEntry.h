@@ -1,7 +1,6 @@
 #pragma once
 
 class Fade;
-class Sound;
 
 class NameEntry : public IGameObject
 {
@@ -82,7 +81,6 @@ private:
 	FontRender		m_inputNameFontRender;				//入力文字。
 	FontRender		m_animFontRender;					//アニメーション用文字。
 	Fade*			m_fade = nullptr;					//フェードクラス。
-	Sound*			m_sound = nullptr;					// サウンドクラス
 	Vector3			m_bezierPos[3];						//ベジェ曲線の座標。
 	AnimationState	m_animationState = enState_Idle;	//アニメーションステート。	
 	char			m_inputName[256];					//入力された名前。

@@ -4,7 +4,6 @@ class Game;
 class Ranking;
 class Fade;
 class Guide;
-class Sound;
 
 class Title : public IGameObject
 {
@@ -62,16 +61,18 @@ private:
 	SpriteRender	m_spriteRenderRogo;									// スプライトレンダー(ロゴ)
 	SpriteRender	m_spriteRenderIcon;									// スプライトレンダー(アイコン)
 	SpriteRender	m_spriteRenderUV;									// スプライトレンダー(UVスクロール画像)
+
 	FontRender		m_StartMessage;										// 開始の文字
 	FontRender		m_GameStartMessage;									// ゲーム開始の文字
 	FontRender		m_RankingMessage;									// ランキング表示の文字
 	FontRender		m_SystemMessage;									// システムの文字
+
 	Level2DRender*	m_level2DRender = nullptr;							// 2Dレンダー
 	Game*			m_game = nullptr;									// ゲーム
 	Ranking*		m_ranking = nullptr;								// ランキング
 	Fade*			m_fade = nullptr;									// フェード
 	Guide*			m_guide = nullptr;									// 操作説明
-	Sound*			m_sound = nullptr;									// サウンド
+
 	bool			m_isChange = false;									// 透過の切り替え
 	bool			m_isWaitFadeOut = false;							// フェードアウトの待機中かどうか
 	float			m_alpha = 1.0f;										// 透明度

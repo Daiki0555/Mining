@@ -5,7 +5,6 @@
 #include "Ranking.h"
 #include "UI/Fade.h"
 #include "Guide.h"
-#include "Sound.h"
 
 namespace 
 {
@@ -66,10 +65,6 @@ bool Title::Start()
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
-
-	m_sound = FindGO<Sound>("sound");
-	m_sound->SetSoundBGM(m_sound->m_enSoundState_TitleBGM);
-	m_sound->SetStoPflag(true);
 
 	return true;
 }
@@ -156,8 +151,6 @@ void Title::Update()
 			if (g_pad[0]->IsTrigger(enButtonB)) {
 				m_fade->FadeOut();
 				m_isWaitFadeOut = true;
-				// BGMを削除する
-				m_sound->DeleteBGM();
 			}
 		}
 		break;
@@ -223,9 +216,6 @@ void Title::FadeScene()
 	switch (m_CursorState) {
 	case m_enCursorState_Game:
 		m_game = NewGO<Game>(0, "game");
-		// BGMを削除する
-		m_sound->DeleteBGM();
-		m_sound->SetStoPflag(false);
 		DeleteGO(this);
 		break;
 	case m_enCursorState_Guide:

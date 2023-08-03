@@ -10,7 +10,6 @@
 #include "UI/Fade.h"
 #include "Scene/Guide.h"
 #include "Scene/Logo.h"
-#include "Sound.h"
 
 // K2EngineLow�̃O���[�o���A�N�Z�X�|�C���g�B
 K2EngineLow* g_k2EngineLow = nullptr;
@@ -39,7 +38,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//NewGO<Game>(0, "game");
 	NewGO<Logo>(0, "logo");
 
-	NewGO<Sound>(0, "sound");
 	NewGO<Fade>(9, "fade");
 
 	//NewGO<Title>(0, "title");

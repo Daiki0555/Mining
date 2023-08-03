@@ -117,7 +117,7 @@ void Ranking::Update()
 
 		//フェードが終了しているなら。
 		if (!m_fade->IsFade()) {
-			Title* m_title = NewGO<Title>(0, "title");
+			m_title = NewGO<Title>(0, "title");
 			// カーソル位置を設定する
 			m_title->SetCursorScene(m_title->m_enCursorState_Ranking);
 			DeleteGO(this);

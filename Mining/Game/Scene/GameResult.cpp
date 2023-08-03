@@ -5,7 +5,6 @@
 #include "NameEntry.h"
 #include "Title.h"
 #include "UI/Fade.h"
-#include "Sound.h"
 
 namespace
 {
@@ -85,9 +84,6 @@ bool GameResult::Start()
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
 
-	m_sound = FindGO<Sound>("sound");
-	m_sound->SetSoundBGM(m_sound->m_enSoundState_ResultBGM);
-
 	return true;
 }
 
@@ -120,8 +116,8 @@ void GameResult::Update()
 		}
 	}
 	else {
-		//Bボタンが押されたら。
-		if (g_pad[0]->IsTrigger(enButtonB)) {
+		//Aボタンが押されたら。
+		if (g_pad[0]->IsTrigger(enButtonA)) {
 			m_fade->FadeOut();
 			m_isWaitFadeOut = true;
 		}
@@ -162,8 +158,6 @@ void GameResult::TransitionScene()
 	else {
 		//タイトルへ遷移。
 		NewGO<Title>(0, "title");
-		// BGMを削除する
-		m_sound->DeleteBGM();
 	}
 
 	DeleteGO(this);

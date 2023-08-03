@@ -14,7 +14,6 @@ private:
 	/// 注視点、始点、画角を設定する
 	/// </summary>
 	void CameraSettings();
-
 	/// <summary>
 	/// 回転処理
 	/// </summary>

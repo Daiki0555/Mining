@@ -4,6 +4,7 @@
 #include "GameCamera.h"
 #include "Player.h"
 #include "Stage/BackGround.h"
+#include "Stage/PhysicsGhost.h"
 #include "Stage/Object/Crystal.h"
 #include "Enemy/Enemy_Stone.h"
 #include "Enemy/Enemy_Mushroom.h"
@@ -12,7 +13,6 @@
 #include "UI/PressAndHoldGauge.h"
 #include "UI/Fade.h"
 #include "Scene/GameResult.h"
-#include "Sound.h"
 
 namespace
 {
@@ -38,9 +38,13 @@ Game::~Game()
 		DeleteGO(m_enemyList[i]);
 	}
 
+	for (int i = 0; i < m_ghostList.size(); i++) {
+		DeleteGO(m_ghostList[i]);
+	}
+
 	m_crystalList.clear();
 	m_enemyList.clear();
-	m_goalList.clear();
+	m_ghostList.clear();
 }
 
 bool Game::Start()
@@ -54,9 +58,6 @@ bool Game::Start()
 
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
-
-	m_sound = FindGO<Sound>("sound");
-	m_sound->SetSoundBGM(m_sound->m_enSoundState_GameBGM);
 
 	return true;
 }
@@ -73,18 +74,18 @@ void Game::LevelDesign()
 			//m_backGround->SetRotation(objData.rotaition);
 			return true;
 		}
-		// playerなら
-		if (objData.EqualObjectName(L"player") == true)
-		{
-			m_player = NewGO<Player>(0, "player");
-			m_player->SetPosition(objData.position);
-			m_player->SetRotation(objData.rotaition);
-			return true;
-		}
 		// ghostなら
 		if (objData.ForwardMatchName(L"ghost") == true)
 		{
-			m_goalList.push_back(objData.position);
+			PhysicsGhost* m_physicsGhost = NewGO<PhysicsGhost>(0, "physicsGhost");
+			m_physicsGhost->SetPosition(objData.position);
+			m_physicsGhost->SetScale(objData.scale);
+			//m_physicsGhost->SetRotation(objData.rotaition);
+			m_ghostList.push_back(m_physicsGhost);
+
+			//m_pointLight.SetPosition(Vector3(objData.position.x, objData.position.y + Y_UP, objData.position.z));
+			//m_pointLight.SetColor(LIGHT_COLOR);
+			//m_pointLight.SetNumber(objData.number);
 
 			return true;
 		}
@@ -99,6 +100,14 @@ void Game::LevelDesign()
 
 			// リストに追加
 			m_crystalList.push_back(m_crystal);
+			return true;
+		}
+		// playerなら
+		if (objData.EqualObjectName(L"player") == true)
+		{
+			m_player = NewGO<Player>(0, "player");
+			m_player->SetPosition(objData.position);
+			m_player->SetRotation(objData.rotaition);
 			return true;
 		}
 		// enemyなら
@@ -193,11 +202,6 @@ void Game::CanDrawObject()
 
 void Game::QuitGame()
 {
-	// ゲームが終了したことを教える
-	for (int i = 0; i < m_enemyList.size(); i++) {
-		m_enemyList[i]->SetEnemyState(m_enemyList[i]->m_enActionState_GameQuit);
-	}
-
 	if (m_isWaitFadeOut) {
 		//フェードが終了しているなら。
 		if (!m_fade->IsFade()) {
