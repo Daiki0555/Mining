@@ -7,7 +7,6 @@ namespace
 {
 	const float Y_POSITION = 25.0f;				// レイの高さ
 	const float ADD_LENGTH = 0.5f;				// 乗算するベクトルの長さ
-
 	const float CAN_ATTACK_LENGTH = 120.0f;		// 攻撃できる範囲
 	const float CAN_MOVETO_PLAYER = 500.0f;		// プレイヤーの方向へ動く範囲
 }
@@ -41,6 +40,10 @@ bool EnemyBasic::Start(int attackPower, float moveSpeed, float radius, float hei
 
 void EnemyBasic::Move()
 {
+	if (m_actionState == m_enActionState_GameQuit) {
+		return;
+	}
+
 	// プレイヤーへ向かうベクトルを作成
 	Vector3 moveSpeed = m_player->GetPosition() - m_position;
 
