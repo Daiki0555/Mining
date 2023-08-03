@@ -3,6 +3,7 @@
 
 #include "Title.h"
 #include "UI/Fade.h"
+#include "Sound.h"
 
 namespace
 {
@@ -57,7 +58,6 @@ bool Guide::Start()
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
-
 	return true;
 }
 
@@ -66,7 +66,7 @@ void Guide::Update()
 	if (m_isWaitFadeOut) {
 		//フェードが終了しているなら。
 		if (!m_fade->IsFade()) {
-			m_title = NewGO<Title>(0, "title");
+			Title* m_title = NewGO<Title>(0, "title");
 			// カーソル位置を設定
 			m_title->SetCursorScene(m_title->m_enCursorState_Guide);
 			DeleteGO(this);

@@ -239,9 +239,9 @@
     <ClCompile Include="Scene\Guide.cpp" />
     <ClCompile Include="Scene\Logo.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Stage\BackGround.cpp" />
     <ClCompile Include="Stage\Object\Crystal.cpp" />
-    <ClCompile Include="Stage\PhysicsGhost.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -268,9 +268,9 @@
     <ClInclude Include="Scene\Guide.h" />
     <ClInclude Include="Scene\Logo.h" />
     <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Stage\BackGround.h" />
     <ClInclude Include="Stage\Object\Crystal.h" />
-    <ClInclude Include="Stage\PhysicsGhost.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="UI\Fade.h" />

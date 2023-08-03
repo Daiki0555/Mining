@@ -1,6 +1,7 @@
 #pragma once
 
 class Fade;
+class Sound;
 
 namespace
 {
@@ -51,6 +52,7 @@ private:
 	FontRender								m_crystalFontRender;				//鉱石の個数文字。
 	FontRender								m_newRecordFontRender;				//新記録時の文字。
 	Fade*									m_fade = nullptr;					//フェードクラス。
+	Sound*									m_sound = nullptr;					// サウンドクラス
 	bool									m_isNewRecord = false;				//新記録かどうか。
 	bool									m_isWaitFadeOut = false;			//フェードアウトの待機中かどうか。
 	std::array<int, CRYSTAL_CATEGORY_MAX>	m_haveCristals = { 0,0,0,0 };		// playerが取得したクリスタル
