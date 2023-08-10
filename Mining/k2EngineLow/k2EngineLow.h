@@ -17,6 +17,9 @@ namespace nsK2EngineLow {
 
 	class K2EngineLow {
 	public:
+		// シャドウマップの数
+		static const int NUM_SHADOW_MAP = 3;
+
 		/// <summary>
 		/// フレームレートモード
 		/// </summary>
