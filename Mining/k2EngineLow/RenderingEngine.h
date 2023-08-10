@@ -1,11 +1,10 @@
 #pragma once
-
 namespace nsK2EngineLow {
-	class ModelRender;
-	class SpriteRender;
-	class RenderTarget;
-	class FontRender;
-	class DirectionLight;
+	namespace
+	{
+		const int POINTLIGHT_NUM = 2;		//ポイントライトの数
+		const int SPOTLIGHT_NUM = 1;		//スポットライトの数
+	}
 	class RenderingEngine:public Noncopyable
 	{
 	public:
@@ -21,8 +20,8 @@ namespace nsK2EngineLow {
 		struct LightCB
 		{
 			DirectionLight::directionLight directionLig;
-			PointLight::pointLight pointLig[2];
-			SpotLight::spotLight spotLig[1];
+			PointLight::pointLight pointLig[POINTLIGHT_NUM];
+			SpotLight::spotLight spotLig[SPOTLIGHT_NUM];
 			HemiSphereLight::hemiSphereLight hemiSphereLig;
 			ShadowParamCB shadowCB;
 			int ptNum;										//ポイントライトの数
@@ -30,9 +29,6 @@ namespace nsK2EngineLow {
 		
 		};
 
-
-
-	//private:
 		RenderingEngine();
 		~RenderingEngine();
 
@@ -45,8 +41,12 @@ namespace nsK2EngineLow {
 		/// </summary>
 		static void CreateInstance()
 		{
+			if (m_instance != nullptr)
+			{
+				std::abort();
+			}
 			m_instance = new RenderingEngine;
-			m_instance->Init();
+			m_instance->Init();			
 		}
 		/// <summary>
 		/// インスタンスの削除
@@ -54,6 +54,7 @@ namespace nsK2EngineLow {
 		static void DeleteInstance()
 		{
 			delete m_instance;
+			m_instance = nullptr;
 		}
 		/// <summary>
 		/// インスタンスの取得
@@ -75,16 +76,6 @@ namespace nsK2EngineLow {
 		void AddRenderObject(IRenderer* renderObject)
 		{
 			m_renderObjects.emplace_back(renderObject);
-		}
-
-
-		/// <summary>
-		/// レンダーオブジェクトを追加
-		/// </summary>
-		/// <param name="renderObject"></param>
-		void AddModelRenderObject(ModelRender* renderObject)
-		{
-			m_modeList.emplace_back(renderObject);
 		}
 
 		/// <summary>
@@ -215,10 +206,16 @@ namespace nsK2EngineLow {
 		void Init2DRenderTarget();
 
 		/// <summary>
-		/// モデルの描画
+		///G-Bufferの初期化
+		/// </summary>
+		void InitGBffer();
+
+
+		/// <summary>
+		/// ディファードライティング
 		/// </summary>
 		/// <param name="rc"></param>
-		void ModelRendering(RenderContext& rc);
+		void DefferedRender(RenderContext& rc);
 
 		/// <summary>
 		/// シャドウマップの描画処理
@@ -231,7 +228,19 @@ namespace nsK2EngineLow {
 		/// </summary>
 		/// <param name="rc"></param>
 		void Render2D(RenderContext& rc);
+
 	private:
+		//GBufferの定義
+		enum EnGBffer
+		{
+			enGBuffer_Albedo,			//アルベド
+			enGBuffer_Normal,			//法線
+			enGBuffer_WorldPos,			//ワールド座標
+			enGBuffer_MetalSmooth,		//金属度と滑らかさ。xに金属度、wに滑らかさが記録されている。
+			enGBuffer_ShadowParam,		//影のパラメータ
+			enGBuffer_Num,				//GBufferの数
+		};
+
 		static RenderingEngine*		m_instance;							//ライト用の構造体
 		
 		DirectionLight				m_directionLig;						//ディレクショナルライトの構造体
@@ -244,20 +253,20 @@ namespace nsK2EngineLow {
 		RenderTarget				m_mainRenderTarget;					//メインレンダーターゲット
 		RenderTarget				m_2DRenderTarget;					//2Dレンダーターゲット
 		RenderTarget				m_shadowMapRenderTarget;
+		RenderTarget			    m_gBuffer[enGBuffer_Num];			//G-Buffer
 		
 		Sprite						m_2DSprite;							//2Dスプライト
 		Sprite						m_mainSprite;
-		Sprite sprite;
+		Sprite						m_defferedLightInSpr;				//ディファードライティング用のスプライト
+
+		SpriteInitData				m_deferredSpriteInitData;			//ディファードライティングを行うためのスプライトの初期化
 		
 										
 		Camera						m_lightCamera;						//描画用のライトカメラを作成する
 
 
 
-		std::vector<SpriteRender*>  m_spriteList;						//レンダリングするオブジェクト
-		std::vector<ModelRender*>	m_modeList;							//モデルリスト
-		std::vector<FontRender*>	m_fontList;							//フォントリスト
-		std::vector<IRenderer*>		m_renderObjects;
+		std::vector<IRenderer*>		m_renderObjects;					//
 
 
 	};

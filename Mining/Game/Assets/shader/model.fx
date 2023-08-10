@@ -59,7 +59,7 @@ struct Shadow
 cbuffer LightCb:register(b1){
 	DirectionLig dirLig;		//ディレクションライト用の定数バッファー
 	PointLig ptLig[2];			//ポイントライトの定数バッファー
-	SpotLig spLig[1];			//スポットライトの定数バッファー
+	SpotLig spLig[0];			//スポットライトの定数バッファー
 	HemiLig hemiLig;			//半球ライトの定数バッファー
 	Shadow shadow;
 	int ptNum;					//ポイントライトの数
@@ -210,7 +210,7 @@ float4 PSMainCore( SPSIn psIn,uniform bool hasShadow) : SV_Target0
 	//ポイントライトによるライティングを計算する
 	float3 pointLight=CalcLigFromPointLight(psIn,normalMap); 
 	//スポットライトによるライティングを計算する
-	float3 spotLight=CalcLigFromSpotLight(psIn,normalMap);
+	//float3 spotLight=CalcLigFromSpotLight(psIn,normalMap);
 	//リムライトによるライティングを計算する
 	float limLight=CalcLim(dirLig.ligDirection,normalMap,psIn.normalInView);
 	//半球ライトによるライティングを計算する
@@ -228,7 +228,7 @@ float4 PSMainCore( SPSIn psIn,uniform bool hasShadow) : SV_Target0
 				+specuDirection
 				+dirLig.ambient
 				+pointLight
-				+spotLight
+				//+spotLight
 				+limColor
 				+hemiSphereLight;
 
@@ -308,6 +308,7 @@ float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldP
 /// <param name="psIn">ピクセルシェーダーに渡されている引数</param>
 float3 CalcLigFromPointLight(SPSIn psIn, float3 normal)
 {
+	
 	float3 finalPtLig = (0.0f, 0.0f, 0.0f);
 
 	for(int i=0;i<ptNum;i++)

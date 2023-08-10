@@ -6,22 +6,22 @@ Debug::Debug()
 	m_animationClips[m_enAnimationClip_Idle].Load("Assets/animData/player/idle.tka");
 	m_animationClips[m_enAnimationClip_Idle].SetLoopFlag(true);
 	m_modelRender.Init("Assets/modelData/player/unityChan.tkm",m_animationClips, m_enAnimationClip_Num, enModelUpAxisY,true,false);
-	m_modelRender.SetPosition(m_position);
+	m_modelRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotaition(m_rotaition);
-	m_backRender.Init("Assets/modelData/bg/bg.tkm",0,0, enModelUpAxisZ,false,true);
+	m_backRender.Init("Assets/modelData/stage/stage.tkm", 0, 0, enModelUpAxisZ, false, true);
 	m_backRender.SetPosition(Vector3::Zero);
 	m_backRender.SetScale(Vector3::One);
 	m_backRender.Update();
 	m_spriteRender.Init("Assets/Sprite/stamina.DDS", 500, 500);
-	m_spriteRender.SetPosition(Vector3::Zero);
+	m_spriteRender.SetPosition(Vector3(0.0f, 20.0f ,0.0f));
 	m_spriteRender.SetScale(Vector3::One);
 	m_spriteRender.Update();
 	m_pointLight.SetPointLight(0,Vector3::Zero, Vector3{ 0.0f,0.0f,0.0f }, 500.0f);
 	m_pointLight.Update();
-	m_2pointLight.SetPointLight(1, Vector3{10.0f,10.0f,0.0f}, Vector3{0.0f,0.0f,0.0f}, 500.0f);
+	m_2pointLight.SetPointLight(1, Vector3{10.0f,10.0f,0.0f}, Vector3{10.0f,0.0f,0.0f}, 80.0f);
 	m_2pointLight.Update();
-	m_spotLight.SetSpotLight(0, Vector3{0.0f,50.0f,0.0f}, Vector3{0.0f,0.0f,0.0f}, 500, Vector3{-1.0f,-1.0f,-1.0f}, 25);
+	m_spotLight.SetSpotLight(0, Vector3{0.0f,50.0f,0.0f}, Vector3{0.0f,10.0f,0.0f}, 500, Vector3{-1.0f,-1.0f,1.0f}, 25);
 	m_spotLight.Update();
 	g_camera3D->SetPosition({ 0.0f, 200.0f, 300.0f });
 	g_camera3D->SetTarget({ 0.0f, 100.0f, 0.0f });
@@ -63,9 +63,15 @@ void Debug::Update()
 		m_rotaition.AddRotationDegY(2.0f);
 	}
 
+	if (g_pad[0]->IsPress(enButtonB))
+	{
+		m_position.x -= 1.0f;
+	}
+
 	m_sampleRender.SetRotaition(m_rotaition);
 	m_sampleRender.Update();
 	m_modelRender.PlayAnimation(m_enAnimationClip_Idle, 0.5f);
+	//m_modelRender.SetPosition(m_position);
 	m_modelRender.Update();
 	m_spriteRender.Update();
 }

@@ -19,7 +19,6 @@ struct SSkinVSIn{
 struct SVSIn
 {
     float4 pos : POSITION; //モデルの頂点座標
-    float3 normal : NORMAL; //法線
     float2 uv : TEXCOORD0; //UV座標
     SSkinVSIn skinVert;    //スキン用のデータ
 };
@@ -28,9 +27,7 @@ struct SVSIn
 struct SPSIn
 {
     float4 pos : SV_POSITION; //スクリーン空間でのピクセルの座標
-    float3 normal :NORMAL;    //法線
     float2 uv : TEXCOORD0;    //UV座標
-    float4 posInLVP:TEXCOORD1;//ライトビュースクリーン空間でのピクセルの座標
 };
 
 ///////////////////////////////////////////////////

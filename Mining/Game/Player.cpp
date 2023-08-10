@@ -13,7 +13,7 @@ bool Player::Start()
 {
 	LoadAnimation();
 
-	m_modelRender.Init("Assets/modelData/player/unityChan.tkm", m_EnAnimationClips, m_en_AnimationClips_Num, enModelUpAxisY);
+	m_modelRender.Init("Assets/modelData/player/unityChan.tkm", m_EnAnimationClips, m_en_AnimationClips_Num, enModelUpAxisY,true,false);
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetRotaition(m_rotation);
 	m_modelRender.SetScale(m_scale);

@@ -146,9 +146,9 @@ namespace nsK2EngineLow {
 		/// <param name="rc"></param>
 		void OnRenderShadowMap(RenderContext& rc, Camera& camera)override
 		{
-			if (m_shadowModel.IsInited())
+			if (m_shadowModels.IsInited())
 			{
-				m_shadowModel.Draw(rc, camera);
+				m_shadowModels.Draw(rc, camera);
 			}
 		}
 
@@ -201,20 +201,24 @@ namespace nsK2EngineLow {
 
 	private:
 		AnimationClip*	m_animationClips = nullptr;
+		Animation		m_animation;
 		int				m_numAnimationClips = 0;					//アニメーションクリップの数
+		float			m_animationSpeed = 1.0f;
+		bool			m_isUpdateAnimation = true;
 
 		Vector3			m_position = Vector3::Zero;
-		Quaternion		m_rotaition = Quaternion::Identity;
 		Vector3			m_scale = Vector3::One;
-		EnModelUpAxis	m_enFbxUpAxis = enModelUpAxisZ;
-		Animation		m_animation;
-		Model			m_model;
-		Model			m_shadowModel;
-		bool			m_isUpdateAnimation = true;
-		Skeleton		m_skeleton;
-		float			m_animationSpeed=1.0f;
-
 		
+		Quaternion		m_rotaition = Quaternion::Identity;
+		
+		EnModelUpAxis	m_enFbxUpAxis = enModelUpAxisZ;
+		
+		
+		Model			m_model;
+		Model			m_shadowModels[ NUM_SHADOW_MAP];
+		
+		Skeleton		m_skeleton;
+			
 		RenderingEngine m_renderinEngine;
 	};
 }
