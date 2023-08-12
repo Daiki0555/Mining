@@ -457,7 +457,6 @@ float CalcShadowMap(float3 worldPos,SPSIn psIn)
 	float4 shadowParam=g_shadowParamTexture.Sample(g_sampler,psIn.uv);
 
 	float shadowVolum=1.0f;
-	//float4 posInLVP=mul(shadow.mLVP,worldPos);
 
 	//ライトビュースクリーン空間の座標からUV空間に座標変換
 	//ライトビュースクリーン空間からUV座標空間に変換している
