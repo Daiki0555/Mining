@@ -8,26 +8,18 @@
 namespace
 {
 	const float DELTA_TIME = 1.0f / 60.0f;			// 経過時間
-
 	const float RUN_SPEED = 2.5f;					// ダッシュ時の移動速度
 	const float WALKING_SPEED = 1.0f;				// 歩いている時の移動速度
-
 	const float DECREASE_STAMINA_VALUE = 15.0f;		// ダッシュ時のスタミナ消費速度
 	const float INCREASE_STAMINA_VALUE = 10.0f;		// スタミナ回復速度
-
 	const float LINEAR_COMPLETION = 1.0f;			// 線形補完
-
 	const float Y_POSITION = 25.0f;					// 衝突判定時のY座標
-
 	const float ADD_LENGTH = 0.5f;					// 加算する長さ
 	const float NOT_DRAW_LENGTH = 100.0f;			// 描画しない長さ
 	const float CAN_GET_LENGTH = 500.0f;			// 獲得できる距離
-
-	const float CLEAR_LENGTH = 100.0f;				// クリアしたとみなされる距離
-
+	const float CLEAR_LENGTH = 500.0f;				// クリアしたとみなされる距離
 	const int	STAMINA_MIN = 1;					// スタミナの最低値
 	const int	STAMINA_MAX = STAMINA;				// スタミナの最大値
-
 	const int	HP_MIN = 0;							// HPの最低値
 }
 
@@ -73,28 +65,32 @@ bool Player::Start()
 
 void Player::Update()
 {
-	// デバッグ用
-	if (g_pad[0]->IsTrigger(enButtonStart)) {
-		m_modelRender.PlayAnimation(m_enActionState_Damage);
-	}
+	//// デバッグ用
+	//if (g_pad[0]->IsTrigger(enButtonStart)) {
+	//	m_modelRender.PlayAnimation(m_enActionState_Damage);
+	//}
 
+	// クリアしたとき
 	if (m_actionState == m_enActionState_Clear ) {
 		if (m_modelRender.IsPlayingAnimation() == false) {
 			m_game->SetIsEndAnimationFlag(true);
 		}
 	}
+	// 死亡したとき
 	else if (m_actionState == m_enActionState_Death) {
 		if (m_modelRender.IsPlayingAnimation() == false) {
 			m_game->SetIsEndAnimationFlag(true);
 		}
 	}
+
 	// 体力が0のとき
 	else if (m_playerStatus.m_hitPoint <= HP_MIN) {
 
-		// 補正
-		m_playerStatus.m_hitPoint = HP_MIN;
+		// 死亡処理
+		m_playerStatus.m_hitPoint = HP_MIN;		// 値を補正する
 		m_actionState = m_enActionState_Death;
 	}
+	// そうでないとき
 	else {
 		if (m_actionState == m_enActionState_Damage && m_modelRender.IsPlayingAnimation() == true) {
 			PlayAnimation();		// アニメーション
@@ -259,7 +255,7 @@ void Player::Move()
 			m_actionState = m_enActionState_Run;
 
 			// スタミナを減らす
-			//m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
+			m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
 
 			m_addValue += ADDSPEED;
 			m_addSpped = min(m_addValue, RUN_SPEED);
@@ -286,14 +282,14 @@ void Player::Move()
 
 void Player::Damage(int attackPower)
 {
-	// ダメージを受けられる状態のとき
-	if (m_canAddDamage) {
-
-		m_actionState = m_enActionState_Damage;
-		m_playerStatus.m_hitPoint -= attackPower;			// ダメージ量をHPから引く
-	
-		m_canAddDamage = false;								// 連続してダメージを受けない
+	if (!m_canAddDamage) {
+		return;
 	}
+
+	// ダメージを受けられる状態のとき
+	m_actionState = m_enActionState_Damage;
+	m_playerStatus.m_hitPoint -= attackPower;			// ダメージ量をHPから引く
+	m_canAddDamage = false;								// 連続でダメージを受けないように設定
 }
 
 struct CrashedCrystal :public btCollisionWorld::ConvexResultCallback

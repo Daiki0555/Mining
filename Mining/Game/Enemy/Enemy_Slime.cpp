@@ -81,13 +81,15 @@ void Enemy_Slime::Action()
 	case m_enActionState_StopAction:
 		StopAction();
 		break;
-	case m_enActionState_GameQuit:
-		break;
 	}
 }
 
 void Enemy_Slime::Update()
 {
+	if (m_actionState == m_enActionState_GameQuit) {
+		return;
+	}
+
 	Action();
 	PlayAnimation();
 
