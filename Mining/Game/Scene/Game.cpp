@@ -25,10 +25,6 @@ Game::Game()
 
 Game::~Game()
 {
-	DeleteGO(m_backGround);
-	DeleteGO(m_gameCamera);
-	DeleteGO(m_playerStatusGauge);
-
 	for (int i = 0; i < m_crystalList.size(); i++) {
 		DeleteGO(m_crystalList[i]);
 	}
@@ -42,6 +38,9 @@ Game::~Game()
 	m_goalList.clear();
 
 	DeleteGO(m_player);
+	DeleteGO(m_backGround);
+	DeleteGO(m_gameCamera);
+	DeleteGO(m_playerStatusGauge);
 }
 
 bool Game::Start()

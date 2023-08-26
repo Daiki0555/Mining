@@ -113,8 +113,6 @@ void GameResult::CalcScore()
 		m_fade->SetDrawFlag(true);
 		return;
 	}
-
-	m_fade->SetDrawFlag(false);
 }
 
 void GameResult::Update()
@@ -156,6 +154,9 @@ void GameResult::DrawScore()
 		//“§–¾“x‚ðÝ’èB
 		m_newRecordFontRender.SetColor(Vector4(alpha, 0.0f, 0.0f, alpha));
 		m_newRecordFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, { alpha ,alpha ,alpha, 1.0f});
+	}
+	else {
+		m_fade->SetDrawFlag(false);
 	}
 }
 

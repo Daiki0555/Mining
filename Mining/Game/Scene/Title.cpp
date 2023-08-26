@@ -144,13 +144,6 @@ void Title::Update()
 			break;
 		}
 
-		// Aボタンを押されたなら
-		if (g_pad[0]->IsTrigger(enButtonA)) {
-			m_sound->SetSoundSE(m_sound->m_enSoundState_CancelSE);
-			// 前のステートに移行する
-			m_MessageState = m_enMessageState_Start;
-		}
-
 		if (m_isWaitFadeOut) {
 			//フェードが終了しているなら。
 			if (!m_fade->IsFade()) {
@@ -165,6 +158,12 @@ void Title::Update()
 				m_isWaitFadeOut = true;
 				// BGMを削除する
 				m_sound->DeleteBGM();
+			}
+			// Aボタンを押されたなら
+			if (g_pad[0]->IsTrigger(enButtonA)) {
+				m_sound->SetSoundSE(m_sound->m_enSoundState_CancelSE);
+				// 前のステートに移行する
+				m_MessageState = m_enMessageState_Start;
 			}
 		}
 		break;
