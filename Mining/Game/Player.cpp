@@ -8,8 +8,8 @@
 namespace
 {
 	const float DELTA_TIME = 1.0f / 60.0f;			// �o�ߎ���
-	const float RUN_SPEED = 2.5f;					// �_�b�V�����̈ړ����x
-	const float WALKING_SPEED = 1.0f;				// ����Ă��鎞�̈ړ����x
+	const float RUN_SPEED = 5.0f;					// �_�b�V�����̈ړ����x
+	const float WALKING_SPEED = 2.5f;				// ����Ă��鎞�̈ړ����x
 	const float DECREASE_STAMINA_VALUE = 15.0f;		// �_�b�V�����̃X�^�~�i����x
 	const float INCREASE_STAMINA_VALUE = 10.0f;		// �X�^�~�i�񕜑��x
 	const float LINEAR_COMPLETION = 1.0f;			// ���`�⊮
