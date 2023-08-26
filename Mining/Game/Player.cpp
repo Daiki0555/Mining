@@ -7,20 +7,20 @@
 
 namespace
 {
-	const float DELTA_TIME = 1.0f / 60.0f;			// ï¿½oï¿½ßï¿½ï¿½ï¿½
-	const float RUN_SPEED = 5.0f;					// ï¿½_ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½x
-	const float WALKING_SPEED = 2.5f;				// ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½éï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½x
-	const float DECREASE_STAMINA_VALUE = 15.0f;		// ï¿½_ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÌƒXï¿½^ï¿½~ï¿½iï¿½ï¿½ï¿½ï‘¬ï¿½x
-	const float INCREASE_STAMINA_VALUE = 10.0f;		// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ñ•œ‘ï¿½ï¿½x
-	const float LINEAR_COMPLETION = 1.0f;			// ï¿½ï¿½ï¿½`ï¿½âŠ®
-	const float Y_POSITION = 25.0f;					// ï¿½Õ“Ë”ï¿½ï¿½èï¿½ï¿½Yï¿½ï¿½ï¿½W
-	const float ADD_LENGTH = 0.5f;					// ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½é’·ï¿½ï¿½
-	const float NOT_DRAW_LENGTH = 100.0f;			// ï¿½`ï¿½æ‚µï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½
-	const float CAN_GET_LENGTH = 500.0f;			// ï¿½lï¿½ï¿½ï¿½Å‚ï¿½ï¿½é‹—ï¿½ï¿½
-	const float CLEAR_LENGTH = 500.0f;				// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Æ‚İ‚È‚ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
-	const int	STAMINA_MIN = 1;					// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ÌÅ’ï¿½l
-	const int	STAMINA_MAX = STAMINA;				// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ÌÅ‘ï¿½l
-	const int	HP_MIN = 0;							// HPï¿½ÌÅ’ï¿½l
+	const float DELTA_TIME = 1.0f / 60.0f;			// 1ƒtƒŒ[ƒ€–ˆ‚ÌŠÔ
+	const float RUN_SPEED = 5.0f;					// ‘–‚Á‚½‚Æ‚«‚Ì‘¬“x
+	const float WALKING_SPEED = 2.5f;				// •à‚¢‚½‚Æ‚«‚Ì‘¬“x
+	const float DECREASE_STAMINA_VALUE = 15.0f;		// ƒXƒ^ƒ~ƒi‚ÌŒ¸­’l
+	const float INCREASE_STAMINA_VALUE = 10.0f;		// ƒXƒ^ƒ~ƒi‚Ì‘‰Á’l
+	const float LINEAR_COMPLETION = 1.0f;			// üŒ`•âŠÔ—¦
+	const float Y_POSITION = 25.0f;					// YÀ•W
+	const float ADD_LENGTH = 0.5f;					// ’Ç‰Á‚·‚é’·‚³
+	const float NOT_DRAW_LENGTH = 100.0f;			// •`‰æ‚µ‚È‚¢’·‚³
+	const float CAN_GET_LENGTH = 500.0f;			// ƒNƒŠƒXƒ^ƒ‹‚ğŠl“¾‚Å‚«‚é’·‚³
+	const float CLEAR_LENGTH = 500.0f;				// ƒNƒŠƒA‚Å‚«‚é’·‚³
+	const int	STAMINA_MIN = 1;					// ƒXƒ^ƒ~ƒi‚ÌÅ’á’l
+	const int	STAMINA_MAX = STAMINA;				// ƒXƒ^ƒ~ƒi‚ÌÅ‘å’l
+	const int	HP_MIN = 0;							// HP‚ÌÅ¬’l
 }
 
 Player::Player() 
@@ -38,11 +38,11 @@ Player::~Player()
 
 bool Player::Start()
 {
-	// ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½Tï¿½ï¿½
+	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ’T‚·
 	m_game = FindGO<Game>("game");
-
 	m_crystal = FindGO<Crystal>("crystal");
 	m_pressAndHoldGauge = FindGO<PressAndHoldGauge>("pressAndHoldGauge");
+	m_sound = FindGO<Sound>("sound");
 
 	LoadAnimation();
 
@@ -51,49 +51,40 @@ bool Player::Start()
 	m_modelRender.SetRotaition(m_rotation);
 	m_modelRender.SetScale(m_scale);
 
-	m_characterController.Init(25.0f, 75.0f, m_position);	// ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Rï¿½ï¿½ï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-
-	// ï¿½Xï¿½tï¿½Bï¿½Aï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½ï¿½İ’ï¿½
+	// ƒLƒƒƒ‰ƒNƒ^[ƒRƒ“ƒgƒ[ƒ‰[‚ğì¬‚·‚é
+	m_characterController.Init(25.0f, 75.0f, m_position);
+	// ƒXƒtƒBƒAƒRƒ‰ƒCƒ_[‚ğì¬‚·‚é
 	m_sphereCollider.Create(20.0f);
 
 	m_modelRender.Update();
-
-	m_sound = FindGO<Sound>("sound");
 
 	return true;
 }
 
 void Player::Update()
 {
-	//// ï¿½fï¿½oï¿½bï¿½Oï¿½p
-	//if (g_pad[0]->IsTrigger(enButtonStart)) {
-	//	m_modelRender.PlayAnimation(m_enActionState_Damage);
-	//}
-
-	// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+	// ƒNƒŠƒA‚Ìˆ—
 	if (m_actionState == m_enActionState_Clear ) {
 		if (m_modelRender.IsPlayingAnimation() == false) {
 			m_game->SetIsEndAnimationFlag(true);
 		}
 	}
-	// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+	// €–S‚Ìˆ—
 	else if (m_actionState == m_enActionState_Death) {
 		if (m_modelRender.IsPlayingAnimation() == false) {
 			m_game->SetIsEndAnimationFlag(true);
 		}
 	}
 
-	// ï¿½Ì—Í‚ï¿½0ï¿½Ì‚Æ‚ï¿½
+	// ƒqƒbƒgƒ|ƒCƒ“ƒg‚ªÅ’á’lˆÈ‰º‚Ìê‡
 	else if (m_playerStatus.m_hitPoint <= HP_MIN) {
-
-		// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½
-		m_playerStatus.m_hitPoint = HP_MIN;		// ï¿½lï¿½ï¿½â³ï¿½ï¿½ï¿½ï¿½
+		// €–S‚³‚¹‚é
+		m_playerStatus.m_hitPoint = HP_MIN;
 		m_actionState = m_enActionState_Death;
 	}
-	// ï¿½ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½Æ‚ï¿½
 	else {
 		if (m_actionState == m_enActionState_Damage && m_modelRender.IsPlayingAnimation() == true) {
-			PlayAnimation();		// ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
+			PlayAnimation();
 
 			m_modelRender.SetPosition(m_position);
 			m_modelRender.SetRotaition(m_rotation);
@@ -106,53 +97,52 @@ void Player::Update()
 		if (!m_canAddDamage) {
 			m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
 
-			// ï¿½^ï¿½Cï¿½}ï¿½[ï¿½ï¿½0.0fï¿½È‰ï¿½ï¿½Ì‚Æ‚ï¿½
+			// –³“Gˆ—
 			if (m_invincibleTimer < 0.0f) {
 				m_canAddDamage = true;
-				m_invincibleTimer = INVINCIBLE_TIMER;			// ï¿½^ï¿½Cï¿½}ï¿½[ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+				m_invincibleTimer = INVINCIBLE_TIMER;
 			}
 		}
 
-		Move();					// ï¿½Ú“ï¿½
-		Rotation();				// ï¿½ï¿½]
-		IsClear();				// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½
+		Move();
+		Rotation();
+		IsClear();
 
-		// Bï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Æ‚ï¿½
+		// Bƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«
 		if (g_pad[0]->IsPress(enButtonB)) {
-			// ï¿½ÌŒ@ï¿½ï¿½ï¿½ï¿½
 			Dig();
 		}
 		else {
-			// ï¿½pï¿½xï¿½ï¿½ï¿½ï¿½ç‚·
+			// Šp“x‚Í•ÏX‚µ‚È‚¢
 			m_pressAndHoldGauge->SetChangeGaugeAngle(false);
 
-			// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½Ìï¿½ï¿½W(Bï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ìï¿½ï¿½gï¿½Ìï¿½ï¿½W)ï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+			// ©g‚ÌÀ•W‚©‚çUI‚ÌÀ•W‚ÖŒü‚©‚¤ƒxƒNƒgƒ‹
 			Vector3 diff = m_pressAndHoldGauge->Get3DPosition() - m_position;
 
 			if (m_pressAndHoldGauge->GetNowStatus() == m_pressAndHoldGauge->enGaugeState_Max ||
 				diff.Length() >= NOT_DRAW_LENGTH) {
-				// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+				// Šp“x‚ğƒŠƒZƒbƒg
 				m_pressAndHoldGauge->ResetGaugeAngle();
 			}
 		}
 
-		// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ï¿½ï¿½Å‘ï¿½lï¿½Å‚È‚ï¿½ï¿½@ï¿½ï¿½ï¿½Â@Aï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½
+		// ƒXƒ^ƒ~ƒi‚ªÅ‘å’lˆÈ‰º@‚©‚Â@‘–‚Á‚Ä‚¢‚È‚¢ó‘Ô‚Ì
 		if (m_playerStatus.m_stamina < STAMINA_MAX &&
 			m_actionState != m_enActionState_Run) {
 
 			m_recoveryTimer -= g_gameTime->GetFrameDeltaTime();
 
 			if (m_recoveryTimer <= 0.0f) {
-				// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ğ‘‚â‚·
+				// ƒXƒ^ƒ~ƒi‚ğ‰ñ•œ‚³‚¹‚é
 				m_playerStatus.m_stamina += g_gameTime->GetFrameDeltaTime() * INCREASE_STAMINA_VALUE;
 			}
 		}
 		else {
-			m_recoveryTimer = RECOVERY_TIMER;		// ï¿½^ï¿½Cï¿½}ï¿½[ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+			m_recoveryTimer = RECOVERY_TIMER;
 		}
 	}
 
-	PlayAnimation();		// ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
+	PlayAnimation();
 
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetRotaition(m_rotation);
@@ -211,21 +201,19 @@ void Player::PlayAnimation()
 
 void Player::Rotation()
 {
-	// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ‘€ì‚ª‚ ‚Á‚½‚Æ‚«‰ñ“]‚³‚¹‚é
 	if (fabsf(m_basicSpeed.x) >= 0.001 || fabsf(m_basicSpeed.z) >= 0.001) {
-		// ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 		m_rotation.SetRotationYFromDirectionXZ(m_basicSpeed);
 		m_modelRender.SetRotaition(m_rotation);
 	}
 	else {
-		// ï¿½È‚ï¿½ï¿½ê‡ï¿½Í‘Ò‹@ï¿½ï¿½Ô‚É‚ï¿½ï¿½ï¿½
 		m_actionState = m_enActionState_Idle;
 	}
 }
 
 void Player::Move()
 {
-	// ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ô‚Í“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+	// ƒQ[ƒW‚ª‘‰Á’†‚È‚ç‘Ò‹@
 	if (m_pressAndHoldGauge->GetNowStatus() == m_pressAndHoldGauge->enGaugeState_Increase) {
 		m_actionState = m_enActionState_Idle;
 		return;
@@ -234,45 +222,42 @@ void Player::Move()
 	m_basicSpeed.x = 0.0f;
 	m_basicSpeed.z = 0.0f;
 
-	// ï¿½Qï¿½[ï¿½ï¿½ï¿½pï¿½bï¿½hï¿½Ì“ï¿½ï¿½Í—Ê‚ï¿½Qï¿½Æ‚ï¿½ï¿½ï¿½
+	// ƒXƒeƒBƒbƒN‚Ì’l‚ğQÆ‚·‚é
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
 	stickL.y = g_pad[0]->GetLStickYF();
 
-	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì‘Oï¿½ï¿½ï¿½ï¿½ï¿½Æ‰Eï¿½ï¿½ï¿½ï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
+	// ƒJƒƒ‰‚Ì‘O•ûŒü‚Æ‰E•ûŒü‚ğQÆ‚·‚é
 	Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
 
-	// yï¿½ï¿½ï¿½ï¿½ï¿½É‚ÍˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+	// y‚Ì’l‚Íg—p‚µ‚È‚¢‚½‚ß‰Šú‰»‚·‚é
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
 	if (g_pad[0]->IsPress(enButtonA) && m_playerStatus.m_stamina > STAMINA_MIN) {
 
-		// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+		// ‘€ì‚ª‚ ‚Á‚½‚Æ‚«
 		if (fabsf(stickL.x) >= 0.001 || fabsf(stickL.y) >= 0.001) {
-			// ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ôƒ_ï¿½bï¿½Vï¿½ï¿½
+			// ‘–‚ç‚¹‚é
 			m_actionState = m_enActionState_Run;
-
-			// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ï¿½ï¿½ï¿½ç‚·
+			// ƒXƒ^ƒ~ƒi‚ğŒ¸‚ç‚·
 			m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
-
+			// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ’²®‚·‚é
 			m_addValue += ADDSPEED;
 			m_addSpped = min(m_addValue, RUN_SPEED);
 		}
 	}
 	else {
-		// ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½ï¿½Í•ï¿½ï¿½
 		m_actionState = m_enActionState_Walk;
-
 		m_addSpped = WALKING_SPEED;
 	}
 
-	// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Í—Ê~ï¿½Ú“ï¿½ï¿½ï¿½ï¿½xï¿½~ï¿½ï¿½Zï¿½ï¿½ï¿½xï¿½ÅÅIï¿½Iï¿½ÈˆÚ“ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
+	// ˆÚ“®‘¬“x‚ğŒvZ‚·‚é
 	right *= stickL.x * m_playerStatus.m_basicSpeed * m_addSpped;
 	forward *= stickL.y * m_playerStatus.m_basicSpeed * m_addSpped;
 
-	// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½xï¿½Éï¿½Lï¿½ÅŒvï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Z
+	// ÅI“I‚ÈˆÚ“®‘¬“x‚É‰ÁZ‚·‚é
 	m_basicSpeed += right + forward;
 
 	m_position = m_characterController.Execute(m_basicSpeed, DELTA_TIME);
@@ -286,19 +271,18 @@ void Player::Damage(int attackPower)
 		return;
 	}
 
-	// ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ó‚¯‚ï¿½ï¿½ï¿½ï¿½Ô‚Ì‚Æ‚ï¿½
 	m_actionState = m_enActionState_Damage;
-	m_playerStatus.m_hitPoint -= attackPower;			// ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½Ê‚ï¿½HPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	m_canAddDamage = false;								// ï¿½Aï¿½ï¿½ï¿½Åƒ_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ó‚¯‚È‚ï¿½ï¿½æ‚¤ï¿½Éİ’ï¿½
+	m_playerStatus.m_hitPoint -= attackPower;			// HP‚ğŒ¸‚ç‚·
+	m_canAddDamage = false;								// ‚·‚®‚É‚Íƒ_ƒ[ƒW‚ğó‚¯‚È‚¢‚æ‚¤‚É‚·‚é
 }
 
 struct CrashedCrystal :public btCollisionWorld::ConvexResultCallback
 {
-	bool isHit = false;		// ï¿½Õ“Ëƒtï¿½ï¿½ï¿½O
+	bool isHit = false;		// Õ“Ëƒtƒ‰ƒO
 
 	virtual btScalar addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normallnWorldSpace) 
 	{
-		// ï¿½Õ“Ë‚ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// Õ“Ë‚µ‚Ä‚¢‚é‚Ì‚ªƒNƒŠƒXƒ^ƒ‹‚Å‚È‚¢‚È‚ç
 		if (convexResult.m_hitCollisionObject->getUserIndex() != enCollisionAttr_Crystal) {
 			return 0.0f;
 		}
@@ -315,20 +299,19 @@ bool Player::CrystalAndHit(Vector3 targetPosition)
 	start.setIdentity();
 	end.setIdentity();
 
-	// ï¿½nï¿½_ï¿½ÆIï¿½_ï¿½ï¿½İ’ï¿½
+	// n“_‚ÆI“_‚ğİ’è‚·‚é
 	start.setOrigin(btVector3(m_position.x, Y_POSITION, m_position.z));
 	end.setOrigin(btVector3(targetPosition.x, Y_POSITION, targetPosition.z));
 
 	CrashedCrystal callback;
 
-	// ï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½ï¿½nï¿½_ï¿½ï¿½ï¿½ï¿½Iï¿½_ï¿½Ü‚Å“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÄÕ“Ë‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×‚ï¿½
 	PhysicsWorld::GetInstance()->ConvexSweepTest(
 		(const btConvexShape*)m_sphereCollider.GetBody(),
 		start, 
 		end, 
 		callback);
 
-	// ï¿½Õ“Ë‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½falseï¿½ï¿½Ô‚ï¿½
+	// Õ“Ë‚µ‚Ä‚¢‚é‚È‚ç
 	if (callback.isHit) {
 		return false;
 	}
@@ -341,7 +324,7 @@ void Player::Dig()
 	Vector3 diff = Vector3::Zero;
 
 	if (!m_isDig) {
-		// ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Ì•ê”ï¿½ï¿½æ“¾
+		// ‘”‚ğæ“¾‚·‚é
 		int crystalNum = m_game->GetCrystalList().size();
 
 		for (int i = 0; i < crystalNum; i++) {
@@ -355,42 +338,42 @@ void Player::Dig()
 				continue;
 			}
 
-			// ï¿½ï¿½ï¿½Wï¿½ï¿½æ“¾
+			// À•W‚ğQÆ‚·‚é
 			Vector3 crystalPos = m_game->GetCrystalList()[i]->GetPosition();
-			// ï¿½ï¿½ï¿½gï¿½Ìï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+			// ©g‚ÌÀ•W‚©‚çƒNƒŠƒXƒ^ƒ‹‚ÖŒü‚©‚¤ƒxƒNƒgƒ‹
 			diff = crystalPos - m_position;
 
-			// ï¿½Õ“Ë‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½È‚ï¿½
+			// Õ“Ë‚µ‚½‚È‚ç
 			if (!CrystalAndHit(m_position + (diff * ADD_LENGTH))) {
-				// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½`ï¿½æ‚·ï¿½ï¿½
+				// UI‚ğ•`‰æ‚·‚é
 				m_pressAndHoldGauge->SetCanDrawGauge(true);
-				// ï¿½ï¿½ï¿½gï¿½Ìï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				// UI‚ÌÀ•W‚ğİ’è
 				m_pressAndHoldGauge->Set3DPosition(m_position);
-				// ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½Û‘ï¿½
+				// ŠY“–ƒNƒŠƒXƒ^ƒ‹‚ÌƒAƒhƒŒƒX‚ÆÀ•W‚ğQÆ‚·‚é
 				m_getCrystal = m_game->GetCrystalList()[i];
 				m_crystalPosition = crystalPos;
-				// ï¿½pï¿½xï¿½ğ‘‚â‚·
+				// Šp“x‚ğ•Ï‰»‚³‚¹‚é
 				m_pressAndHoldGauge->SetChangeGaugeAngle(true);
 				m_isDig = true;
 				break;
 			}
 
-			// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½`ï¿½æ‚·ï¿½ï¿½
+			// UI‚ğ‚Ñ‚å‚¤‚ª‚µ‚È‚¢
 			m_pressAndHoldGauge->SetCanDrawGauge(false);
 		}
 	}
 	else {
-		// ï¿½ï¿½ï¿½gï¿½Ìï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+		// ©g‚ÌÀ•W‚©‚çƒNƒŠƒXƒ^ƒ‹‚ÖŒü‚©‚¤ƒxƒNƒgƒ‹
 		diff = m_crystalPosition - m_position;
 
-		// ï¿½ï¿½ï¿½Èã—£ï¿½ê‚½ï¿½ï¿½
+		// ƒxƒNƒgƒ‹‚Ì’·‚³‚ªˆê’èˆÈã‚Ì‚Æ‚«
 		if (diff.Length() >= CAN_GET_LENGTH) {
-			// ï¿½ÌŒ@ï¿½ï¿½ï¿½È‚ï¿½
+			// ÌŒ@‚ğ’†’f‚·‚é
 			m_isDig = false;
 			return;
 		}
 
-		// ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½Å‘ï¿½Å‚È‚ï¿½ï¿½Æ‚ï¿½ï¿½È‰ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Íï¿½ï¿½sï¿½ï¿½ï¿½È‚ï¿½
+		// ƒQ[ƒW‚ªÅ¬‚È‚ç‚±‚ê‚æ‚èˆÈ‰º‚Ìˆ—‚ÍÀs‚µ‚È‚¢
 		if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Min) {
 			return;
 		}
@@ -409,13 +392,13 @@ void Player::Dig()
 		//	}
 		//}
 
-		// ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// Šl“¾ˆ—
 		m_getCrystal->SetCrystalState(m_crystal->m_enCrystalStete_HavePlayer);
 		m_haveCrystals.push_back(m_getCrystal);
 
 		m_sound->SetSoundSE(m_sound->m_enSoundState_GetSE);
 
-		// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
+		// Šp“x‚ğƒŠƒZƒbƒg‚·‚é
 		m_pressAndHoldGauge->ResetGaugeAngle();
 
 		m_getCrystal = nullptr;
@@ -425,7 +408,7 @@ void Player::Dig()
 void Player::IsClear()
 {
 	for (int i = 0; i < m_game->GetGoalList().size(); i++) {
-		// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Wï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+		// ©g‚ÌÀ•W‚©‚çƒS[ƒ‹‚ÖŒü‚©‚¤ƒxƒNƒgƒ‹
 		Vector3 diff = m_game->GetGoalList()[i] - m_position;
 		
 		if (diff.Length() <= CLEAR_LENGTH) {
