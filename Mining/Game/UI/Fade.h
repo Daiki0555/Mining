@@ -32,11 +32,25 @@ public:
 		return m_fadeState != m_enFadeState_Idle;
 	}
 
+	/// <summary>
+	/// Loadingの文字を表示するか決定する
+	/// </summary>
+	/// <param name="flag">trueなら描画する</param>
+	void SetDrawFlag(bool flag) 
+	{
+		m_isDraw = flag;
+	}
+
 private:
 	/// <summary>
 	/// 画像を更新
 	/// </summary>
 	void SpriteUpdate();
+
+	/// <summary>
+	/// 画像を回転させる
+	/// </summary>
+	void RotationImage();
 
 private:
 	enum enFadeState {
@@ -47,6 +61,11 @@ private:
 	enFadeState		m_fadeState = m_enFadeState_Idle;		// ステート
 
 	SpriteRender	m_spriteRender;							// スプライトレンダー
+	SpriteRender	m_imageSpriteRender;					// スプライトレンダー
+	FontRender		m_fontRender;							// フォントレンダー
+
+	bool			m_isDraw = true;						// 描画するかどうか
 	float			m_alpha = 1.0f;							// 透明度
+	float			m_timer = 0.0f;							// タイマー
 };
 

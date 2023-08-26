@@ -25,7 +25,6 @@ Game::Game()
 
 Game::~Game()
 {
-	DeleteGO(m_player);
 	DeleteGO(m_backGround);
 	DeleteGO(m_gameCamera);
 	DeleteGO(m_playerStatusGauge);
@@ -41,6 +40,8 @@ Game::~Game()
 	m_crystalList.clear();
 	m_enemyList.clear();
 	m_goalList.clear();
+
+	DeleteGO(m_player);
 }
 
 bool Game::Start()
@@ -210,6 +211,7 @@ void Game::QuitGame()
 		// アニメーションの再生が終了したなら
 		if (m_isEndAnimation) {
 			m_fade->FadeOut();
+			m_fade->SetDrawFlag(true);
 			m_isWaitFadeOut = true;
 		}
 	}

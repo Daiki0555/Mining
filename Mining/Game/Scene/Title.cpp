@@ -66,6 +66,7 @@ bool Title::Start()
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
+	m_fade->SetDrawFlag(false);
 
 	m_sound = FindGO<Sound>("sound");
 	m_sound->SetSoundBGM(m_sound->m_enSoundState_TitleBGM);
@@ -125,18 +126,21 @@ void Title::Update()
 			m_GameStartMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
 			m_spriteRenderIcon.SetPosition({ -500.0f, 15.0f, 0.0f });
+			m_fade->SetDrawFlag(true);
 			break;
 		case m_enCursorState_Guide:
 			m_SystemMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
 			m_SystemMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
 			m_spriteRenderIcon.SetPosition({ -500.0f,-110.0f,0.0f });
+			m_fade->SetDrawFlag(false);
 			break;
 		case m_enCursorState_Ranking:
 			m_RankingMessage.SetColor({ m_alpha, 0.0f, 0.0f, m_alpha });
 			m_RankingMessage.SetShadowParam(true, FONT_SHADOW_OFFSET, { m_alpha,m_alpha,m_alpha,1.0f });
 
 			m_spriteRenderIcon.SetPosition({ -500.0f,-230.0f,0.0f });
+			m_fade->SetDrawFlag(false);
 			break;
 		}
 

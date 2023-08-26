@@ -36,8 +36,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	RenderingEngine::GetInstance()->Init();
 
 	//NewGO<Debug>(0,"debug");
-	//NewGO<Game>(0, "game");
-	NewGO<Logo>(0, "logo");
+	NewGO<Game>(0, "game");
+	//NewGO<Logo>(10, "logo");
 
 	NewGO<Sound>(0, "sound");
 	NewGO<Fade>(9, "fade");

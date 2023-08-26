@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "Fade.h"
 
-namespace 
+namespace
 {
-	const float FADE_SPEED = 0.7f;
+	const float FADE_SPEED = 0.7f;		// フェードの速度
+	const float FONT_SCALE = 1.0f;		// フォントのスケール
+	const float ROT_ANGLE = -180.0f;		// 回転角度
 }
 
 Fade::Fade()
@@ -18,6 +20,17 @@ bool Fade::Start()
 {
 	//m_spriteRender.Init("Assets/sprite/UI/Scene/Fade.DDS", 1920.0f, 1080.0f);
 	m_spriteRender.Init("Assets/sprite/UI/Scene/image.DDS", 1920.0f, 1080.0f, AlphaBlendMode_Multiply, 3);
+
+	// スプライトの設定
+	m_imageSpriteRender.Init("Assets/Sprite/UI/Scene/image_nowloading.DDS", 149.0f, 141.0f);
+	m_imageSpriteRender.SetScale(Vector3(0.4f, 0.4f, 0.4f));
+	m_imageSpriteRender.SetPosition(Vector3(440.0f, -405.0f, 0.0f));
+
+	// テキストの設定
+	m_fontRender.SetText(L"Now Loading...");
+	m_fontRender.SetColor(Vector4::White);
+	m_fontRender.SetScale(FONT_SCALE);
+	m_fontRender.SetPosition(Vector3(600.0f, -460.0f, 0.0f));
 
 	return true;
 }
@@ -48,19 +61,48 @@ void Fade::Update()
 	}
 
 	RenderingEngine::GetInstance()->GetSpriteCB().fadeValue = m_alpha;
+
+	if (!m_isDraw) {
+		return;
+	}
+
+	RotationImage();
+	m_fontRender.SetColor({ m_alpha, m_alpha, m_alpha, m_alpha });
 	//SpriteUpdate();
 }
 
 void Fade::SpriteUpdate()
 {
-	Vector4 alpha = Vector4{ 1.0f,1.0f,1.0f,m_alpha };
+	Vector4 alpha = Vector4( 1.0f,1.0f,1.0f,m_alpha );
 
 	// 背景の設定
 	m_spriteRender.SetMulColor(alpha);
 	m_spriteRender.Update();
 }
 
+void Fade::RotationImage()
+{
+	m_timer += g_gameTime->GetFrameDeltaTime();
+
+	Quaternion rot = Quaternion::Identity;
+	rot.AddRotationZ(Math::DegToRad(ROT_ANGLE * m_timer));
+
+	Vector4 alpha = Vector4(1.0f, 1.0f, 1.0f, m_alpha);
+
+	m_imageSpriteRender.SetRotation(rot);
+	m_imageSpriteRender.SetMulColor(alpha);
+	m_imageSpriteRender.Update();
+}
+
+
 void Fade::Render(RenderContext& rc)
 {
 	m_spriteRender.Draw(rc);
+
+	if (!m_isDraw) {
+		return;
+	}
+
+	m_imageSpriteRender.Draw(rc);
+	m_fontRender.Draw(rc);
 }

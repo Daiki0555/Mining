@@ -51,6 +51,7 @@ bool Logo::Start()
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
+	m_fade->SetDrawFlag(false);
 
 	return true;
 }
@@ -70,6 +71,7 @@ void Logo::Update()
 		//Aボタンが押されたら。
 		if (m_timer >= FADE_TIMER) {
 			m_fade->FadeOut();
+			m_fade->SetDrawFlag(false);
 			m_isWaitFadeOut = true;
 		}
 	}

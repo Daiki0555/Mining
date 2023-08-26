@@ -40,6 +40,10 @@ bool EnemyBasic::Start(int attackPower, float moveSpeed, float radius, float hei
 
 void EnemyBasic::Move()
 {
+	if (m_actionState == m_enActionState_GameQuit) {
+		return;
+	}
+
 	// プレイヤーへ向かうベクトルを作成
 	Vector3 moveSpeed = m_player->GetPosition() - m_position;
 

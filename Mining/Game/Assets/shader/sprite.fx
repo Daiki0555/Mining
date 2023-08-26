@@ -98,7 +98,7 @@ float4 PSFade(PSInput In) : SV_Target0
 	float maxValue = rangedValue + SOFTRANGE;
 	// フェード処理。smoothを実装して計算
 	float alpha = saturate(maskValue - minValue / maxValue - minValue);
-	alpha = alpha * alpha * (3.0 - 2.0 * alpha);	// エルミート補間。直線的なではない補間
+	alpha = alpha * alpha * (3.0 - 2.0 * alpha);	// エルミート補間。直線的ではない補間
 
 	// 決定した透過値を戻り値として返す
 	float4 color = (0.0f, 0.0f, 0.0f, alpha);

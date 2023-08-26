@@ -117,6 +117,7 @@ bool NameEntry::Start()
 	//フェードイン。
 	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
+	m_fade->SetDrawFlag(true);
 
 	m_sound = FindGO<Sound>("sound");
 
@@ -315,6 +316,7 @@ void NameEntry::End()
 
 	//フェードアウト開始。
 	m_fade->FadeOut();
+	m_fade->SetDrawFlag(false);
 	m_isWaitFadeOut = true;
 }
 

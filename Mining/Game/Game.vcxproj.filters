@@ -40,7 +40,6 @@
     <ClCompile Include="UI\PressAndHoldGauge.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
-    <ClCompile Include="Stage\PhysicsGhost.cpp" />
     <ClCompile Include="Scene\GameResult.cpp" />
     <ClCompile Include="SaveDataManager.cpp" />
     <ClCompile Include="NameEntry.cpp" />
@@ -78,7 +77,6 @@
     <ClInclude Include="UI\PressAndHoldGauge.h" />
     <ClInclude Include="Scene\Game.h" />
     <ClInclude Include="Scene\Title.h" />
-    <ClInclude Include="Stage\PhysicsGhost.h" />
     <ClInclude Include="Scene\GameResult.h" />
     <ClInclude Include="SaveDataManager.h" />
     <ClInclude Include="NameEntry.h" />

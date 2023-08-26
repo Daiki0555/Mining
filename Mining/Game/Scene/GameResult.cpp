@@ -32,6 +32,9 @@ GameResult::~GameResult()
 
 bool GameResult::Start()
 {
+	// インスタンスを探す
+	m_fade = FindGO<Fade>("fade");
+
 	CalcScore();
 
 	////背景画像の設定。
@@ -82,8 +85,8 @@ bool GameResult::Start()
 	m_newRecordFontRender.SetShadowParam(true, FONT_SHADOW_OFFSET, FONT_SHADOW_COLOR);
 
 	//フェードイン。
-	m_fade = FindGO<Fade>("fade");
 	m_fade->FadeIn();
+	m_fade->SetDrawFlag(true);
 
 	m_sound = FindGO<Sound>("sound");
 	m_sound->SetSoundBGM(m_sound->m_enSoundState_ResultBGM);
@@ -107,7 +110,11 @@ void GameResult::CalcScore()
 	//スコアがランキングのスコアより上なら。
 	if (m_newScore > data.score[9]) {
 		m_isNewRecord = true;
+		m_fade->SetDrawFlag(true);
+		return;
 	}
+
+	m_fade->SetDrawFlag(false);
 }
 
 void GameResult::Update()
