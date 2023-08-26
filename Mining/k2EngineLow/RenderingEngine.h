@@ -2,8 +2,8 @@
 namespace nsK2EngineLow {
 	namespace
 	{
-		const int POINTLIGHT_NUM = 2;		//ѓ|ѓCѓ“ѓgѓ‰ѓCѓg‚Мђ”
-		const int SPOTLIGHT_NUM = 1;		//ѓXѓ|ѓbѓgѓ‰ѓCѓg‚Мђ”
+		const int POINTLIGHT_NUM = 2;		//пїЅ|пїЅCпїЅпїЅпїЅgпїЅпїЅпїЅCпїЅgпїЅМђпїЅ
+		const int SPOTLIGHT_NUM = 1;		//пїЅXпїЅ|пїЅbпїЅgпїЅпїЅпїЅCпїЅgпїЅМђпїЅ
 	}
 	class RenderingEngine:public Noncopyable
 	{
@@ -16,7 +16,7 @@ namespace nsK2EngineLow {
 			Matrix mLVP = g_matIdentity;
 		};
 
-		//ѓ‰ѓCѓg‚МЌ\‘ў‘М
+		//пїЅпїЅпїЅCпїЅgпїЅМЌ\пїЅпїЅпїЅпїЅ
 		struct LightCB
 		{
 			DirectionLight::directionLight directionLig;
@@ -24,9 +24,17 @@ namespace nsK2EngineLow {
 			SpotLight::spotLight spotLig[SPOTLIGHT_NUM];
 			HemiSphereLight::hemiSphereLight hemiSphereLig;
 			ShadowParamCB shadowCB;
-			int ptNum;										//ѓ|ѓCѓ“ѓgѓ‰ѓCѓg‚Мђ”
-			int spNum;										//ѓXѓ|ѓbѓgѓ‰ѓCѓg‚Мђ”
+			int ptNum;										//пїЅ|пїЅCпїЅпїЅпїЅgпїЅпїЅпїЅCпїЅgпїЅМђпїЅ
+			int spNum;										//пїЅXпїЅ|пїЅbпїЅgпїЅпїЅпїЅCпїЅgпїЅМђпїЅ
 		
+		};
+
+		// пїЅXпїЅvпїЅпїЅпїЅCпїЅgпїЅpпїЅМЌ\пїЅпїЅпїЅпїЅ
+		struct SpriteCB
+		{
+			Vector3 clipSize;								// пїЅNпїЅпїЅпїЅbпїЅvпїЅTпїЅCпїЅY
+			float fadeValue;								// пїЅtпїЅFпїЅ[пїЅhпїЅl
+			int clipMode = 0;
 		};
 
 		RenderingEngine();
@@ -37,7 +45,7 @@ namespace nsK2EngineLow {
 	public:
 
 		/// <summary>
-		/// ѓCѓ“ѓXѓ^ѓ“ѓX‚Мђ¶ђ¬
+		/// пїЅCпїЅпїЅпїЅXпїЅ^пїЅпїЅпїЅXпїЅМђпїЅпїЅпїЅ
 		/// </summary>
 		static void CreateInstance()
 		{
@@ -49,7 +57,7 @@ namespace nsK2EngineLow {
 			m_instance->Init();			
 		}
 		/// <summary>
-		/// ѓCѓ“ѓXѓ^ѓ“ѓX‚МЌнЏњ
+		/// пїЅCпїЅпїЅпїЅXпїЅ^пїЅпїЅпїЅXпїЅМЌнЏњ
 		/// </summary>
 		static void DeleteInstance()
 		{
@@ -57,7 +65,7 @@ namespace nsK2EngineLow {
 			m_instance = nullptr;
 		}
 		/// <summary>
-		/// ѓCѓ“ѓXѓ^ѓ“ѓX‚МЋж“ѕ
+		/// пїЅCпїЅпїЅпїЅXпїЅ^пїЅпїЅпїЅXпїЅМЋж“ѕ
 		/// </summary>
 		/// <returns></returns>
 		static RenderingEngine* GetInstance()
@@ -70,7 +78,7 @@ namespace nsK2EngineLow {
 		}
 		
 		/// <summary>
-		/// ѓЊѓ“ѓ_Ѓ[ѓIѓuѓWѓFѓNѓg‚р’З‰Б
+		/// пїЅпїЅпїЅпїЅпїЅ_пїЅ[пїЅIпїЅuпїЅWпїЅFпїЅNпїЅgпїЅпїЅЗ‰пїЅ
 		/// </summary>
 		/// <param name="renderObject"></param>
 		void AddRenderObject(IRenderer* renderObject)
@@ -79,7 +87,7 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ѓ‰ѓCѓg—p‚МЌ\‘ў‘М‚рЋж“ѕ
+		/// пїЅпїЅпїЅCпїЅgпїЅpпїЅМЌ\пїЅпїЅпїЅМ‚пїЅпїЅж“ѕ
 		/// </summary>
 		/// <returns></returns>
 		LightCB& GetLightCB()
@@ -88,7 +96,7 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ѓVѓѓѓhѓE—p‚МЌ\‘ў‘М‚рЋж“ѕ
+		/// пїЅVпїЅпїЅпїЅhпїЅEпїЅpпїЅМЌ\пїЅпїЅпїЅМ‚пїЅпїЅж“ѕ
 		/// </summary>
 		/// <returns></returns>
 		ShadowParamCB& GetShadowParamCB()
@@ -97,10 +105,19 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ѓfѓBѓЊѓNѓVѓ‡ѓiѓ‹ѓ‰ѓCѓg‚МђЭ’иЃB
+		/// пїЅXпїЅvпїЅпїЅпїЅCпїЅgпїЅpпїЅМЌ\пїЅпїЅпїЅМ‚пїЅпїЅж“ѕ
 		/// </summary>
-		/// <param name="dir">ѓ‰ѓCѓg‚М•ыЊьЃB</param>
-		/// <param name="color">ѓ‰ѓCѓg‚МѓJѓ‰Ѓ[ЃB[</param>
+		/// <returns></returns>
+		SpriteCB& GetSpriteCB()
+		{
+			return m_spiteCB;
+		}
+
+		/// <summary>
+		/// пїЅfпїЅBпїЅпїЅпїЅNпїЅVпїЅпїЅпїЅiпїЅпїЅпїЅпїЅпїЅCпїЅgпїЅМђЭ’пїЅB
+		/// </summary>
+		/// <param name="dir">пїЅпїЅпїЅCпїЅgпїЅМ•пїЅпїЅпїЅпїЅB</param>
+		/// <param name="color">пїЅпїЅпїЅCпїЅgпїЅМѓJпїЅпїЅпїЅ[пїЅB[</param>
 		void SetDirectionLight(const Vector3& dir, const Vector3 color)
 		{
 			m_directionLig.SetDirection(dir);
@@ -109,9 +126,9 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ЉВ‹«Њх‚МђЭ’и
+		/// пїЅВ‹пїЅпїЅпїЅпїЅМђЭ’пїЅ
 		/// </summary>
-		/// <param name="amb">ЉВ‹«Њх‚М‹­‚і</param>
+		/// <param name="amb">пїЅВ‹пїЅпїЅпїЅпїЅМ‹пїЅпїЅпїЅ</param>
 		void SetAmbient(const float amb)
 		{
 			m_directionLig.SetAmbientLight(amb);
@@ -119,10 +136,10 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ѓ|ѓCѓ“ѓgѓ‰ѓCѓg‚МђЭ’и
+		/// пїЅ|пїЅCпїЅпїЅпїЅgпїЅпїЅпїЅCпїЅgпїЅМђЭ’пїЅ
 		/// </summary>
-		/// <param name="ptNum">ѓ|ѓCѓ“ѓgѓ‰ѓCѓg‚Мђ”</param>
-		/// <param name="ptlig">ѓ|ѓCѓ“ѓgѓ‰ѓCѓg‚МЌ\‘ў‘М</param>
+		/// <param name="ptNum">пїЅ|пїЅCпїЅпїЅпїЅgпїЅпїЅпїЅCпїЅgпїЅМђпїЅ</param>
+		/// <param name="ptlig">пїЅ|пїЅCпїЅпїЅпїЅgпїЅпїЅпїЅCпїЅgпїЅМЌ\пїЅпїЅпїЅпїЅ</param>
 		void SetPointLight(const int ptNum, PointLight::pointLight& ptlig)
 		{
 			GetLightCB().pointLig[ptNum].ptPosition = ptlig.ptPosition;
@@ -131,10 +148,10 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ѓXѓ|ѓbѓgѓ‰ѓCѓg‚МђЭ’и
+		/// пїЅXпїЅ|пїЅbпїЅgпїЅпїЅпїЅCпїЅgпїЅМђЭ’пїЅ
 		/// </summary>
-		/// <param name="spNum">ѓXѓ|ѓbѓgѓ‰ѓCѓg‚Мђ”</param>
-		/// <param name="splig">ѓXѓ|ѓbѓgѓ‰ѓCѓg‚МЌ\‘ў‘М</param>
+		/// <param name="spNum">пїЅXпїЅ|пїЅbпїЅgпїЅпїЅпїЅCпїЅgпїЅМђпїЅ</param>
+		/// <param name="splig">пїЅXпїЅ|пїЅbпїЅgпїЅпїЅпїЅCпїЅgпїЅМЌ\пїЅпїЅпїЅпїЅ</param>
 		void SetSpotLight(const int spNum, SpotLight::spotLight& splig)
 		{
 			GetLightCB().spotLig[spNum].spPosition = splig.spPosition;
@@ -145,7 +162,7 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ”ј‹…ѓ‰ѓCѓg‚рђЭ’иЃB
+		/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅCпїЅgпїЅпїЅЭ’пїЅB
 		/// </summary>
 		void SetHemiSphereLight(const Vector3& grdColor, const Vector3& skyColor, const Vector3& grdNormal)
 		{
@@ -156,7 +173,7 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ѓuѓ‹Ѓ[ѓЂ‚Ми‡’l‚рђЭ’и
+		/// пїЅuпїЅпїЅпїЅ[пїЅпїЅпїЅпїЅи‡’lпїЅпїЅЭ’пїЅ
 		/// </summary>
 		/// <param name="threshold">и‡’l</param>
 		void SetBloomThreshold(const float threshold)
@@ -165,7 +182,7 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ѓVѓѓѓhѓEѓ}ѓbѓv‚МѓЊѓ“ѓ_ѓЉѓ“ѓOѓ^Ѓ[ѓQѓbѓg‚рЋж“ѕ
+		/// пїЅVпїЅпїЅпїЅhпїЅEпїЅ}пїЅbпїЅvпїЅМѓпїЅпїЅпїЅпїЅ_пїЅпїЅпїЅпїЅпїЅOпїЅ^пїЅ[пїЅQпїЅbпїЅgпїЅпїЅпїЅж“ѕ
 		/// </summary>
 		/// <returns></returns>
 		RenderTarget& GetShadowMapRenderTarget()
@@ -175,94 +192,95 @@ namespace nsK2EngineLow {
 
 
 		/// <summary>
-		/// Џ‰Љъ‰»Џ€—ќ
+		/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		/// </summary>
 		void Init();
 
 		/// <summary>
-		/// ЋАЌsЏ€—ќ
+		/// пїЅпїЅпїЅsпїЅпїЅпїЅпїЅ
 		/// </summary>
 		/// <param name="rc"></param>
 		void Execute(RenderContext& rc);
 	private:
 		/// <summary>
-		/// ѓ‰ѓCѓg‚МЏ‰Љъ‰»
+		/// пїЅпїЅпїЅCпїЅgпїЅМЏпїЅпїЅпїЅпїЅпїЅ
 		/// </summary>
 		void InitLight();
 
 		/// <summary>
-		/// ѓЃѓCѓ“ѓЊѓ“ѓ_ѓЉѓ“ѓOѓ^Ѓ[ѓQѓbѓg‚рЏ‰Љъ‰»
+		/// пїЅпїЅпїЅCпїЅпїЅпїЅпїЅпїЅпїЅпїЅ_пїЅпїЅпїЅпїЅпїЅOпїЅ^пїЅ[пїЅQпїЅbпїЅgпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		/// </summary>
 		void InitMainRenderTarget();
 
 		/// <summary>
-		/// ѓVѓѓѓhѓEѓ}ѓbѓv—p‚МѓЊѓ“ѓ_Ѓ[ѓ^Ѓ[ѓQѓbѓg‚рЏ‰Љъ‰»ЃB
+		/// пїЅVпїЅпїЅпїЅhпїЅEпїЅ}пїЅbпїЅvпїЅpпїЅМѓпїЅпїЅпїЅпїЅ_пїЅ[пїЅ^пїЅ[пїЅQпїЅbпїЅgпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅB
 		/// </summary>
 		void InitShadowMapRenderTarget();
 
 		/// <summary>
-		/// 2DѓЊѓ“ѓ_Ѓ[ѓ^Ѓ[ѓQѓbѓg‚рЏ‰Љъ‰»
+		/// 2DпїЅпїЅпїЅпїЅпїЅ_пїЅ[пїЅ^пїЅ[пїЅQпїЅbпїЅgпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		/// </summary>
 		void Init2DRenderTarget();
 
 		/// <summary>
-		///G-Buffer‚МЏ‰Љъ‰»
+		///G-BufferпїЅМЏпїЅпїЅпїЅпїЅпїЅ
 		/// </summary>
 		void InitGBffer();
 
 
 		/// <summary>
-		/// ѓfѓBѓtѓ@Ѓ[ѓhѓ‰ѓCѓeѓBѓ“ѓO
+		/// пїЅfпїЅBпїЅtпїЅ@пїЅ[пїЅhпїЅпїЅпїЅCпїЅeпїЅBпїЅпїЅпїЅO
 		/// </summary>
 		/// <param name="rc"></param>
 		void DefferedRender(RenderContext& rc);
 
 		/// <summary>
-		/// ѓVѓѓѓhѓEѓ}ѓbѓv‚М•`‰жЏ€—ќ
+		/// пїЅVпїЅпїЅпїЅhпїЅEпїЅ}пїЅbпїЅvпїЅМ•`пїЅжЏ€пїЅпїЅ
 		/// </summary>
 		/// <param name="rc"></param>
 		void RenderShadowMap(RenderContext& rc);
 
 		/// <summary>
-		/// 2D•`‰жЏ€—ќ
+		/// 2DпїЅ`пїЅжЏ€пїЅпїЅ
 		/// </summary>
 		/// <param name="rc"></param>
 		void Render2D(RenderContext& rc);
 
 	private:
-		//GBuffer‚М’и‹`
+		//GBufferпїЅМ’пїЅ`
 		enum EnGBffer
 		{
-			enGBuffer_Albedo,			//ѓAѓ‹ѓxѓh
-			enGBuffer_Normal,			//–@ђь
-			enGBuffer_WorldPos,			//ѓЏЃ[ѓ‹ѓhЌА•W
-			enGBuffer_MetalSmooth,		//‹а‘®“x‚ЖЉЉ‚з‚©‚іЃBx‚Й‹а‘®“xЃAw‚ЙЉЉ‚з‚©‚і‚Є‹L^‚і‚к‚Д‚ў‚йЃB
-			enGBuffer_ShadowParam,		//‰e‚Мѓpѓ‰ѓЃЃ[ѓ^
-			enGBuffer_Num,				//GBuffer‚Мђ”
+			enGBuffer_Albedo,			//пїЅAпїЅпїЅпїЅxпїЅh
+			enGBuffer_Normal,			//пїЅ@пїЅпїЅ
+			enGBuffer_WorldPos,			//пїЅпїЅпїЅ[пїЅпїЅпїЅhпїЅпїЅпїЅW
+			enGBuffer_MetalSmooth,		//пїЅпїЅпїЅпїЅпїЅxпїЅЖЉпїЅпїЅз‚©пїЅпїЅпїЅBxпїЅЙ‹пїЅпїЅпїЅпїЅxпїЅAwпїЅЙЉпїЅпїЅз‚©пїЅпїЅпїЅпїЅпїЅLпїЅ^пїЅпїЅпїЅпїЅД‚пїЅпїЅпїЅB
+			enGBuffer_ShadowParam,		//пїЅeпїЅМѓpпїЅпїЅпїЅпїЅпїЅ[пїЅ^
+			enGBuffer_Num,				//GBufferпїЅМђпїЅ
 		};
 
-		static RenderingEngine*		m_instance;							//ѓ‰ѓCѓg—p‚МЌ\‘ў‘М
+		static RenderingEngine*		m_instance;							//пїЅпїЅпїЅCпїЅgпїЅpпїЅМЌ\пїЅпїЅпїЅпїЅ
 		
-		DirectionLight				m_directionLig;						//ѓfѓBѓЊѓNѓVѓ‡ѓiѓ‹ѓ‰ѓCѓg‚МЌ\‘ў‘М
+		DirectionLight				m_directionLig;						//пїЅfпїЅBпїЅпїЅпїЅNпїЅVпїЅпїЅпїЅiпїЅпїЅпїЅпїЅпїЅCпїЅgпїЅМЌ\пїЅпїЅпїЅпїЅ
 		LightCB						m_lightCB;
+		SpriteCB					m_spiteCB;							//пїЅXпїЅvпїЅпїЅпїЅCпїЅgпїЅpпїЅМЌ\пїЅпїЅпїЅпїЅ
 		HemiSphereLight				m_hemiShereLig;
-		Bloom						m_bloom;							//ѓuѓ‹Ѓ[ѓЂ
+		Bloom						m_bloom;							//пїЅuпїЅпїЅпїЅ[пїЅпїЅ
 		
 
 
-		RenderTarget				m_mainRenderTarget;					//ѓЃѓCѓ“ѓЊѓ“ѓ_Ѓ[ѓ^Ѓ[ѓQѓbѓg
-		RenderTarget				m_2DRenderTarget;					//2DѓЊѓ“ѓ_Ѓ[ѓ^Ѓ[ѓQѓbѓg
+		RenderTarget				m_mainRenderTarget;					//пїЅпїЅпїЅCпїЅпїЅпїЅпїЅпїЅпїЅпїЅ_пїЅ[пїЅ^пїЅ[пїЅQпїЅbпїЅg
+		RenderTarget				m_2DRenderTarget;					//2DпїЅпїЅпїЅпїЅпїЅ_пїЅ[пїЅ^пїЅ[пїЅQпїЅbпїЅg
 		RenderTarget				m_shadowMapRenderTarget;
 		RenderTarget			    m_gBuffer[enGBuffer_Num];			//G-Buffer
 		
-		Sprite						m_2DSprite;							//2DѓXѓvѓ‰ѓCѓg
+		Sprite						m_2DSprite;							//2DпїЅXпїЅvпїЅпїЅпїЅCпїЅg
 		Sprite						m_mainSprite;
-		Sprite						m_defferedLightInSpr;				//ѓfѓBѓtѓ@Ѓ[ѓhѓ‰ѓCѓeѓBѓ“ѓO—p‚МѓXѓvѓ‰ѓCѓg
+		Sprite						m_defferedLightInSpr;				//пїЅfпїЅBпїЅtпїЅ@пїЅ[пїЅhпїЅпїЅпїЅCпїЅeпїЅBпїЅпїЅпїЅOпїЅpпїЅМѓXпїЅvпїЅпїЅпїЅCпїЅg
 
-		SpriteInitData				m_deferredSpriteInitData;			//ѓfѓBѓtѓ@Ѓ[ѓhѓ‰ѓCѓeѓBѓ“ѓO‚рЌs‚¤‚Ѕ‚Я‚МѓXѓvѓ‰ѓCѓg‚МЏ‰Љъ‰»
+		SpriteInitData				m_deferredSpriteInitData;			//пїЅfпїЅBпїЅtпїЅ@пїЅ[пїЅhпїЅпїЅпїЅCпїЅeпїЅBпїЅпїЅпїЅOпїЅпїЅпїЅsпїЅпїЅпїЅпїЅпїЅЯ‚МѓXпїЅvпїЅпїЅпїЅCпїЅgпїЅМЏпїЅпїЅпїЅпїЅпїЅ
 		
 										
-		Camera						m_lightCamera;						//•`‰ж—p‚Мѓ‰ѓCѓgѓJѓЃѓ‰‚рЌмђ¬‚·‚й
+		Camera						m_lightCamera;						//пїЅ`пїЅпїЅpпїЅМѓпїЅпїЅCпїЅgпїЅJпїЅпїЅпїЅпїЅпїЅпїЅпїЅмђ¬пїЅпїЅпїЅпїЅ
 
 
 

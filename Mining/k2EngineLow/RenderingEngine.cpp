@@ -90,6 +90,37 @@ namespace nsK2EngineLow {
 			clearColor
 		);
 
+		//�~�`�Q�[�W�p�Ɉ�U�R�����g�A�E�g
+		//�ŏI�����p�X�v���C�g�̏�����
+		SpriteInitData finalSpriteInitData;
+		finalSpriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
+		// �𑜓x��mainRenderTarget�̕��ƍ���
+		finalSpriteInitData.m_width = m_mainRenderTarget.GetWidth();
+		finalSpriteInitData.m_height = m_mainRenderTarget.GetHeight();
+		// 2D�p�̃V�F�[�_�[��g�p����
+		finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
+		finalSpriteInitData.m_vsEntryPointFunc = "VSMain";
+		finalSpriteInitData.m_psEntryPoinFunc = "PSMain";
+		// SpriteRender用の追加コード
+		finalSpriteInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
+		finalSpriteInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
+		//�㏑��
+		finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
+		//�����_�����O�^�[�Q�b�g�̃t�H�[�}�b�g
+		finalSpriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
+		
+		m_2DSprite.Init(finalSpriteInitData);
+
+		//2D�����p�X�v���C�g�̏�����
+		SpriteInitData spriteInitData;
+		spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
+		spriteInitData.m_width = m_2DRenderTarget.GetWidth();
+		spriteInitData.m_height = m_2DRenderTarget.GetHeight();
+		spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
+		spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
+		spriteInitData.m_colorBufferFormat[0] = m_2DRenderTarget.GetColorBufferFormat();
+		
+		m_mainSprite.Init(spriteInitData);
 		
 	}
 
