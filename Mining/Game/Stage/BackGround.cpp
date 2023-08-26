@@ -11,7 +11,7 @@ BackGround::~BackGround()
 
 bool BackGround::Start()
 {
-	// ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
+	// ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ì“Ç‚İï¿½ï¿½ï¿½
 	m_modelRender.Init("Assets/modelData/stage/stage.tkm", 0, 0, enModelUpAxisZ, false, true);
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetScale(m_scale);
@@ -26,6 +26,6 @@ bool BackGround::Start()
 
 void BackGround::Render(RenderContext& rc)
 {
-	// •`‰æ
+	// ï¿½`ï¿½ï¿½
 	m_modelRender.Draw(rc);
 }

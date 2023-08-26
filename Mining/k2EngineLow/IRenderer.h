@@ -5,6 +5,8 @@ namespace nsK2EngineLow {
 	/// </summary>
 	class IRenderer {
 	public:
+		
+		
 		/// <summary>
 		/// フォワードレンダリング
 		/// </summary>

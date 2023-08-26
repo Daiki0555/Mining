@@ -5,7 +5,7 @@ namespace nsK2EngineLow {
 
 	namespace
 	{
-		const Vector3 SHADOW_CAMERA_POS = Vector3(1024.0f, 2000.0f, 1024.0f);
+		const Vector3 SHADOW_CAMERA_POS = Vector3(1024.0f, 100.0f, 1024.0f);
 		const Vector3 SHADOW_CAMERA_TAR = Vector3(0.0f, -100.0f, 0.0f);
 	}
 
@@ -30,7 +30,7 @@ namespace nsK2EngineLow {
 		
 		Init2DRenderTarget();
 		
-		
+		InitGBffer();
 		
 	
 
@@ -58,10 +58,10 @@ namespace nsK2EngineLow {
 		SetDirectionLight(Vector3(1, -1, 1), Vector3(0.5f, 0.5f, 0.5f));
 
 		//�����̐ݒ�
-		SetAmbient(0.5f);
+		SetAmbient(0.7f);
 
 		//�������C�g�̐ݒ�
-	/*	SetHemiSphereLight(
+		/*SetHemiSphereLight(
 			Vector3(1.0f, 0.5f, 0.3f),
 			Vector3(0.15f, 0.7f, 0.95f),
 			Vector3(0.0f, 1.0f, 0.0f)
@@ -90,95 +90,35 @@ namespace nsK2EngineLow {
 			clearColor
 		);
 
-		//�~�`�Q�[�W�p�Ɉ�U�R�����g�A�E�g
-		//�ŏI�����p�X�v���C�g�̏�����
-		SpriteInitData finalSpriteInitData;
-		finalSpriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
-		// �𑜓x��mainRenderTarget�̕��ƍ���
-		finalSpriteInitData.m_width = m_mainRenderTarget.GetWidth();
-		finalSpriteInitData.m_height = m_mainRenderTarget.GetHeight();
-		// 2D�p�̃V�F�[�_�[��g�p����
-		finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
-		finalSpriteInitData.m_vsEntryPointFunc = "VSMain";
-		finalSpriteInitData.m_psEntryPoinFunc = "PSMain";
-		// SpriteRender用の追加コード
-		finalSpriteInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
-		finalSpriteInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
-		//�㏑��
-		finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
-		//�����_�����O�^�[�Q�b�g�̃t�H�[�}�b�g
-		finalSpriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
 		
-		m_2DSprite.Init(finalSpriteInitData);
-
-		//2D�����p�X�v���C�g�̏�����
-		SpriteInitData spriteInitData;
-		spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
-		spriteInitData.m_width = m_2DRenderTarget.GetWidth();
-		spriteInitData.m_height = m_2DRenderTarget.GetHeight();
-		spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
-		spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
-		spriteInitData.m_colorBufferFormat[0] = m_2DRenderTarget.GetColorBufferFormat();
-		
-		m_mainSprite.Init(spriteInitData);
-
-		////�ŏI�����p�X�v���C�g�̏�����
-		//SpriteInitData finalSpriteInitData;
-		//finalSpriteInitData.m_textures[0] = &m_2DRenderTarget.GetRenderTargetTexture();
-		//// �𑜓x��mainRenderTarget�̕��ƍ���
-		//finalSpriteInitData.m_width = m_mainRenderTarget.GetWidth();
-		//finalSpriteInitData.m_height = m_mainRenderTarget.GetHeight();
-		//// 2D�p�̃V�F�[�_�[��g�p����
-		//finalSpriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
-		//finalSpriteInitData.m_vsEntryPointFunc = "VSMain";
-		//finalSpriteInitData.m_psEntryPoinFunc = "PSMain";
-		////�㏑��
-		//finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
-		////�����_�����O�^�[�Q�b�g�̃t�H�[�}�b�g
-		//finalSpriteInitData.m_colorBufferFormat[0] = m_mainRenderTarget.GetColorBufferFormat();
-		//
-		//m_2DSprite.Init(finalSpriteInitData);
-
-	//	//2D�����p�X�v���C�g�̏�����
-	//	SpriteInitData spriteInitData;
-	//	spriteInitData.m_textures[0] = &m_mainRenderTarget.GetRenderTargetTexture();
-	//	spriteInitData.m_width = m_2DRenderTarget.GetWidth();
-	//	spriteInitData.m_height = m_2DRenderTarget.GetHeight();
-	//	spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
-	//	spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
-	//	spriteInitData.m_colorBufferFormat[0] = m_2DRenderTarget.GetColorBufferFormat();
-	//	
-	//	m_mainSprite.Init(spriteInitData);
 	}
 
 	void RenderingEngine::InitShadowMapRenderTarget()
 	{
-		
 		//�J�����̈ʒu����̓��C�g�̈ʒu
-		m_lightCamera.SetPosition(g_camera3D->GetPosition()+SHADOW_CAMERA_POS);
-		
+		m_lightCamera.SetPosition(g_camera3D->GetTarget() + Vector3(0,600,0));
+
 		//�J�����̒����_��ݒ�B���ꂪ���C�g��Ƃ炵�Ă���ꏊ
-		m_lightCamera.SetTarget(g_camera3D->GetTarget() + SHADOW_CAMERA_TAR);
+		m_lightCamera.SetTarget(g_camera3D->GetTarget());
 
 		//�������ݒ�
 		m_lightCamera.SetUp(0, 1, 0);
 
+		m_lightCamera.SetFar(5000.0f);
+
 		//��p��ݒ肷��
-		m_lightCamera.SetViewAngle(Math::DegToRad(50.0f));
-		m_lightCamera.SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Perspective);
+		//m_lightCamera.SetViewAngle(Math::DegToRad(20.0f));
+		//m_lightCamera.SetUpdateProjMatrixFunc(Camera::enUpdateProjMatrixFunc_Perspective);
 		m_lightCamera.Update();
 
 		//���C�g�r���[�v���e�N�V������s��Ɍv�Z���Ă���
-		m_lightCB.shadowCB.mLVP = m_lightCamera.GetViewProjectionMatrix();
-
-
-		m_lightCamera.Update();
+		m_lightCB.shadowCB.mLVP = m_lightCamera.GetViewProjectionMatrix();	
 
 		//�V���h�E�}�b�v�p�̃����_�����O�^�[�Q�b�g�������
 		float clearColor[4] = { 1.0f,1.0f,1.0f,1.0f };
 		m_shadowMapRenderTarget.Create(
-			5192,
-			5192,
+			1500,
+			1500,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
@@ -189,15 +129,82 @@ namespace nsK2EngineLow {
 
 	}
 
+	void RenderingEngine::InitGBffer()
+	{
+		//�A���x�h�J���[�p�̃����_�[�^�[�Q�b�g
+		float clearColor[4] = { 0.5f,0.5f,0.5f,1.0f };
+		m_gBuffer[enGBuffer_Albedo].Create(
+			g_graphicsEngine->GetFrameBufferWidth(),
+			g_graphicsEngine->GetFrameBufferHeight(),
+			1,
+			1,
+			DXGI_FORMAT_R32G32B32A32_FLOAT,
+			DXGI_FORMAT_D32_FLOAT
+		);
+		//�@���������ݗp�̃����_�[�^�[�Q�b�g
+		m_gBuffer[enGBuffer_Normal].Create(
+			g_graphicsEngine->GetFrameBufferWidth(),
+			g_graphicsEngine->GetFrameBufferHeight(),
+			1, 1,
+			DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_FORMAT_UNKNOWN
+		);
+		//�s�N�Z���̃��[���h���W��L�^���邽�߂�G-Buffer��쐬
+		m_gBuffer[enGBuffer_WorldPos].Create(
+			g_graphicsEngine->GetFrameBufferWidth(),
+			g_graphicsEngine->GetFrameBufferHeight(),
+			1, 1,
+			DXGI_FORMAT_R32G32B32A32_FLOAT, DXGI_FORMAT_UNKNOWN
+		);
 
+		//����x�Ɗ��炩���}�b�v�o�͗p�̃����_�[�^�[�Q�b�g�������
+		m_gBuffer[enGBuffer_MetalSmooth].Create(
+			g_graphicsEngine->GetFrameBufferWidth(),
+			g_graphicsEngine->GetFrameBufferHeight(),
+			1,
+			1,
+			DXGI_FORMAT_R8G8B8A8_UNORM, //�������g�p�ʃ������������ݑ��x�D��ŁA8bit�̕����Ȃ������o�b�t�@��g�p����B�B
+			DXGI_FORMAT_UNKNOWN
+		);
+
+		//�e�̃p�����[�^��o�͗p�̃����_�����O�^�[�Q�b�g�������
+		m_gBuffer[enGBuffer_ShadowParam].Create(
+			g_graphicsEngine->GetFrameBufferWidth(),
+			g_graphicsEngine->GetFrameBufferHeight(),
+			1,
+			1,
+			DXGI_FORMAT_R8G8B8A8_UNORM,
+			DXGI_FORMAT_D32_FLOAT
+		);
+
+		//�f�B�t�@�[�h���C�e�B���O��s�����߂̃X�v���C�g�����������
+		//��ʑS�̂Ƀ����_�����O����̂ŕ��ƍ����̓t���[���o�b�t�@�[�̕��ƍ����Ɠ���
+		m_deferredSpriteInitData.m_width = FRAME_BUFFER_W;
+		m_deferredSpriteInitData.m_height = FRAME_BUFFER_H;
+
+		//�g�p����e�N�X�`���̓A���x�h�e�N�X�`���Ɩ@���e�N�X�`��
+		m_deferredSpriteInitData.m_textures[0] = &m_gBuffer[enGBuffer_Albedo].GetRenderTargetTexture();
+		m_deferredSpriteInitData.m_textures[1] = &m_gBuffer[enGBuffer_Normal].GetRenderTargetTexture();
+		m_deferredSpriteInitData.m_textures[2] = &m_gBuffer[enGBuffer_WorldPos].GetRenderTargetTexture();
+		m_deferredSpriteInitData.m_textures[3] = &m_gBuffer[enGBuffer_MetalSmooth].GetRenderTargetTexture();
+		m_deferredSpriteInitData.m_textures[4] = &m_gBuffer[enGBuffer_ShadowParam].GetRenderTargetTexture();
+		m_deferredSpriteInitData.m_textures[5] = &m_shadowMapRenderTarget.GetRenderTargetTexture();
+		m_deferredSpriteInitData.m_fxFilePath = "Assets/shader/deferredLighting.fx";
+		m_deferredSpriteInitData.m_expandConstantBuffer = &GetLightCB();
+		m_deferredSpriteInitData.m_expandConstantBufferSize = sizeof(GetLightCB());
+
+		//m_deferredSpriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+
+		//�������f�[�^��g���ăX�v���C�g��쐬
+		m_defferedLightInSpr.Init(m_deferredSpriteInitData);
+	}
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
 		//�V���h�E�}�b�v�̕`��B
-		RenderShadowMap(rc);
+		RenderShadowMap(rc);	
 
-		//�t�H���[�h�����_�����O
-		ModelRendering(rc);
+		//�f�B�t�@�[�h�����_�����O
+		DefferedRender(rc);
 
 		//�u���[���̕`��B
 		m_bloom.Render(rc, m_mainRenderTarget);
@@ -205,29 +212,48 @@ namespace nsK2EngineLow {
 		//2D�X�v���C�g�̕`��B
 		Render2D(rc);
 
+	
+
 		m_renderObjects.clear();
 	}
 
 	//���f�����X�g�ɓ����ꂽ���f����`�悷��
-	void RenderingEngine::ModelRendering(RenderContext& rc)
+	void RenderingEngine::DefferedRender(RenderContext& rc)
 	{
-		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
-		rc.SetRenderTargetAndViewport(m_mainRenderTarget);
-		rc.ClearRenderTargetView(m_mainRenderTarget);
 
-		for (auto& modelobj : m_renderObjects)
-		{
+		RenderTarget* rts[] = {
+			&m_gBuffer[enGBuffer_Albedo],
+			&m_gBuffer[enGBuffer_Normal],
+			&m_gBuffer[enGBuffer_WorldPos],
+			&m_gBuffer[enGBuffer_MetalSmooth],
+			&m_gBuffer[enGBuffer_ShadowParam]
+		};
+		rc.WaitUntilToPossibleSetRenderTargets(ARRAYSIZE(rts),rts);
+		rc.SetRenderTargetsAndViewport(ARRAYSIZE(rts),rts);
+		rc.ClearRenderTargetViews(ARRAYSIZE(rts),rts);
+
+		for (auto& modelobj : m_renderObjects){
 			modelobj->OnRenderModel(rc);
 		}
-		//rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
+		
+		rc.WaitUntilFinishDrawingToRenderTargets(ARRAYSIZE(rts),rts);
+
+		//�����_�����O���t���[���o�b�t�@�[�ɖ߂��ăX�v���C�g������_�����O����
+		g_graphicsEngine->ChangeRenderTargetToFrameBuffer(rc);
+
+		//G-Buffer�̓�e���ƂɃX�v���C�g������_�����O����
+		//m_defferedLightInSpr.Draw(rc);
 	}
 
 	void RenderingEngine::RenderShadowMap(RenderContext& rc)
 	{
-		// �J�����̈ʒu��ݒ�B
-		m_lightCamera.SetPosition(Vector3(g_camera3D->GetTarget() + SHADOW_CAMERA_POS));
-		m_lightCamera.SetTarget(Vector3(g_camera3D->GetTarget() + SHADOW_CAMERA_TAR));
+
+		//�J�����̈ʒu����̓��C�g�̈ʒu
+		m_lightCamera.SetPosition(g_camera3D->GetTarget() + Vector3(200,600,300) * 1.0f);
+		//�J�����̒����_��ݒ�B���ꂪ���C�g��Ƃ炵�Ă���ꏊ
+		m_lightCamera.SetTarget(g_camera3D->GetTarget());
 		m_lightCamera.Update();
+		
 
 		m_lightCB.shadowCB.mLVP = m_lightCamera.GetViewProjectionMatrix();
 		m_lightCB.shadowCB.lightPos = m_lightCamera.GetPosition();
@@ -239,8 +265,7 @@ namespace nsK2EngineLow {
 		rc.ClearRenderTargetView(m_shadowMapRenderTarget);
 
 		//�`�揈��
-		for (auto& shadowMaps : m_renderObjects)
-		{
+		for (auto& shadowMaps : m_renderObjects){
 			shadowMaps->OnRenderShadowMap(rc,m_lightCamera);
 		}
 
@@ -251,15 +276,17 @@ namespace nsK2EngineLow {
 	void RenderingEngine::Render2D(RenderContext& rc)
 	{
 		////�����_�����O�^�[�Q�b�g�������ݑ҂��B
-		//rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
-		//rc.SetRenderTargetAndViewport(m_mainRenderTarget);
-		//rc.ClearRenderTargetView(m_mainRenderTarget);
-
+		rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
+		rc.SetRenderTargetAndViewport(m_mainRenderTarget);
+		rc.ClearRenderTargetView(m_mainRenderTarget);
+		
+		m_defferedLightInSpr.Draw(rc);
+		
 		//�`�揈��
-		for (auto& sprites : m_renderObjects)
-		{
+		for (auto& sprites : m_renderObjects){
 			sprites->OnRender2D(rc);
 		}
+		
 		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 
 	}

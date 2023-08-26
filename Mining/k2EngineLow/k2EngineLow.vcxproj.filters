@@ -236,6 +236,7 @@
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="HemiSphereLight.cpp" />
     <ClCompile Include="Bloom.cpp" />
+    <ClCompile Include="ShadowMapRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -522,6 +523,7 @@
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="HemiSphereLight.h" />
     <ClInclude Include="Bloom.h" />
+    <ClInclude Include="ShadowMapRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">

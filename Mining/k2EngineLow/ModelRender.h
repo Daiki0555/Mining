@@ -201,18 +201,24 @@ namespace nsK2EngineLow {
 
 	private:
 		AnimationClip*	m_animationClips = nullptr;
+		Animation		m_animation;
 		int				m_numAnimationClips = 0;					//アニメーションクリップの数
 
 		Vector3			m_position = Vector3::Zero;
-		Quaternion		m_rotaition = Quaternion::Identity;
 		Vector3			m_scale = Vector3::One;
+		
+		Quaternion		m_rotaition = Quaternion::Identity;
+		
 		EnModelUpAxis	m_enFbxUpAxis = enModelUpAxisZ;
-		Animation		m_animation;
+		
+		
 		Model			m_model;
 		Model			m_shadowModel;
+		
+		float			m_animationSpeed = 1.0f;
 		bool			m_isUpdateAnimation = true;
 		Skeleton		m_skeleton;
-		float			m_animationSpeed=1.0f;
+		
 
 		
 		RenderingEngine m_renderinEngine;

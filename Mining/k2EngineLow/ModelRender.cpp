@@ -64,7 +64,8 @@ namespace nsK2EngineLow {
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = tkmFilePath;
 		modelInitData.m_modelUpAxis = modelUpAxis;
-		modelInitData.m_fxFilePath = "Assets/shader/model.fx";
+		modelInitData.m_fxFilePath = "Assets/shader/RenderToGBufferFor3DModel.fx";
+		//modelInitData.m_fxFilePath = "Assets/shader/model.fx";
 
 		if (isShadowReceiver) {
 			modelInitData.m_psEntryPointFunc = "PSMainShadow";
@@ -81,10 +82,15 @@ namespace nsK2EngineLow {
 			modelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
 		}
 
+		modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		modelInitData.m_colorBufferFormat[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		modelInitData.m_colorBufferFormat[2] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		modelInitData.m_colorBufferFormat[3] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		modelInitData.m_colorBufferFormat[4] = DXGI_FORMAT_R8G8B8A8_UNORM;
 		//ディレクションライトの情報をディスクリプタヒープに定数バファーといして
 		//登録するためにモデルの初期化情報として渡す
-		modelInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetLightCB();
-		modelInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetLightCB());
+		//modelInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetLightCB();
+		//modelInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetLightCB());
 		m_model.Init(modelInitData);
 		if (isShadow){
 			//シャドウ用のモデルの初期化
@@ -96,7 +102,7 @@ namespace nsK2EngineLow {
 
 
 	void ModelRender::InitShadowModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
-	{
+	{ 
 		ModelInitData shadowModelInitData;
 		shadowModelInitData.m_fxFilePath = "Assets/shader/shadowMap.fx";
 		shadowModelInitData.m_tkmFilePath = tkmFilePath;
@@ -107,6 +113,8 @@ namespace nsK2EngineLow {
 			shadowModelInitData.m_skeleton = &m_skeleton;
 			shadowModelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
 		}
+
+
 
 		m_shadowModel.Init(shadowModelInitData);
 	}
