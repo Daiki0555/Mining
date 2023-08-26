@@ -1,23 +1,32 @@
 #include "stdafx.h"
 #include "system/system.h"
 #include "Debug.h"
-#include "Game.h"
+#include "Scene/Game.h"
+#include "Scene/Title.h"
+#include "SaveDataManager.h"
+#include "NameEntry.h"
+#include "Ranking.h"
+#include "Scene/GameResult.h"
+#include "UI/Fade.h"
+#include "Scene/Guide.h"
+#include "Scene/Logo.h"
+#include "Sound.h"
 
-// K2EngineLow‚ÌƒOƒ[ƒoƒ‹ƒAƒNƒZƒXƒ|ƒCƒ“ƒgB
+// K2EngineLowï¿½ÌƒOï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Aï¿½Nï¿½Zï¿½Xï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½B
 K2EngineLow* g_k2EngineLow = nullptr;
 
 /// <summary>
-/// ƒƒCƒ“ŠÖ”
+/// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Öï¿½
 /// </summary>
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-	// ƒQ[ƒ€‚Ì‰Šú‰»B
-	InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, TEXT("Game"));
+	// ï¿½Qï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+	InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, TEXT("Mining!"));
 	
-	//‚±‚ñ‚Î‚ñ‚Í`
+	//ï¿½ï¿½ï¿½ï¿½Î‚ï¿½Í`
 
 
-	// k2EngineLow‚Ì‰Šú‰»B
+	// k2EngineLowï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
 	g_k2EngineLow = new K2EngineLow();
 	g_k2EngineLow->Init(g_hWnd, FRAME_BUFFER_W, FRAME_BUFFER_H);
 	g_camera3D->SetPosition({ 0.0f, 100.0f, -200.0f });
@@ -25,30 +34,40 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 
 	RenderingEngine::GetInstance()->Init();
-	//NewGO<Debug>(0,"debug");
-	
-	NewGO<Game>(0, "game");
-	
 
-	// ‚±‚±‚©‚çƒQ[ƒ€ƒ‹[ƒvB
+	//NewGO<Debug>(0,"debug");
+	//NewGO<Game>(0, "game");
+	NewGO<Logo>(10, "logo");
+
+	NewGO<Sound>(0, "sound");
+	NewGO<Fade>(9, "fade");
+
+	//NewGO<Title>(0, "title");
+	//NewGO<Guide>(0, "guide");
+	//NewGO<GameResult>(0, "gameResult");
+	//NewGO<NameEntry>(0, "nameEntry");
+	//NewGO<Ranking>(0, "ranking");
+
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½vï¿½B
 	while (DispatchWindowMessage())
 	{
 		auto& renderContext = g_graphicsEngine->GetRenderContext();
-		// ƒtƒŒ[ƒ€‚ÌŠJn‚ÉŒÄ‚Ño‚·•K—v‚ª‚ ‚éˆ—‚ğÀs
+		// ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ÌŠJï¿½nï¿½ï¿½ï¿½ÉŒÄ‚Ñoï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½éˆï¿½ï¿½ï¿½ï¿½ï¿½ï¿½s
 		g_k2EngineLow->BeginFrame();
 
-		// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚ÌXVˆ—‚ğŒÄ‚Ño‚·B
+		// ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½}ï¿½lï¿½[ï¿½Wï¿½ï¿½ï¿½[ï¿½ÌXï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚Ñoï¿½ï¿½ï¿½B
 		g_k2EngineLow->ExecuteUpdate();
 
-		// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ì•`‰æˆ—‚ğŒÄ‚Ño‚·B
+		// ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½}ï¿½lï¿½[ï¿½Wï¿½ï¿½ï¿½[ï¿½Ì•`ï¿½æˆï¿½ï¿½ï¿½ï¿½Ä‚Ñoï¿½ï¿½ï¿½B
 		g_k2EngineLow->ExecuteRender();
 
-		// ƒfƒoƒbƒO•`‰æˆ—‚ğÀs‚·‚éB
+		// ï¿½fï¿½oï¿½bï¿½Oï¿½`ï¿½æˆï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½B
 		g_k2EngineLow->DebubDrawWorld();
 
 		RenderingEngine::GetInstance()->Execute(renderContext);
 
-		// ƒtƒŒ[ƒ€‚ÌI—¹‚ÉŒÄ‚Ño‚·•K—v‚ª‚ ‚éˆ—‚ğÀsB
+		// ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ÌIï¿½ï¿½ï¿½ï¿½ï¿½ÉŒÄ‚Ñoï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½éˆï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½B
 		g_k2EngineLow->EndFrame();
 
 

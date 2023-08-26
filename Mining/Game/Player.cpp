@@ -1,5 +1,27 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Scene/Game.h"
+#include "Stage/Object/Crystal.h"
+#include "UI/PressAndHoldGauge.h"
+#include "Sound.h"
+
+namespace
+{
+	const float DELTA_TIME = 1.0f / 60.0f;			// ï¿½oï¿½ßï¿½ï¿½ï¿½
+	const float RUN_SPEED = 5.0f;					// ï¿½_ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½x
+	const float WALKING_SPEED = 2.5f;				// ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½éï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½x
+	const float DECREASE_STAMINA_VALUE = 15.0f;		// ï¿½_ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÌƒXï¿½^ï¿½~ï¿½iï¿½ï¿½ï¿½ï‘¬ï¿½x
+	const float INCREASE_STAMINA_VALUE = 10.0f;		// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ñ•œ‘ï¿½ï¿½x
+	const float LINEAR_COMPLETION = 1.0f;			// ï¿½ï¿½ï¿½`ï¿½âŠ®
+	const float Y_POSITION = 25.0f;					// ï¿½Õ“Ë”ï¿½ï¿½èï¿½ï¿½Yï¿½ï¿½ï¿½W
+	const float ADD_LENGTH = 0.5f;					// ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½é’·ï¿½ï¿½
+	const float NOT_DRAW_LENGTH = 100.0f;			// ï¿½`ï¿½æ‚µï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½
+	const float CAN_GET_LENGTH = 500.0f;			// ï¿½lï¿½ï¿½ï¿½Å‚ï¿½ï¿½é‹—ï¿½ï¿½
+	const float CLEAR_LENGTH = 500.0f;				// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Æ‚İ‚È‚ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
+	const int	STAMINA_MIN = 1;					// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ÌÅ’ï¿½l
+	const int	STAMINA_MAX = STAMINA;				// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ÌÅ‘ï¿½l
+	const int	HP_MIN = 0;							// HPï¿½ÌÅ’ï¿½l
+}
 
 Player::Player() 
 {
@@ -7,37 +29,130 @@ Player::Player()
 
 Player::~Player()
 {
+	m_haveCrystals.clear();
+
+	for (int i = 0; i < m_haveCrystals.size(); i++) {
+		DeleteGO(m_haveCrystals[i]);
+	}
 }
 
 bool Player::Start()
 {
+	// ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½Tï¿½ï¿½
+	m_game = FindGO<Game>("game");
+
+	m_crystal = FindGO<Crystal>("crystal");
+	m_pressAndHoldGauge = FindGO<PressAndHoldGauge>("pressAndHoldGauge");
+
 	LoadAnimation();
 
-	m_modelRender.Init("Assets/modelData/player/unityChan.tkm", m_EnAnimationClips, m_en_AnimationClips_Num, enModelUpAxisY,true,false);
+	m_modelRender.Init("Assets/modelData/player/unityChan.tkm", m_enAnimationClips, m_en_AnimationClips_Num, enModelUpAxisY, true);
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetRotaition(m_rotation);
 	m_modelRender.SetScale(m_scale);
 
-	m_characterController.Init(25.0f, 75.0f, m_position);	// ƒLƒƒƒ‰ƒNƒ^[ƒRƒ“ƒgƒ[ƒ‰[‚ğ‰Šú‰»
+	m_characterController.Init(25.0f, 75.0f, m_position);	// ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Rï¿½ï¿½ï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+	// ï¿½Xï¿½tï¿½Bï¿½Aï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½ï¿½İ’ï¿½
+	m_sphereCollider.Create(20.0f);
 
 	m_modelRender.Update();
+
+	m_sound = FindGO<Sound>("sound");
 
 	return true;
 }
 
 void Player::Update()
 {
-	// ‘Ì—Í‚ª0‚Ì‚Æ‚«
-	if (playerStatus.m_hitPoint <= 0) {
-		// €–S‚·‚é
-		Death();
-		return;
+	//// ï¿½fï¿½oï¿½bï¿½Oï¿½p
+	//if (g_pad[0]->IsTrigger(enButtonStart)) {
+	//	m_modelRender.PlayAnimation(m_enActionState_Damage);
+	//}
+
+	// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+	if (m_actionState == m_enActionState_Clear ) {
+		if (m_modelRender.IsPlayingAnimation() == false) {
+			m_game->SetIsEndAnimationFlag(true);
+		}
+	}
+	// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+	else if (m_actionState == m_enActionState_Death) {
+		if (m_modelRender.IsPlayingAnimation() == false) {
+			m_game->SetIsEndAnimationFlag(true);
+		}
 	}
 
-	Move();					// ˆÚ“®
-	Rotation();				// ‰ñ“]
+	// ï¿½Ì—Í‚ï¿½0ï¿½Ì‚Æ‚ï¿½
+	else if (m_playerStatus.m_hitPoint <= HP_MIN) {
 
-	PlayAnimation();		// ƒAƒjƒ[ƒVƒ‡ƒ“
+		// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½
+		m_playerStatus.m_hitPoint = HP_MIN;		// ï¿½lï¿½ï¿½â³ï¿½ï¿½ï¿½ï¿½
+		m_actionState = m_enActionState_Death;
+	}
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½Æ‚ï¿½
+	else {
+		if (m_actionState == m_enActionState_Damage && m_modelRender.IsPlayingAnimation() == true) {
+			PlayAnimation();		// ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
+
+			m_modelRender.SetPosition(m_position);
+			m_modelRender.SetRotaition(m_rotation);
+			m_modelRender.SetScale(m_scale);
+
+			m_modelRender.Update();
+			return;
+		}
+
+		if (!m_canAddDamage) {
+			m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
+
+			// ï¿½^ï¿½Cï¿½}ï¿½[ï¿½ï¿½0.0fï¿½È‰ï¿½ï¿½Ì‚Æ‚ï¿½
+			if (m_invincibleTimer < 0.0f) {
+				m_canAddDamage = true;
+				m_invincibleTimer = INVINCIBLE_TIMER;			// ï¿½^ï¿½Cï¿½}ï¿½[ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+			}
+		}
+
+		Move();					// ï¿½Ú“ï¿½
+		Rotation();				// ï¿½ï¿½]
+		IsClear();				// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½
+
+		// Bï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Æ‚ï¿½
+		if (g_pad[0]->IsPress(enButtonB)) {
+			// ï¿½ÌŒ@ï¿½ï¿½ï¿½ï¿½
+			Dig();
+		}
+		else {
+			// ï¿½pï¿½xï¿½ï¿½ï¿½ï¿½ç‚·
+			m_pressAndHoldGauge->SetChangeGaugeAngle(false);
+
+			// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½Ìï¿½ï¿½W(Bï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ìï¿½ï¿½gï¿½Ìï¿½ï¿½W)ï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+			Vector3 diff = m_pressAndHoldGauge->Get3DPosition() - m_position;
+
+			if (m_pressAndHoldGauge->GetNowStatus() == m_pressAndHoldGauge->enGaugeState_Max ||
+				diff.Length() >= NOT_DRAW_LENGTH) {
+				// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+				m_pressAndHoldGauge->ResetGaugeAngle();
+			}
+		}
+
+		// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ï¿½ï¿½Å‘ï¿½lï¿½Å‚È‚ï¿½ï¿½@ï¿½ï¿½ï¿½Â@Aï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½
+		if (m_playerStatus.m_stamina < STAMINA_MAX &&
+			m_actionState != m_enActionState_Run) {
+
+			m_recoveryTimer -= g_gameTime->GetFrameDeltaTime();
+
+			if (m_recoveryTimer <= 0.0f) {
+				// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ğ‘‚â‚·
+				m_playerStatus.m_stamina += g_gameTime->GetFrameDeltaTime() * INCREASE_STAMINA_VALUE;
+			}
+		}
+		else {
+			m_recoveryTimer = RECOVERY_TIMER;		// ï¿½^ï¿½Cï¿½}ï¿½[ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+		}
+	}
+
+	PlayAnimation();		// ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
 
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetRotaition(m_rotation);
@@ -48,148 +163,275 @@ void Player::Update()
 
 void Player::LoadAnimation()
 {
-	m_EnAnimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/player/idle.tka");
-	m_EnAnimationClips[m_en_AnimationClips_Idle].SetLoopFlag(true);
+	m_enAnimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/player/idle.tka");
+	m_enAnimationClips[m_en_AnimationClips_Idle].SetLoopFlag(true);
 
-	m_EnAnimationClips[m_en_AnimationClips_Walk].Load("Assets/animData/player/walk.tka");
-	m_EnAnimationClips[m_en_AnimationClips_Walk].SetLoopFlag(true);
+	m_enAnimationClips[m_en_AnimationClips_Walk].Load("Assets/animData/player/walk.tka");
+	m_enAnimationClips[m_en_AnimationClips_Walk].SetLoopFlag(true);
 
-	m_EnAnimationClips[m_en_AnimationClips_Run].Load("Assets/animData/player/run.tka");
-	m_EnAnimationClips[m_en_AnimationClips_Run].SetLoopFlag(true);
+	m_enAnimationClips[m_en_AnimationClips_Run].Load("Assets/animData/player/run.tka");
+	m_enAnimationClips[m_en_AnimationClips_Run].SetLoopFlag(true);
 
-	//m_EnAnimationClips[m_en_AnimationClips_Dig].Load("Assets/animData/player/dig.tka");
-	//m_EnAnimationClips[m_en_AnimationClips_Dig].SetLoopFlag(true);
+	m_enAnimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/player/damage.tka");
+	m_enAnimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
 
-	m_EnAnimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/player/damage.tka");
-	m_EnAnimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
+	m_enAnimationClips[m_en_AnimationClips_Death].Load("Assets/animData/player/KneelDown.tka");
+	m_enAnimationClips[m_en_AnimationClips_Death].SetLoopFlag(false);
 
-	m_EnAnimationClips[m_en_AnimationClips_Death].Load("Assets/animData/player/KneelDown.tka");
-	m_EnAnimationClips[m_en_AnimationClips_Death].SetLoopFlag(false);
-
-	m_EnAnimationClips[m_en_AnimationClips_Clear].Load("Assets/animData/player/clear.tka");
-	m_EnAnimationClips[m_en_AnimationClips_Clear].SetLoopFlag(false);
+	m_enAnimationClips[m_en_AnimationClips_Clear].Load("Assets/animData/player/clear.tka");
+	m_enAnimationClips[m_en_AnimationClips_Clear].SetLoopFlag(false);
 }
 
 void Player::PlayAnimation()
 {
 	switch (m_actionState) {
-	case m_ActionState_Idle:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle);
+	case m_enActionState_Idle:
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Walk:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Walk);
+	case m_enActionState_Walk:
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Walk, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Run:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Run);
+	case m_enActionState_Run:
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Run, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Dig:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Dig);
+	case m_enActionState_Dig:
 		break;
-	case m_ActionState_Damage:
+	case m_enActionState_Damage:
 		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage);
+		m_modelRender.SetAnimationSpeed(0.5f);
 		break;
-	case m_ActionState_Death:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Death);
+	case m_enActionState_Death:
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Death, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Clear:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Clear);
+	case m_enActionState_Clear:
+		m_modelRender.PlayAnimation(m_en_AnimationClips_Clear, LINEAR_COMPLETION);
 		break;
 	}
 }
 
 void Player::Rotation()
 {
-	// ƒXƒeƒBƒbƒN‚Ì“ü—Í‚ª‚ ‚Á‚½‚ç
-	if (fabsf(m_moveSpeed.x) >= 0.001 || fabsf(m_moveSpeed.z) >= 0.001) {
-		//@ƒLƒƒƒ‰ƒNƒ^[‚Ì•ûŒü‚ğ•Ï‚¦‚é
-		m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
+	// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if (fabsf(m_basicSpeed.x) >= 0.001 || fabsf(m_basicSpeed.z) >= 0.001) {
+		// ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
+		m_rotation.SetRotationYFromDirectionXZ(m_basicSpeed);
 		m_modelRender.SetRotaition(m_rotation);
 	}
 	else {
-		// ‚È‚¢ê‡‚Í‘Ò‹@ó‘Ô‚É‚·‚é
-		m_actionState = m_ActionState_Idle;
+		// ï¿½È‚ï¿½ï¿½ê‡ï¿½Í‘Ò‹@ï¿½ï¿½Ô‚É‚ï¿½ï¿½ï¿½
+		m_actionState = m_enActionState_Idle;
 	}
 }
 
 void Player::Move()
 {
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
+	// ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ô‚Í“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+	if (m_pressAndHoldGauge->GetNowStatus() == m_pressAndHoldGauge->enGaugeState_Increase) {
+		m_actionState = m_enActionState_Idle;
+		return;
+	}
 
-	// ƒQ[ƒ€ƒpƒbƒh‚Ì“ü—Í—Ê‚ğQÆ‚·‚é
+	m_basicSpeed.x = 0.0f;
+	m_basicSpeed.z = 0.0f;
+
+	// ï¿½Qï¿½[ï¿½ï¿½ï¿½pï¿½bï¿½hï¿½Ì“ï¿½ï¿½Í—Ê‚ï¿½Qï¿½Æ‚ï¿½ï¿½ï¿½
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
 	stickL.y = g_pad[0]->GetLStickYF();
 
-	// ƒJƒƒ‰‚Ì‘O•ûŒü‚Æ‰E•ûŒü‚ÌƒxƒNƒgƒ‹‚ğ‚Á‚Ä‚­‚é
+	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì‘Oï¿½ï¿½ï¿½ï¿½ï¿½Æ‰Eï¿½ï¿½ï¿½ï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 	Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
 
-	// y•ûŒü‚É‚ÍˆÚ“®‚³‚¹‚È‚¢
+	// yï¿½ï¿½ï¿½ï¿½ï¿½É‚ÍˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 	forward.y = 0.0f;
 	right.y = 0.0f;
 
-	if (g_pad[0]->IsPress(enButtonA)) {
-		// ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚éŠÔƒ_ƒbƒVƒ…
-		m_actionState = m_ActionState_Run;
-		m_addSpped = 2.5f;
+	if (g_pad[0]->IsPress(enButtonA) && m_playerStatus.m_stamina > STAMINA_MIN) {
+
+		// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+		if (fabsf(stickL.x) >= 0.001 || fabsf(stickL.y) >= 0.001) {
+			// ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ôƒ_ï¿½bï¿½Vï¿½ï¿½
+			m_actionState = m_enActionState_Run;
+
+			// ï¿½Xï¿½^ï¿½~ï¿½iï¿½ï¿½ï¿½ï¿½ç‚·
+			m_playerStatus.m_stamina -= g_gameTime->GetFrameDeltaTime() * DECREASE_STAMINA_VALUE;
+
+			m_addValue += ADDSPEED;
+			m_addSpped = min(m_addValue, RUN_SPEED);
+		}
 	}
 	else {
-		// ‰Ÿ‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚Í•à‚­
-		m_actionState = m_ActionState_Walk;
-		m_addSpped = 1.0f;
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½ï¿½Í•ï¿½ï¿½
+		m_actionState = m_enActionState_Walk;
+
+		m_addSpped = WALKING_SPEED;
 	}
 
-	// ƒXƒeƒBƒbƒN‚Ì“ü—Í—Ê~ˆÚ“®‘¬“x~æZ‘¬“x‚ÅÅI“I‚ÈˆÚ“®‘¬“x‚ğŒvZ‚·‚é
-	right *= stickL.x * playerStatus.m_basicSpeed * m_addSpped;
-	forward *= stickL.y * playerStatus.m_basicSpeed * m_addSpped;
+	// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Í—Ê~ï¿½Ú“ï¿½ï¿½ï¿½ï¿½xï¿½~ï¿½ï¿½Zï¿½ï¿½ï¿½xï¿½ÅÅIï¿½Iï¿½ÈˆÚ“ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
+	right *= stickL.x * m_playerStatus.m_basicSpeed * m_addSpped;
+	forward *= stickL.y * m_playerStatus.m_basicSpeed * m_addSpped;
 
-	// ˆÚ“®‘¬“x‚Éã‹L‚ÅŒvZ‚µ‚½ƒxƒNƒgƒ‹‚ğ‰ÁZ
-	m_moveSpeed += right + forward;
+	// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½xï¿½Éï¿½Lï¿½ÅŒvï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Z
+	m_basicSpeed += right + forward;
 
-	m_position = m_characterController.Execute(m_moveSpeed, 1.0f / 60.0f);
+	m_position = m_characterController.Execute(m_basicSpeed, DELTA_TIME);
 
 	m_modelRender.SetPosition(m_position);
 }
 
-void Player::Attack()
-{
-}
-
 void Player::Damage(int attackPower)
 {
-	// ƒ_ƒ[ƒW‚ğó‚¯‚È‚¢ó‘Ô‚Ì‚Æ‚«
-	if (m_takeDamageflag == false) {
-		// ˆÈ‰º‚Ìˆ—‚ğÀs‚µ‚È‚¢
+	if (!m_canAddDamage) {
 		return;
 	}
 
-	m_en_AnimationClips_Damage;					// ”í’eƒ‚[ƒVƒ‡ƒ“‚ğÄ¶
-
-	playerStatus.m_hitPoint-= attackPower;		// ƒ_ƒ[ƒW—Ê‚ğHP‚©‚çˆø‚­
-	m_takeDamageflag = false;					// ˜A‘±‚µ‚Äƒ_ƒ[ƒW‚ğó‚¯‚È‚¢
-
-	m_invincibleTimer -= g_gameTime->GetFrameDeltaTime();
-
-	// ƒ^ƒCƒ}[‚ª0.0fˆÈ‰º‚Ì‚Æ‚«
-	if (m_invincibleTimer < 0.0f) {
-		m_takeDamageflag = true;
-	}
+	// ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ó‚¯‚ï¿½ï¿½ï¿½ï¿½Ô‚Ì‚Æ‚ï¿½
+	m_actionState = m_enActionState_Damage;
+	m_playerStatus.m_hitPoint -= attackPower;			// ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½Ê‚ï¿½HPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	m_canAddDamage = false;								// ï¿½Aï¿½ï¿½ï¿½Åƒ_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ó‚¯‚È‚ï¿½ï¿½æ‚¤ï¿½Éİ’ï¿½
 }
 
-void Player::Death()
+struct CrashedCrystal :public btCollisionWorld::ConvexResultCallback
 {
-	m_actionState = m_ActionState_Death;
+	bool isHit = false;		// ï¿½Õ“Ëƒtï¿½ï¿½ï¿½O
+
+	virtual btScalar addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normallnWorldSpace) 
+	{
+		// ï¿½Õ“Ë‚ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		if (convexResult.m_hitCollisionObject->getUserIndex() != enCollisionAttr_Crystal) {
+			return 0.0f;
+		}
+		
+		isHit = true;
+		return 0.0f;
+	}
+};
+
+bool Player::CrystalAndHit(Vector3 targetPosition)
+{
+	btTransform start, end;
+
+	start.setIdentity();
+	end.setIdentity();
+
+	// ï¿½nï¿½_ï¿½ÆIï¿½_ï¿½ï¿½İ’ï¿½
+	start.setOrigin(btVector3(m_position.x, Y_POSITION, m_position.z));
+	end.setOrigin(btVector3(targetPosition.x, Y_POSITION, targetPosition.z));
+
+	CrashedCrystal callback;
+
+	// ï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½ï¿½nï¿½_ï¿½ï¿½ï¿½ï¿½Iï¿½_ï¿½Ü‚Å“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÄÕ“Ë‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×‚ï¿½
+	PhysicsWorld::GetInstance()->ConvexSweepTest(
+		(const btConvexShape*)m_sphereCollider.GetBody(),
+		start, 
+		end, 
+		callback);
+
+	// ï¿½Õ“Ë‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½falseï¿½ï¿½Ô‚ï¿½
+	if (callback.isHit) {
+		return false;
+	}
+
+	return true;
 }
 
 void Player::Dig()
 {
-	m_actionState = m_ActionState_Dig;
+	Vector3 diff = Vector3::Zero;
+
+	if (!m_isDig) {
+		// ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Ì•ê”ï¿½ï¿½æ“¾
+		int crystalNum = m_game->GetCrystalList().size();
+
+		for (int i = 0; i < crystalNum; i++) {
+
+			if (m_isDig) {
+				m_isDig = false;
+				return;
+			}
+
+			if (m_game->GetCrystalList()[i]->GetCrystalState() != m_game->GetCrystalList()[i]->m_enCrystalStete_Normal) {
+				continue;
+			}
+
+			// ï¿½ï¿½ï¿½Wï¿½ï¿½æ“¾
+			Vector3 crystalPos = m_game->GetCrystalList()[i]->GetPosition();
+			// ï¿½ï¿½ï¿½gï¿½Ìï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+			diff = crystalPos - m_position;
+
+			// ï¿½Õ“Ë‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½È‚ï¿½
+			if (!CrystalAndHit(m_position + (diff * ADD_LENGTH))) {
+				// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½`ï¿½æ‚·ï¿½ï¿½
+				m_pressAndHoldGauge->SetCanDrawGauge(true);
+				// ï¿½ï¿½ï¿½gï¿½Ìï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				m_pressAndHoldGauge->Set3DPosition(m_position);
+				// ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½Û‘ï¿½
+				m_getCrystal = m_game->GetCrystalList()[i];
+				m_crystalPosition = crystalPos;
+				// ï¿½pï¿½xï¿½ğ‘‚â‚·
+				m_pressAndHoldGauge->SetChangeGaugeAngle(true);
+				m_isDig = true;
+				break;
+			}
+
+			// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½`ï¿½æ‚·ï¿½ï¿½
+			m_pressAndHoldGauge->SetCanDrawGauge(false);
+		}
+	}
+	else {
+		// ï¿½ï¿½ï¿½gï¿½Ìï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+		diff = m_crystalPosition - m_position;
+
+		// ï¿½ï¿½ï¿½Èã—£ï¿½ê‚½ï¿½ï¿½
+		if (diff.Length() >= CAN_GET_LENGTH) {
+			// ï¿½ÌŒ@ï¿½ï¿½ï¿½È‚ï¿½
+			m_isDig = false;
+			return;
+		}
+
+		// ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½Å‘ï¿½Å‚È‚ï¿½ï¿½Æ‚ï¿½ï¿½È‰ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Íï¿½ï¿½sï¿½ï¿½ï¿½È‚ï¿½
+		if (m_pressAndHoldGauge->GetNowStatus() != m_pressAndHoldGauge->enGaugeState_Min) {
+			return;
+		}
+
+		//m_game->GetCrystalList().erase(
+		//	std::remove(m_game->GetCrystalList().begin(), m_game->GetCrystalList().end(),m_getCrystal),
+		//	m_game->GetCrystalList().end()
+		//);
+
+		//while (it != m_game->GetCrystalList().end()) {
+		//	if (*it == m_getCrystal) {
+		//		it = m_game->GetCrystalList().erase(it);
+		//	}
+		//	else {
+		//		it++;
+		//	}
+		//}
+
+		// ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		m_getCrystal->SetCrystalState(m_crystal->m_enCrystalStete_HavePlayer);
+		m_haveCrystals.push_back(m_getCrystal);
+
+		m_sound->SetSoundSE(m_sound->m_enSoundState_GetSE);
+
+		// ï¿½~ï¿½`ï¿½Qï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
+		m_pressAndHoldGauge->ResetGaugeAngle();
+
+		m_getCrystal = nullptr;
+	}
 }
 
-void Player::Clear()
+void Player::IsClear()
 {
-	m_actionState = m_ActionState_Clear;
+	for (int i = 0; i < m_game->GetGoalList().size(); i++) {
+		// ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Wï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬
+		Vector3 diff = m_game->GetGoalList()[i] - m_position;
+		
+		if (diff.Length() <= CLEAR_LENGTH) {
+			m_actionState = m_enActionState_Clear;
+		}
+	}
 }
 
 void Player::Render(RenderContext& rc)

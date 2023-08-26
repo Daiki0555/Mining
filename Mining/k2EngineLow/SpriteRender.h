@@ -10,11 +10,13 @@ namespace nsK2EngineLow {
 		/// <param name="w">画像の横幅</param>
 		/// <param name="h">画像の縦幅</param>
 		/// <param name="alphaBlendMode">デフォルトは半透明</param>
+		/// <param name="clipMode">デフォルトは0</param>
 		void Init(
 			const char* filePath,
 			const float w,
 			const float h,
-			AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans
+			AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans,
+			const int clipMode = 0			// クリップモード
 		);
 
 		/// <summary>
@@ -117,6 +119,10 @@ namespace nsK2EngineLow {
 		/// <param name="rc">レンダーコンテキスト</param>
 		void Draw(RenderContext& rc);
 
+		/// <summary>
+		/// クリップボードの設定処理
+		/// </summary>
+		void ClipMode(SpriteInitData& initData, const int clipMode);
 	
 	private:
 		/// <summary>
@@ -130,7 +136,7 @@ namespace nsK2EngineLow {
 	private:
 		Sprite			m_sprite;
 		Vector3			m_position = Vector3::Zero;
-		Vector3			m_scale = Vector3::Zero;
+		Vector3			m_scale = Vector3::One;
 		Quaternion		m_rotaition = Quaternion::Identity;
 		Vector2			m_pivot = Sprite::DEFAULT_PIVOT;
 	};

@@ -21,6 +21,7 @@ namespace nsK2EngineLow {
 			objData.position.y = caslData->position.y;
 			objData.width = caslData->width;
 			objData.height = caslData->height;
+			objData.name = caslData->name.get();
 			objData.ddsFilePath = caslData->ddsFilePath.get();
 			objData.pivot = caslData->pivot;
 			auto isHook = false;

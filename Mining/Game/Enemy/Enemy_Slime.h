@@ -1,4 +1,5 @@
 #pragma once
+
 #include "EnemyBasic.h"
 
 class Enemy_Slime:public EnemyBasic
@@ -9,8 +10,19 @@ public:
 
 	bool Start();
 	void Update();
-	void LoadAnimation();
-	void PlayAnimation();
 	void Render(RenderContext& rc);
+private:
+	/// <summary>
+	/// 行動処理
+	/// </summary>
+	void Action();
+	/// <summary>
+	/// アニメーションのロード
+	/// </summary>
+	void LoadAnimation();
+	/// <summary>
+	/// アニメーションの再生処理
+	/// </summary>
+	void PlayAnimation();
 };
 

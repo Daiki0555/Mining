@@ -3,11 +3,12 @@
 
 namespace
 {
-	const int	ATTACK_POWER = 0;							// 攻撃
-	const float BASIC_SPEED = 30.0f;						// 基本スピード
-
-	const float CHARACTERCONTROLLER_RADIUS = 50.0f;			// 半径
-	const float CHARACTERCONTROLLER_HEIGHT = 50.0f;			// 高さ
+	const Vector3	SCALE = Vector3(5.0f, 5.0f, 5.0f);			// スケール
+	const int		ATTACK_POWER = 30;							// 攻撃
+	const float		BASIC_SPEED = 150.0f;						// 基本スピード
+	const float		CHARACTERCONTROLLER_RADIUS = 50.0f;			// 半径
+	const float		CHARACTERCONTROLLER_HEIGHT = 50.0f;			// 高さ
+	const float		LINEAR_COMPLETION = 1.0f;					// 線形補完
 }
 
 Enemy_Slime::Enemy_Slime()
@@ -22,12 +23,13 @@ bool Enemy_Slime::Start()
 {
 	LoadAnimation();
 
-	m_scale = { 5.0f,5.0f,5.0f };
+	m_scale = SCALE;
 
-	m_modelRender.Init("Assets/modelData/enemy/SlimeRabbit/SlimeRabbit.tkm", m_EnanimationClips, m_en_AnimationClips_Num, enModelUpAxisZ);
+	m_modelRender.Init("Assets/modelData/enemy/SlimeRabbit/SlimeRabbit.tkm", m_enAnimationClips, m_enAnimationClips_Num, enModelUpAxisZ, true);
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotaition(m_rotation);
 	m_modelRender.SetPosition(m_position);
+	m_modelRender.Update();
 
 	EnemyBasic::Start(
 		ATTACK_POWER,					// 攻撃力
@@ -42,42 +44,53 @@ bool Enemy_Slime::Start()
 void Enemy_Slime::LoadAnimation()
 {
 	// Attackなし
-	m_EnanimationClips[m_en_AnimationClips_Idle].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Idle.tka");
-	m_EnanimationClips[m_en_AnimationClips_Idle].SetLoopFlag(true);
+	m_enAnimationClips[m_enAnimationClips_Idle].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Idle.tka");
+	m_enAnimationClips[m_enAnimationClips_Idle].SetLoopFlag(true);
 
-	m_EnanimationClips[m_en_AnimationClips_Move].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Move.tka");
-	m_EnanimationClips[m_en_AnimationClips_Move].SetLoopFlag(true);
-
-	m_EnanimationClips[m_en_AnimationClips_Damage].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Damage.tka");
-	m_EnanimationClips[m_en_AnimationClips_Damage].SetLoopFlag(false);
+	m_enAnimationClips[m_enAnimationClips_Move].Load("Assets/animData/enemy/SlimeRabbitAnim/SlimeRabbit_Move.tka");
+	m_enAnimationClips[m_enAnimationClips_Move].SetLoopFlag(true);
 }
 
 void Enemy_Slime::PlayAnimation()
 {
 	switch (m_actionState) {
-	case m_ActionState_Idle:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Idle);
+	case m_enActionState_Idle:
+	case m_enActionState_GameQuit:
+	case m_enActionState_StopAction:
+		m_modelRender.PlayAnimation(m_enAnimationClips_Idle, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Move:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Move);
+	case m_enActionState_Move:
+	case m_enActionState_Attack:
+		m_modelRender.PlayAnimation(m_enAnimationClips_Move, LINEAR_COMPLETION);
 		break;
-	case m_ActionState_Damage:
-		m_modelRender.PlayAnimation(m_en_AnimationClips_Damage);
+	}
+}
+
+void Enemy_Slime::Action()
+{
+	switch (m_actionState) {
+	case m_enActionState_Idle:
+		Idle();
+		break;
+	case m_enActionState_Move:
+		Move();
+		break;
+	case m_enActionState_Attack:
+		Attack();
+		break;
+	case m_enActionState_StopAction:
+		StopAction();
 		break;
 	}
 }
 
 void Enemy_Slime::Update()
 {
-	switch (m_actionState) {
-	case m_ActionState_Idle:
-		break;
-	case m_ActionState_Move:
-		break;
-	case m_ActionState_Damage:
-		break;
+	if (m_actionState == m_enActionState_GameQuit) {
+		return;
 	}
 
+	Action();
 	PlayAnimation();
 
 	m_modelRender.SetScale(m_scale);

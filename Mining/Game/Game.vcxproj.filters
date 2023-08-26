@@ -19,8 +19,7 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Enemy\Enemy_Bee.cpp">
+    <ClCompile Include="Enemy\Enemy_Stone.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Enemy\Enemy_Mushroom.cpp">
@@ -37,6 +36,18 @@
     </ClCompile>
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Stage\Object\Crystal.cpp" />
+    <ClCompile Include="UI\PlayerStatusGauge.cpp" />
+    <ClCompile Include="UI\PressAndHoldGauge.cpp" />
+    <ClCompile Include="Scene\Game.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="Scene\GameResult.cpp" />
+    <ClCompile Include="SaveDataManager.cpp" />
+    <ClCompile Include="NameEntry.cpp" />
+    <ClCompile Include="UI\Fade.cpp" />
+    <ClCompile Include="Scene\Guide.cpp" />
+    <ClCompile Include="Scene\Logo.cpp" />
+    <ClCompile Include="Ranking.cpp" />
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -45,8 +56,7 @@
     </ClInclude>
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Enemy\Enemy_Bee.h">
+    <ClInclude Include="Enemy\Enemy_Stone.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Enemy\Enemy_Mushroom.h">
@@ -63,5 +73,17 @@
     </ClInclude>
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Stage\Object\Crystal.h" />
+    <ClInclude Include="UI\PlayerStatusGauge.h" />
+    <ClInclude Include="UI\PressAndHoldGauge.h" />
+    <ClInclude Include="Scene\Game.h" />
+    <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="Scene\GameResult.h" />
+    <ClInclude Include="SaveDataManager.h" />
+    <ClInclude Include="NameEntry.h" />
+    <ClInclude Include="UI\Fade.h" />
+    <ClInclude Include="Scene\Guide.h" />
+    <ClInclude Include="Scene\Logo.h" />
+    <ClInclude Include="Ranking.h" />
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,21 @@
 #pragma once
+
+class Game;
+class Crystal;
+class PressAndHoldGauge;
+class Sound;
+
+namespace 
+{
+	const int	HIT_POINT = 150;			// HP
+	const int	ATTACK_POWER = 25;			// 攻撃力
+	const float	STAMINA = 100.0f;			// スタミナ
+	const float BASIC_SPEED = 150.0f;		// 移動速度
+	const float INVINCIBLE_TIMER = 5.0f;	// 無敵時間
+	const float RECOVERY_TIMER = 2.0f;		// スタミナが回復するまでの時間
+	const float ADDSPEED = 0.5f;			// ダッシュ時の加算速度
+}
+
 class Player :public IGameObject
 {
 public:
@@ -9,17 +26,41 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	void LoadAnimation();
-	void PlayAnimation();
-
-	void Rotation();
-	void Move();
-	void Attack();
+public:
+	/// <param name="attackPower">相手の攻撃力</param>
 	void Damage(int attackPower);
+private:
+	/// <summary>
+	/// アニメーションのロード
+	/// </summary>
+	void LoadAnimation();
+	/// <summary>
+	/// アニメーションの再生
+	/// </summary>
+	void PlayAnimation();
+	/// <summary>
+	/// 回転処理
+	/// </summary>
+	void Rotation();
+	/// <summary>
+	/// 移動処理
+	/// </summary>
+	void Move();
+	/// <summary>
+	/// 採掘処理
+	/// </summary>
 	void Dig();
-	void Death();
-	void Clear();
+	/// クリアしているかどうかを判定
+	/// </summary>
+	void IsClear();
+	/// <summary>
+	/// クリスタルとの衝突判定
+	/// </summary>
+	/// <param name="targetPosition">目的の座標</param>
+	/// <returns></returns>
+	bool CrystalAndHit(Vector3 targetPosition);
 
+public:
 	/// <summary>
 	/// 座標を参照する
 	/// </summary>
@@ -50,34 +91,65 @@ public:
 	}
 
 	/// <summary>
-	/// クリスタルをlistに追加する
+	/// クリスタルの総数を取得
 	/// </summary>
-	/// <param name="number">自身のレアリティ</param>
-	void AddCrystal(const int& number) {
-		m_haveCrystals.emplace_back(number);
+	inline std::vector<Crystal*> GetCrystalList() const {
+		return m_haveCrystals;
 	}
 
 	/// <summary>
-	/// クリスタルの総数を取得
+	/// プレイヤーのHPを参照する
 	/// </summary>
 	/// <returns></returns>
-	const int GetCrystalSum() const {
-		return m_haveCrystals.size();
+	const int GetHitPoint() const {
+		return m_playerStatus.m_hitPoint;
+	}
+
+	/// <summary>
+	/// プレイヤーのスタミナを参照する
+	/// </summary>
+	/// <returns></returns>
+	const int GetStamina() const {
+		return m_playerStatus.m_stamina;
+	}
+
+	/// <summary>
+	/// ダメージを受けられるかどうかのフラグを参照する
+	/// </summary>
+	/// <returns></returns>
+	const bool GetCanDamege() const {
+		return m_canAddDamage;
+	}
+
+	enum enActionState {
+		m_enActionState_Idle,			// 待機
+		m_enActionState_Walk,			// 歩く
+		m_enActionState_Run,			// 走る
+		m_enActionState_Dig,			// 掘る
+		m_enActionState_Damage,			// 被弾
+		m_enActionState_Death,			// 死亡
+		m_enActionState_Clear			// クリア
+	};
+
+	/// <summary>
+	/// ステートを設定する
+	/// </summary>
+	/// <param name="state"></param>
+	void SetActionState(enActionState state) {
+		m_actionState = state;
+	}
+
+	/// <summary>
+	/// 現在のステートを返す
+	/// </summary>
+	const enActionState GetActionState() const {
+		return m_actionState;
 	}
 
 private:
-	enum ActionState {
-		m_ActionState_Idle,			// 待機
-		m_ActionState_Walk,			// 歩く
-		m_ActionState_Run,			// 走る
-		m_ActionState_Dig,			// 掘る
-		m_ActionState_Damage,		// 被弾
-		m_ActionState_Death,		// 死亡
-		m_ActionState_Clear			// クリア
-	};
-	ActionState m_actionState;
+	enActionState			m_actionState = m_enActionState_Idle;
 
-	enum EnAnimationClip {
+	enum enAnimationClip {
 		m_en_AnimationClips_Idle,		// 待機
 		m_en_AnimationClips_Walk,		// 歩く
 		m_en_AnimationClips_Run,		// 走る
@@ -87,32 +159,40 @@ private:
 		m_en_AnimationClips_Clear,		// クリア
 		m_en_AnimationClips_Num
 	};
-	AnimationClip m_EnAnimationClips[m_en_AnimationClips_Num];
+	AnimationClip			m_enAnimationClips[m_en_AnimationClips_Num];
 
 // --------------------------------------------------------
-	ModelRender			m_modelRender;						// モデルレンダー
 
-	CharacterController m_characterController;				// キャラクターコントローラー
-
-	Vector3				m_position = Vector3::Zero;			// 自身の座標
-	Vector3				m_scale = Vector3::One;				// 自身のスケール
-	Vector3				m_moveSpeed = Vector3::Zero;		// 移動速度
-
-	Quaternion			m_rotation= Quaternion::Identity;	// 自身の回転
-
+	/// <summary>
+	/// プレイヤーステータス
+	/// </summary>
 	struct PlayerStatus {
-		int				m_hitPoint = 150;					// HP(150)
-		int				m_attackPower = 25;					// 攻撃力(25)
-		float			m_stamina = 100.0f;					// スタミナ(100.0f)
-		float			m_basicSpeed = 150.0f;				// 基本速度(120.0f)
+		int					m_hitPoint = HIT_POINT;							// HP
+		int					m_attackPower = ATTACK_POWER;					// 攻撃力
+		float				m_stamina = STAMINA;							// スタミナ
+		float				m_basicSpeed = BASIC_SPEED;						// 基本速度
 	};
-	PlayerStatus		playerStatus;						// プレイヤーのステータス
 
-	float				m_invincibleTimer = 5.0f;			// 無敵時間
-	float				m_addSpped = 1.0f;					// 乗算速度
-
-	bool				m_takeDamageflag = true;			// ダメージを受けるフラグ
-
-	std::list<int>		m_haveCrystals;						// 所持しているクリスタル
+	ModelRender				m_modelRender;									// モデルレンダー
+	CharacterController		m_characterController;							// キャラクターコントローラー
+	SphereCollider			m_sphereCollider;								// スフィアコライダー
+	Vector3					m_position = Vector3::Zero;						// 自身の座標
+	Vector3					m_scale = Vector3::One;							// 自身のスケール
+	Vector3					m_basicSpeed = Vector3::Zero;					// 移動速度
+	Vector3					m_crystalPosition = Vector3::Zero;				// 獲得するクリスタルの座標
+	Quaternion				m_rotation= Quaternion::Identity;				// 自身の回転
+	Game*					m_game = nullptr;								// ゲーム
+	Crystal*				m_crystal = nullptr;							// クリスタル
+	Crystal*				m_getCrystal = nullptr;							// 獲得したクリスタル
+	PressAndHoldGauge*		m_pressAndHoldGauge = nullptr;					// 円形ゲージ
+	Sound*					m_sound = nullptr;								// サウンド
+	std::vector<Crystal*>	m_haveCrystals;									// 所持しているクリスタル
+	PlayerStatus			m_playerStatus;									// プレイヤーのステータス
+	float					m_recoveryTimer = RECOVERY_TIMER;				// スタミナが回復し始めるまでの時間
+	float					m_invincibleTimer = INVINCIBLE_TIMER;			// 無敵時間
+	float					m_addSpped = 0.0f;								// 乗算する移動速度
+	float					m_addValue = ADDSPEED;							// 移動速度と比較するための変数
+	bool					m_canAddDamage = true;							// ダメージを受けられるかどうか
+	bool					m_isDig = false;								// 採掘しているかどうか
 };
 

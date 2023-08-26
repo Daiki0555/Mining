@@ -1,0 +1,4 @@
+3
+5,title,49,../../Game/Assets/Sprite/UI/Scene/title/title.png,1.9230769230770193,1.1368683772161603e-13,1920,1080,10,1.0,1.0,0.5,0.5,9,title.dds
+8,userName,56,../../Game/Assets/Sprite/UI/Scene/nameEntry/userName.png,0.0,100.0,213,11,10,1.0,1.0,0.5,0.5,12,userName.dds
+9,nameEntry,57,../../Game/Assets/Sprite/UI/Scene/nameEntry/nameEntry.png,0.0,360.0,788,138,10,1.0,1.0,0.5,0.5,13,nameEntry.dds

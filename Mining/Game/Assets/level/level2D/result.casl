@@ -1,0 +1,4 @@
+3
+5,title,49,../../Game/Assets/Sprite/UI/Scene/title/title.png,1.9230769230770193,1.1368683772161603e-13,1920,1080,10,1.0,1.0,0.5,0.5,9,title.dds
+6,result,51,../../Game/Assets/Sprite/UI/Scene/rerult/result.png,-575.0,355.7692307692307,377,140,10,1.0,1.0,0.5,0.5,10,result.dds
+10,scoreBoard,55,../../Game/Assets/Sprite/UI/Scene/rerult/scoreBoard.png,-10.000000000000114,-30.0,572,593,10,1.0,1.0,0.5,0.5,14,scoreBoard.dds
