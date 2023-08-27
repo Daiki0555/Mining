@@ -82,11 +82,9 @@ void Fade::RotationImage()
 
 
 	m_imageSpriteRender.SetRotation(rot);
-	m_imageSpriteRender.SetScale(Vector3(rot.x, rot.y, 1.0f));
 	m_imageSpriteRender.SetMulColor(alpha);
 	m_imageSpriteRender.Update();
 }
-
 
 void Fade::Render(RenderContext& rc)
 {
