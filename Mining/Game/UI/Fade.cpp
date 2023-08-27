@@ -5,7 +5,7 @@ namespace
 {
 	const float FADE_SPEED = 0.7f;		// フェードの速度
 	const float FONT_SCALE = 1.0f;		// フォントのスケール
-	const float ROT_ANGLE = -180.0f;		// 回転角度
+	const float ROT_ANGLE = 2.0f;		// 回転角度
 }
 
 Fade::Fade()
@@ -18,7 +18,6 @@ Fade::~Fade()
 
 bool Fade::Start()
 {
-	//m_spriteRender.Init("Assets/sprite/UI/Scene/Fade.DDS", 1920.0f, 1080.0f);
 	m_spriteRender.Init("Assets/sprite/UI/Scene/image.DDS", 1920.0f, 1080.0f, AlphaBlendMode_Multiply, 3);
 
 	// スプライトの設定
@@ -60,6 +59,7 @@ void Fade::Update()
 		break;
 	}
 
+	// バッファーの値に透明度を渡す
 	RenderingEngine::GetInstance()->GetSpriteCB().fadeValue = m_alpha;
 
 	if (!m_isDraw) {
@@ -67,29 +67,22 @@ void Fade::Update()
 	}
 
 	RotationImage();
-	m_fontRender.SetColor({ m_alpha, m_alpha, m_alpha, m_alpha });
-	//SpriteUpdate();
-}
-
-void Fade::SpriteUpdate()
-{
-	Vector4 alpha = Vector4( 1.0f,1.0f,1.0f,m_alpha );
-
-	// 背景の設定
-	m_spriteRender.SetMulColor(alpha);
-	m_spriteRender.Update();
+	m_fontRender.SetColor(Vector4(m_alpha, m_alpha, m_alpha, m_alpha));
 }
 
 void Fade::RotationImage()
 {
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
+	// 回転
 	Quaternion rot = Quaternion::Identity;
-	rot.AddRotationZ(Math::DegToRad(ROT_ANGLE * m_timer));
-
+	rot.AddRotationZ(ROT_ANGLE * m_timer);
+	// 透明度
 	Vector4 alpha = Vector4(1.0f, 1.0f, 1.0f, m_alpha);
 
+
 	m_imageSpriteRender.SetRotation(rot);
+	m_imageSpriteRender.SetScale(Vector3(rot.x, rot.y, 1.0f));
 	m_imageSpriteRender.SetMulColor(alpha);
 	m_imageSpriteRender.Update();
 }
