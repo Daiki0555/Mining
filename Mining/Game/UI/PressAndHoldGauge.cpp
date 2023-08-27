@@ -4,19 +4,14 @@
 namespace
 {
 	const Vector3	TEX_SCALE = Vector3(1.0f, 1.0f, 1.0f);				// テクスチャのスケール
-
+	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
 	const float		DECREASE_CIRCLE_ANGLE = 36.0f;						// 角度の減少速度
 	const float		INCREASE_CIRCLE_ANGLE = 180.0f;						// 角度の増加速度
-
 	const float		FONT_SCALE = 0.5f;									// フォントのスケール 
 	const float		FONT_SHADOW_OFFSET = 2.0f;							// ピクセルのオフセット量
-	const Vector4	FONT_SHADOW_COLOR = Vector4(1.0f, 1.0f, 1.0f, 1.0f);// カラー
-
 	const float		FONT_LEFT_X = 39.0f;								// 左に移動させる値
 	const float		FONT_DOWN_Y = 8.0f;									// 下に移動させる値
-
 	const float		PI = 3.14159;										// 円周率
-
 	const float		CHANGE_STATE_TIME = 10.0f;							// ステートを変更する待ち時間
 }
 
